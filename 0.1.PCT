@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- #DEFINE PREFIX _0p1 -->
+<devicetemplate>
+	<deviceinfo caption="0.1" name="0.1" version="0.0" icon="img\application.ico" deviceid="_0p1" devicetype="application" PLCApplicationID="0.1">
+		<description>0.1 Application</description>
+		<protocols><protocol>M172P_596p15_appl</protocol></protocols>
+	</deviceinfo>
+	<plcconfig>
+		<hmi>
+			<tree name="treeCommissioning">
+				<node name="PREFIX" caption="0.1" icon="%CATALOG%\Applications\img\application.ico" datalink="PREFIX" captionedit="false" menu="menuAppPLC"/>
+			</tree>
+		</hmi>
+		<templatedata>
+			<PREFIX/>
+		</templatedata>
+		<extensions>
+		</extensions>
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+								</xs:sequence>
+								<xs:attribute name="oncreatenode" type="xs:string" fixed="configurator.OnCreateDeviceChild"/>
+								<xs:attribute name="onloadnode" type="xs:string" fixed="configurator.OnLoadDeviceChild"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="configurator.OnDeleteDeviceChild"/>
+								<xs:attribute name="PLCProject" type="xs:string" fixed=""/>
+								<xs:attribute name="noAutoGenCaption" type="xs:boolean" fixed="true"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+		<cfgSettings><item name="newAccessLevelFormat">true</item></cfgSettings></plcconfig>
+	<deviceconfig>
+		<hmi>
+			<tree name="tree1">
+				<node name="PREFIX" caption="0.1" icon="%CATALOG%\Applications\img\application.ico" datalink="PREFIX" captionedit="false" menu="menuAppPLC"/>
+			</tree>
+		</hmi>
+		<templatedata>
+			<PREFIX/>
+		</templatedata>
+		<extensions>
+			<eventhandler event="OnLoadTemplate">configurator.OnLoadDeviceTemplate</eventhandler>
+		</extensions>
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+								</xs:sequence>
+								<xs:attribute name="oncreatenode" type="xs:string" fixed="configurator.OnCreateDeviceChild"/>
+								<xs:attribute name="onloadnode" type="xs:string" fixed="configurator.OnLoadDeviceChild"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="configurator.OnDeleteDeviceChild"/>
+								<xs:attribute name="PLCProject" type="xs:string" fixed="0.1.RSM"/>
+								<xs:attribute name="HMIProject" type="xs:string" fixed="HMIRemote\0.1.RSM"/>
+								<xs:attribute name="HMIRemoteProject" type="xs:string" fixed="HMIRemote\Download\0.1.BIN"/>
+								<xs:attribute name="noAutoGenCaption" type="xs:boolean" fixed="true"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+		<parameters><par ipa="5000" name="TIME_OF_WAIT" descr="" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8960" commsubindex="0"/><option dataBlock="MW110.0" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8960" commsubindex="0"/></par><par ipa="5001" name="level_tank" descr="Рівень резервуара" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="true" defval="" accesslevel="0"><protocol name="Modbus" commaddr="8961" commsubindex="0"/><option dataBlock="MW110.1" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8961" commsubindex="0"/></par><par ipa="5002" name="level_min" descr="Рівень стоп" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8962" commsubindex="0"/><option dataBlock="MW110.2" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8962" commsubindex="0"/></par><par ipa="5003" name="Level_1" descr="Рівень роботи 1" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8963" commsubindex="0"/><option dataBlock="MW110.3" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8963" commsubindex="0"/></par><par ipa="5004" name="Level_2" descr="Рівень роботи 2" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8964" commsubindex="0"/><option dataBlock="MW110.4" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8964" commsubindex="0"/></par><par ipa="5005" name="Level_3" descr="Рівень роботи 3" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8965" commsubindex="0"/><option dataBlock="MW110.5" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8965" commsubindex="0"/></par><par ipa="5012" name="Priority" descr="Пріорітет  0 = Motor_A, 1 = Motor_B, 2 = Motor_C" typetarg="short" typepar="short" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8966" commsubindex="0"/><option dataBlock="MW110.6" typeIEC="INT" parType="status"/><option name="typeIEC">INT</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8966" commsubindex="0"/></par><par ipa="5013" name="Alarms" descr="Аварії" typetarg="unsignedShort" typepar="unsignedShort" scale="1" form="" offs="0" um="" readonly="true" defval="" accesslevel="0"><protocol name="Modbus" commaddr="8967" commsubindex="0"/><option dataBlock="MW110.7" typeIEC="WORD" parType="status"/><option name="typeIEC">WORD</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8967" commsubindex="0"/></par><par ipa="5006" name="Rotation" descr="Ротація 0 - вимкнена" typetarg="boolean" typepar="boolean" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8968" commsubindex="0"/><option dataBlock="MW110.8" typeIEC="BOOL" parType="status"/><option name="typeIEC">BOOL</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8968" commsubindex="0"/></par><par ipa="5007" name="FastRun" descr="Прогонка 0 - вимкнена" typetarg="boolean" typepar="boolean" scale="1" form="" offs="0" um="" readonly="false" defval="0" accesslevel="0"><protocol name="Modbus" commaddr="8969" commsubindex="0"/><option dataBlock="MW110.9" typeIEC="BOOL" parType="status"/><option name="typeIEC">BOOL</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8969" commsubindex="0"/></par><par ipa="5008" name="MotoHour_1" descr="Мотогодини  насос А" typetarg="unsignedInt" typepar="unsignedInt" scale="1" form="" offs="0" um="" readonly="true" defval="" accesslevel="0" aggregable="false"><protocol name="Modbus" commaddr="8970" commsubindex="0"/><option dataBlock="MW110.10" typeIEC="REAL" parType="status"/><option name="typeIEC">REAL</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8970" commsubindex="0"/></par><par ipa="5009" name="MotoHour_2" descr="Мотогодини  насос В" typetarg="unsignedInt" typepar="unsignedInt" scale="1" form="" offs="0" um="" readonly="true" defval="" accesslevel="0" aggregable="false"><protocol name="Modbus" commaddr="8972" commsubindex="0"/><option dataBlock="MW110.12" typeIEC="REAL" parType="status"/><option name="typeIEC">REAL</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8972" commsubindex="0"/></par><par ipa="5010" name="MotoHour_3" descr="Мотогодини  насос С" typetarg="unsignedInt" typepar="unsignedInt" scale="1" form="" offs="0" um="" readonly="true" defval="" accesslevel="0" aggregable="false"><protocol name="Modbus" commaddr="8974" commsubindex="0"/><option dataBlock="MW110.14" typeIEC="REAL" parType="status"/><option name="typeIEC">REAL</option><option name="softscope">0</option><option name="dbScale">1</option><option name="dbOffset">0</option><protocol name="CanOpen" commaddr="8974" commsubindex="0"/></par></parameters>
+		<enums/>
+		<redefPars><redefPar ipa="10004" defval="3"/></redefPars>
+		<settings><item name="newAccessLevelFormat">true</item></settings><fieldVars/>
+		<BACnetsNotPublished/></deviceconfig>
+</devicetemplate>

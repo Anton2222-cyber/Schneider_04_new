@@ -1,0 +1,5950 @@
+***********************************************************************
+*
+*	CODE GENERATION LISTING FOR: 04
+*	COMPILER VERSION: 6.0.0.52
+*
+***********************************************************************
+
+**************************************************
+	List function block: TON
+**************************************************
+
+FUNCTION_BLOCK TON
+
+	{ DE:"<HTML>The TON block produces a delayed output Q of the input IN. The delay time is expressed in milliseconds on the PT input.</br></br>
+<img src= tonscheme.png>
+<ul>
+<li>if IN is FALSE Q is false</li>
+<li>Q becomes TRUE as IN remains TRUE for PT milliseconds</li>
+<li>Q remains TRUE until IN remains TRUE</li>
+</ul>" }
+
+        VAR_INPUT
+IN : BOOL;	{ DE:"Timer input source" }
+PT : UDINT;	{ DE:"Preset time value (ms)" }
+	END_VAR
+
+        VAR_OUTPUT
+Q : BOOL;	{ DE:"Timer output" }
+ET : UDINT;	{ DE:"Timer current value (ms)" }
+	END_VAR
+
+        VAR_EXTERNAL
+	{G:"System_Timers"}
+sysTimer AT %MD0.0 : UDINT;	{ DE:"System timer [ms]" }
+	END_VAR
+
+        VAR
+timStart : UDINT;	{ DE:"Time value at start of counting" }
+	END_VAR
+
+END_FUNCTION_BLOCK
+
+088842F0  55                            push ebp
+088842F1  8B EB                         mov ebp, ebx
+088842F3  57                            push edi
+
+#0		{SRC:TON}
+#1		
+#2			(*	Check if in counting	*)
+#3		
+#4			LD		IN
+(*) UNDEF
+088842F4  33 C0                         xor eax, eax
+088842F6  8A 45 04                      mov al, 4[ebp]
+
+#5			JMPCN	lReset
+(-) BOOL
+088842F9  84 C0                         test al, al
+088842FB  90 74 61 90 90 90             je 0888435FH
+
+#6		
+#7			(*	Check if Q is TRUE *)
+#8			LD		Q
+(*) UNDEF
+08884301  33 C0                         xor eax, eax
+08884303  8A 45 09                      mov al, 9[ebp]
+
+#9			RETC
+#10			
+(-) BOOL
+08884306  84 C0                         test al, al
+08884308  90 75 6A 90 90 90             jne 08884375H
+
+#11			(*	Check if already in counting *)
+#12			LD		timStart
+(*) UNDEF
+0888430E  8B 45 00                      mov eax, [ebp]
+
+#13			EQ		0
+(*) UDINT
+08884311  3D 00 00 00 00                cmp eax, 0
+08884316  0F 94 C0                      sete al
+08884319  25 FF 00 00 00                and eax, 0FFh
+
+#14			JMPCN	lUpdate
+(-) BOOL
+0888431E  84 C0                         test al, al
+08884320  90 74 0C 90 90 90             je 0888432FH
+
+#15		
+#16			(*	Start of counting *)
+#17			LD		sysTimer
+(*) UNDEF
+08884326  8B 05 CC CC CC CC             mov eax, [CCCCCCCCH] ; %M0+0
+
+#18			ST		timStart
+(*) UDINT
+0888432C  89 45 00                      mov [ebp], eax
+
+#19			
+#20		lUpdate:
+#21		
+#22			(*	Update timer and check if time elapsed *)
+#23			LD		sysTimer
+(*) UNDEF
+0888432F  8B 05 CC CC CC CC             mov eax, [CCCCCCCCH] ; %M0+0
+
+#24			SUB		timStart
+(*) UDINT
+08884335  2B 45 00                      sub eax, [ebp]
+
+#25			ST		ET
+(*) UDINT
+08884338  89 45 0A                      mov 10[ebp], eax
+
+#26			GE		PT
+(*) UDINT
+0888433B  3B 45 05                      cmp eax, [ebp+5]
+0888433E  0F 93 C0                      setae al
+08884341  25 FF 00 00 00                and eax, 0FFh
+
+#27			ST		Q
+(*) BOOL
+08884346  84 C0                         test al, al
+08884348  0F 95 45 09                   setne 9[ebp]
+
+#28			RETCN
+#29		
+(-) BOOL
+0888434C  84 C0                         test al, al
+0888434E  90 74 24 90 90 90             je 08884375H
+
+#30			(*	Limit actual time value *)
+#31			LD		PT
+(*) UNDEF
+08884354  8B 45 05                      mov eax, 5[ebp]
+
+#32			ST		ET
+(*) UDINT
+08884357  89 45 0A                      mov 10[ebp], eax
+
+#33			RET
+#34		
+(-) UDINT
+0888435A  EB 19 90 90 90                jmp 08884375H
+
+#35		lReset:
+#36		
+#37			(*	Reset status *)
+#38			LD		0
+(*) UNDEF
+0888435F  B8 00 00 00 00                mov eax, 00H
+
+#39			ST		ET
+(*) USINT
+08884364  89 45 0A                      mov 10[ebp], eax
+
+#40			ST		timStart
+(*) UDINT
+08884367  89 45 00                      mov [ebp], eax
+
+#41			LD		FALSE
+(*) UNDEF
+0888436A  B8 00 00 00 00                mov eax, 00H
+
+#42			ST		Q
+(*) BOOL
+0888436F  84 C0                         test al, al
+08884371  0F 95 45 09                   setne 9[ebp]
+
+08884375  5F                            pop edi
+08884376  5D                            pop ebp
+
+08884377  C3                            ret
+
+
+Frame allocation (hex):
+
+	0000       : VAR timStart
+	0004 bit  0: VAR IN
+	0005       : VAR PT
+	0009 bit  0: VAR Q
+	000A       : VAR ET
+
+END_FUNCTION_BLOCK
+**************************************************
+	List program: main
+**************************************************
+
+PROGRAM main
+
+END_PROGRAM
+
+08884380  55                            push ebp
+08884381  8B EC                         mov ebp, esp
+08884383  60                            pushad
+
+#0		{SRC:main}
+#1		(*$WAITSWITCH$*)
+#2		
+#3			(* cnt := cnt + 1; *)
+#4			LD		cnt	{LNXT:2|2|-1}
+(*) UNDEF
+08884384  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+250
+
+#5			ADD		1	{LNXT:2|2|-1}
+(*) INT
+0888438B  05 01 00 00 00                add eax, 1
+
+#6			ST		cnt	{LNXT:2|2|-1}
+(*) INT
+08884390  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+250
+
+08884397  61                            popad
+08884398  5D                            pop ebp
+
+08884399  C3                            ret
+
+END_PROGRAM
+
+
+**************************************************
+	Target variable image generation
+**************************************************
+
+
+*** INPUT:
+0888439A  55                            push ebp
+0888439B  8B EC                         mov ebp, esp
+
+0888439D  8B E5                         mov esp, ebp
+0888439F  5D                            pop ebp
+
+088843A0  C3                            ret
+
+
+*** OUTPUT:
+088843A1  55                            push ebp
+088843A2  8B EC                         mov ebp, esp
+
+088843A4  8B E5                         mov esp, ebp
+088843A6  5D                            pop ebp
+
+088843A7  C3                            ret
+
+
+
+**************************************************
+	Task Background init code
+**************************************************
+
+088843A8  55                            push ebp
+088843A9  8B EC                         mov ebp, esp
+
+088843AB  8B E5                         mov esp, ebp
+088843AD  5D                            pop ebp
+
+088843AE  C3                            ret
+
+**************************************************
+	List program: InitParDB
+**************************************************
+
+PROGRAM InitParDB
+
+        VAR
+warningsKiller : USINT;
+dummyCrc32 : UDINT;
+	END_VAR
+
+END_PROGRAM
+
+088843C0  55                            push ebp
+088843C1  8B EC                         mov ebp, esp
+088843C3  60                            pushad
+
+#0		{SRC:InitParDB}
+#1		(*$WAITSWITCH$*)
+#2		
+#3			(* dummyCrc32 := 125138389; *)
+#4			MOVE		125138389,dummyCrc32	{LNXT:3|5|-1}
+(*) UDINT
+088843C4  B8 D5 75 75 07                mov eax, 077575D5H
+088843C9  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+12
+
+#5		
+#6			(* warningsKiller := sysDBase_SetExtTable( ADR( $$ParDB ), $$ParDBLength ); *)
+#7			ADR		$$ParDB	{LNXT:5|3|-1}
+(*) UDINT
+088843CF  B8 CC CC CC CC                mov eax, CCCCCCCCH ; $$CODE$$+240
+
+#8			sysDBase_SetExtTable		$$ParDBLength	{LNXT:5|3|-1}
+(*) @USINT
+088843D4  68 0D 00 00 00                push 13
+088843D9  8B C8                         mov ecx, eax
+088843DB  51                            push ecx
+088843DC  B9 CC CC CC CC                mov ecx, CCCCCCCCH ; sysDBase_SetExtTable
+088843E1  FF D1                         call ecx
+088843E3  81 C4 08 00 00 00             add esp, 8
+
+#9			ST		warningsKiller	{LNXT:5|3|-1}
+(*) USINT
+088843E9  88 05 CC CC CC CC             mov [CCCCCCCCH], al ; $$DATA$$+16
+
+088843EF  61                            popad
+088843F0  5D                            pop ebp
+
+088843F1  C3                            ret
+
+END_PROGRAM
+
+
+**************************************************
+	Target variable image generation
+**************************************************
+
+
+*** INPUT:
+088843F2  C3                            ret
+
+
+*** OUTPUT:
+088843F3  C3                            ret
+
+
+
+**************************************************
+	Task Serv init code
+**************************************************
+
+088843F4  55                            push ebp
+088843F5  8B EC                         mov ebp, esp
+
+088843F7  8B E5                         mov esp, ebp
+088843F9  5D                            pop ebp
+
+088843FA  C3                            ret
+
+**************************************************
+	List program: LVL
+**************************************************
+
+PROGRAM LVL
+
+        VAR
+Fault_A : BOOL := FALSE;
+Fault_B : BOOL := FALSE;
+Fault_C : BOOL := FALSE;
+RotationMode : BOOL := FALSE;	{ DE:"Локальна змінна ротація 0-вимкнена" }
+Rotationnumber : INT := 1;	{ DE:"Номер в ротації" }
+FastRunMode : BOOL := FALSE;	{ DE:"Локальна змінна Прогонка 0-вимкнена" }
+PriorityMotor : INT := 0;	{ DE:"Priority 0 = Motor_A, 1 = Motor_B, 2 = Motor_C" }
+RunTime_START : TIME;	{ DE:"Час роботи двигуна A" }
+TM_WAIT : INT;	{ DE:"Час затримки перевірки запуску двигуна" }
+ErrorTimer_A : TON;
+ErrorTimer_B : TON;
+ErrorTimer_C : TON;
+CurrentMotor : INT := 1;
+ErrorCode : INT := 0;
+Max_Level_3 : INT := 500;	{ DE:"Рівень запуску 1 насоса" }
+Max_Level_2 : INT := 300;	{ DE:"Рівень запуску 1 насоса" }
+Max_Level_1 : INT := 200;	{ DE:"Рівень запуску 1 насоса" }
+Min_Level : INT := 100;	{ DE:"Рівень зупинки насоса" }
+PumpIntervalTimer_1 : TON;	{ DE:"інтервал для запуску прогонки" }
+PumpRunTimer_1 : TON;	{ DE:"Час прогонки" }
+TestRunActive_1 : BOOL := FALSE;	{ DE:"Тригер готовності прогонки" }
+TestRunRunning_1 : BOOL := FALSE;	{ DE:"Прогонка виконується" }
+PumpIntervalTimer_2 : TON;	{ DE:"інтервал для запуску прогонки" }
+PumpRunTimer_2 : TON;	{ DE:"Час прогонки" }
+TestRunActive_2 : BOOL := FALSE;	{ DE:"Тригер готовності прогонки" }
+TestRunRunning_2 : BOOL := FALSE;	{ DE:"Прогонка виконується" }
+PumpIntervalTimer_3 : TON;	{ DE:"інтервал для запуску прогонки" }
+PumpRunTimer_3 : TON;	{ DE:"Час прогонки" }
+TestRunActive_3 : BOOL := FALSE;	{ DE:"Тригер готовності прогонки" }
+TestRunRunning_3 : BOOL := FALSE;	{ DE:"Прогонка виконується" }
+CurrentPump : INT := 1;
+	END_VAR
+
+END_PROGRAM
+
+08884410  55                            push ebp
+08884411  8B EC                         mov ebp, esp
+08884413  60                            pushad
+
+#0		{SRC:LVL}
+#1		(*$WAITSWITCH$*)
+#2		
+#3			(* TM_WAIT:=3000; *)
+#4			MOVE		3000,TM_WAIT	{LNXT:4|8|-1}
+(*) UDINT
+08884414  B8 B8 0B 00 00                mov eax, 0BB8H
+08884419  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+18
+
+#5		
+#6			(* level_min := Min_Level; *)
+#7			MOVE		Min_Level,level_min	{LNXT:8|9|-1}
+(*) INT
+08884420  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+20
+08884427  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; %M110+4
+
+#8		
+#9			(* Level_1 := Max_Level_1; *)
+#10			MOVE		Max_Level_1,Level_1	{LNXT:9|10|-1}
+(*) INT
+0888442E  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+22
+08884435  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; %M110+6
+
+#11		
+#12			(* Level_2 := Max_Level_2; *)
+#13			MOVE		Max_Level_2,Level_2	{LNXT:10|11|-1}
+(*) INT
+0888443C  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+24
+08884443  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; %M110+8
+
+#14		
+#15			(* Level_3 := Max_Level_3; *)
+#16			MOVE		Max_Level_3,Level_3	{LNXT:11|14|-1}
+(*) INT
+0888444A  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+26
+08884451  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; %M110+10
+
+#17		
+#18			(* Alarms.5 := Avto_A; *)
+#19			MOVE		Avto_A,Alarms.5	{LNXT:14|15|-1}
+(*) INT
+08884458  33 C0                         xor eax, eax
+0888445A  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+08884460  84 C0                         test al, al
+08884462  90 75 11 90 90 90             jne 00000014H@
+08884468  66 0F BA 35 CC CC CC CC 05    btr word ptr [CCCCCCCCH], 5 ; %M110+14
+08884471  EB 0C 90 90 90                jmp 0000000EH@
+08884476  66 0F BA 2D CC CC CC CC 05    bts word ptr [CCCCCCCCH], 5 ; %M110+14
+
+#20		
+#21			(* Alarms.6 := Avto_B; *)
+#22			MOVE		Avto_B,Alarms.6	{LNXT:15|16|-1}
+(*) BOOL
+0888447F  33 C0                         xor eax, eax
+08884481  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+08884487  84 C0                         test al, al
+08884489  90 75 11 90 90 90             jne 00000014H@
+0888448F  66 0F BA 35 CC CC CC CC 06    btr word ptr [CCCCCCCCH], 6 ; %M110+14
+08884498  EB 0C 90 90 90                jmp 0000000EH@
+0888449D  66 0F BA 2D CC CC CC CC 06    bts word ptr [CCCCCCCCH], 6 ; %M110+14
+
+#23		
+#24			(* Alarms.7 := Avto_C; *)
+#25			MOVE		Avto_C,Alarms.7	{LNXT:16|19|-1}
+(*) BOOL
+088844A6  33 C0                         xor eax, eax
+088844A8  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+088844AE  84 C0                         test al, al
+088844B0  90 75 11 90 90 90             jne 00000014H@
+088844B6  66 0F BA 35 CC CC CC CC 07    btr word ptr [CCCCCCCCH], 7 ; %M110+14
+088844BF  EB 0C 90 90 90                jmp 0000000EH@
+088844C4  66 0F BA 2D CC CC CC CC 07    bts word ptr [CCCCCCCCH], 7 ; %M110+14
+
+#26		
+#27			(* Alarms.8 := ALM_A; *)
+#28			MOVE		ALM_A,Alarms.8	{LNXT:19|20|-1}
+(*) BOOL
+088844CD  33 C0                         xor eax, eax
+088844CF  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+30
+088844D5  84 C0                         test al, al
+088844D7  90 75 11 90 90 90             jne 00000014H@
+088844DD  66 0F BA 35 CC CC CC CC 08    btr word ptr [CCCCCCCCH], 8 ; %M110+14
+088844E6  EB 0C 90 90 90                jmp 0000000EH@
+088844EB  66 0F BA 2D CC CC CC CC 08    bts word ptr [CCCCCCCCH], 8 ; %M110+14
+
+#29		
+#30			(* Alarms.9 := ALM_B; *)
+#31			MOVE		ALM_B,Alarms.9	{LNXT:20|21|-1}
+(*) BOOL
+088844F4  33 C0                         xor eax, eax
+088844F6  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+31
+088844FC  84 C0                         test al, al
+088844FE  90 75 11 90 90 90             jne 00000014H@
+08884504  66 0F BA 35 CC CC CC CC 09    btr word ptr [CCCCCCCCH], 9 ; %M110+14
+0888450D  EB 0C 90 90 90                jmp 0000000EH@
+08884512  66 0F BA 2D CC CC CC CC 09    bts word ptr [CCCCCCCCH], 9 ; %M110+14
+
+#32		
+#33			(* Alarms.10 := ALM_C; *)
+#34			MOVE		ALM_C,Alarms.10	{LNXT:21|27|-1}
+(*) BOOL
+0888451B  33 C0                         xor eax, eax
+0888451D  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+32
+08884523  84 C0                         test al, al
+08884525  90 75 11 90 90 90             jne 00000014H@
+0888452B  66 0F BA 35 CC CC CC CC 0A    btr word ptr [CCCCCCCCH], 10 ; %M110+14
+08884534  EB 0C 90 90 90                jmp 0000000EH@
+08884539  66 0F BA 2D CC CC CC CC 0A    bts word ptr [CCCCCCCCH], 10 ; %M110+14
+
+#35		
+#36		
+#37			(* IF Rotation <> RotationMode *)
+#38			LD		Rotation	{LNXT:27|-1|-1}
+(*) UNDEF
+08884542  33 C0                         xor eax, eax
+08884544  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %M110+16
+
+#39			NE		RotationMode	{LNXT:27|-1|-1}
+(*) BOOL
+0888454A  33 C9                         xor ecx, ecx
+0888454C  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+33
+08884552  33 C1                         xor eax, ecx
+
+#40			JMPCN	$label0	{LNXT:27|28|34}
+(-) BOOL
+08884554  84 C0                         test al, al
+08884556  90 74 14 90 90 90             je 0888456DH
+
+#41		
+#42			(* THEN *)
+#43		
+#44				(* RotationMode := Rotation; *)
+#45				MOVE		Rotation,RotationMode	{LNXT:28|34|-1}
+(*) BOOL
+0888455C  33 C0                         xor eax, eax
+0888455E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %M110+16
+08884564  84 C0                         test al, al
+08884566  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+33
+
+#46		
+#47		$label0:
+#48			(* END_IF *)
+#49		
+#50		
+#51			(* IF RotationMode = FALSE *)
+#52			LD		RotationMode	{LNXT:34|-1|-1}
+(*) UNDEF
+0888456D  33 C0                         xor eax, eax
+0888456F  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+33
+
+#53			EQ		FALSE	{LNXT:34|-1|-1}
+(*) BOOL
+08884575  35 01 00 00 00                xor eax, 00000001H
+
+#54			JMPCN	$label1	{LNXT:34|35|42}
+(-) BOOL
+0888457A  84 C0                         test al, al
+0888457C  90 74 11 90 90 90             je 08884590H
+
+#55		
+#56			(* THEN *)
+#57		
+#58				(* PriorityMotor := Priority; *)
+#59				MOVE		Priority,PriorityMotor	{LNXT:35|42|-1}
+(*) BOOL
+08884582  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; %M110+12
+08884589  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#60		
+#61		$label1:
+#62			(* END_IF *)
+#63		
+#64		
+#65			(* IF FastRun <> FastRunMode *)
+#66			LD		FastRun	{LNXT:42|-1|-1}
+(*) UNDEF
+08884590  33 C0                         xor eax, eax
+08884592  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %M110+18
+
+#67			NE		FastRunMode	{LNXT:42|-1|-1}
+(*) BOOL
+08884598  33 C9                         xor ecx, ecx
+0888459A  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+36
+088845A0  33 C1                         xor eax, ecx
+
+#68			JMPCN	$label2	{LNXT:42|43|50}
+(-) BOOL
+088845A2  84 C0                         test al, al
+088845A4  90 74 14 90 90 90             je 088845BBH
+
+#69		
+#70			(* THEN *)
+#71		
+#72				(* FastRunMode := FastRun; *)
+#73				MOVE		FastRun,FastRunMode	{LNXT:43|50|-1}
+(*) BOOL
+088845AA  33 C0                         xor eax, eax
+088845AC  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %M110+18
+088845B2  84 C0                         test al, al
+088845B4  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+36
+
+#74		
+#75		$label2:
+#76			(* END_IF *)
+#77		
+#78		
+#79			(* IF Tank_Level >= Max_Level_1 and RotationMode *)
+#80			LD		Tank_Level	{LNXT:50|-1|-1}
+(*) UNDEF
+088845BB  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#81			GE		Max_Level_1	{LNXT:50|-1|-1}
+(*) INT
+088845C2  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+22
+088845C9  3B C1                         cmp eax, ecx
+088845CB  0F 9D C0                      setge al
+088845CE  25 FF 00 00 00                and eax, 0FFh
+
+#82			AND		RotationMode	{LNXT:50|-1|-1}
+(*) BOOL
+088845D3  33 C9                         xor ecx, ecx
+088845D5  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+33
+088845DB  23 C1                         and eax, ecx
+
+#83			JMPCN	$label3	{LNXT:50|53|136}
+(-) BOOL
+088845DD  84 C0                         test al, al
+088845DF  0F 84 FE 04 00 00             je 08884AE3H
+
+#84		
+#85			(* THEN *)
+#86		
+#87		
+#88				(* CASE Rotationnumber OF *)
+#89		
+#90				(* 0: *)
+#91				LD		Rotationnumber	{LNXT:53|-1|-1}
+(*) UNDEF
+088845E5  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#92				EQ		0	{LNXT:53|-1|-1}
+(*) INT
+088845EC  3D 00 00 00 00                cmp eax, 0
+088845F1  0F 94 C0                      sete al
+088845F4  25 FF 00 00 00                and eax, 0FFh
+
+#93				JMPC		$label5	{LNXT:53|54|74}
+(-) BOOL
+088845F9  84 C0                         test al, al
+088845FB  90 75 40 90 90 90             jne 0888463EH
+
+#94		
+#95				(* 1: *)
+#96				LD		Rotationnumber	{LNXT:74|-1|-1}
+(*) UNDEF
+08884601  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#97				EQ		1	{LNXT:74|-1|-1}
+(*) INT
+08884608  3D 01 00 00 00                cmp eax, 1
+0888460D  0F 94 C0                      sete al
+08884610  25 FF 00 00 00                and eax, 0FFh
+
+#98				JMPC		$label6	{LNXT:74|75|95}
+(-) BOOL
+08884615  84 C0                         test al, al
+08884617  0F 85 82 01 00 00             jne 0888479FH
+
+#99		
+#100				(* 2: *)
+#101				LD		Rotationnumber	{LNXT:95|-1|-1}
+(*) UNDEF
+0888461D  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#102				EQ		2	{LNXT:95|-1|-1}
+(*) INT
+08884624  3D 02 00 00 00                cmp eax, 2
+08884629  0F 94 C0                      sete al
+0888462C  25 FF 00 00 00                and eax, 0FFh
+
+#103				JMPC		$label7	{LNXT:95|96|119}
+(-) BOOL
+08884631  84 C0                         test al, al
+08884633  0F 85 C7 02 00 00             jne 08884900H
+
+#104				JMP		$label4	{LNXT:95|96|119}
+(-) BOOL
+08884639  E9 1E 04 00 00                jmp 08884A5CH
+
+#105		
+#106				(* Istruzioni di ciascun CASE: *)
+#107		
+#108		$label5:
+#109		
+#110					(* IF Fault_A AND Avto_A AND NOT Motor_B AND NOT Motor_C *)
+#111					LD		Motor_C	{LNXT:54|-1|-1}
+(*) UNDEF
+0888463E  33 C0                         xor eax, eax
+08884640  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#112					NOT	{LNXT:54|-1|-1}
+(*) BOOL
+08884646  84 C0                         test al, al
+08884648  0F 94 C0                      sete al
+
+#113					AND(		Motor_B	{LNXT:54|-1|-1}
+(*) BOOL
+0888464B  50                            push eax
+0888464C  33 C0                         xor eax, eax
+0888464E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#114					NOT	{LNXT:54|-1|-1}
+(*) BOOL
+08884654  84 C0                         test al, al
+08884656  0F 94 C0                      sete al
+
+#115					AND(		Fault_A	{LNXT:54|-1|-1}
+(*) BOOL
+08884659  50                            push eax
+0888465A  33 C0                         xor eax, eax
+0888465C  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#116					NOT	{LNXT:54|-1|-1}
+(*) BOOL
+08884662  84 C0                         test al, al
+08884664  0F 94 C0                      sete al
+
+#117					AND		Avto_A	{LNXT:54|-1|-1}
+(*) BOOL
+08884667  33 C9                         xor ecx, ecx
+08884669  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+0888466F  23 C1                         and eax, ecx
+
+#118					)	{LNXT:54|-1|-1}
+(*) BOOL
+08884671  8B C8                         mov ecx, eax
+08884673  58                            pop eax
+08884674  23 C1                         and eax, ecx
+
+#119					)	{LNXT:54|-1|-1}
+(*) BOOL
+08884676  8B C8                         mov ecx, eax
+08884678  58                            pop eax
+08884679  23 C1                         and eax, ecx
+
+#120					JMPCN	$label8	{LNXT:54|55|58}
+(-) BOOL
+0888467B  84 C0                         test al, al
+0888467D  90 74 33 90 90 90             je 088846B3H
+
+#121		
+#122					(* THEN *)
+#123		
+#124						(* Motor_A := TRUE; *)
+#125						MOVE		TRUE,Motor_A	{LNXT:55|56|-1}
+(*) BOOL
+08884683  B8 01 00 00 00                mov eax, 01H
+08884688  84 C0                         test al, al
+0888468A  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#126		
+#127						(* Rotationnumber := (Rotationnumber + 1) MOD 3; *)
+#128						LD		Rotationnumber	{LNXT:56|119|-1}
+(*) UNDEF
+08884691  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#129						ADD		1	{LNXT:56|119|-1}
+(*) INT
+08884698  05 01 00 00 00                add eax, 1
+
+#130						MOD		3	{LNXT:56|119|-1}
+(*) INT
+0888469D  99                            cdq
+0888469E  B9 03 00 00 00                mov ecx, 3
+088846A3  F7 F9                         idiv ecx
+088846A5  8B C2                         mov eax, edx
+
+#131						ST		Rotationnumber	{LNXT:56|119|-1}
+(*) INT
+088846A7  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#132						JMP		$label9	{LNXT:54|55|58}
+(-) INT
+088846AE  E9 E7 00 00 00                jmp 0888479AH
+
+#133		$label8:
+#134		
+#135					(* ELSE *)
+#136		
+#137		
+#138						(* IF Fault_A AND NOT Avto_A AND NOT Motor_B AND NOT Motor_C *)
+#139						LD		Motor_C	{LNXT:58|-1|-1}
+(*) UNDEF
+088846B3  33 C0                         xor eax, eax
+088846B5  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#140						NOT	{LNXT:58|-1|-1}
+(*) BOOL
+088846BB  84 C0                         test al, al
+088846BD  0F 94 C0                      sete al
+
+#141						AND(		Motor_B	{LNXT:58|-1|-1}
+(*) BOOL
+088846C0  50                            push eax
+088846C1  33 C0                         xor eax, eax
+088846C3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#142						NOT	{LNXT:58|-1|-1}
+(*) BOOL
+088846C9  84 C0                         test al, al
+088846CB  0F 94 C0                      sete al
+
+#143						AND(		Avto_A	{LNXT:58|-1|-1}
+(*) BOOL
+088846CE  50                            push eax
+088846CF  33 C0                         xor eax, eax
+088846D1  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#144						NOT	{LNXT:58|-1|-1}
+(*) BOOL
+088846D7  84 C0                         test al, al
+088846D9  0F 94 C0                      sete al
+
+#145						AND(		Fault_A	{LNXT:58|-1|-1}
+(*) BOOL
+088846DC  50                            push eax
+088846DD  33 C0                         xor eax, eax
+088846DF  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#146						NOT	{LNXT:58|-1|-1}
+(*) BOOL
+088846E5  84 C0                         test al, al
+088846E7  0F 94 C0                      sete al
+
+#147						)	{LNXT:58|-1|-1}
+(*) BOOL
+088846EA  8B C8                         mov ecx, eax
+088846EC  58                            pop eax
+088846ED  23 C1                         and eax, ecx
+
+#148						)	{LNXT:58|-1|-1}
+(*) BOOL
+088846EF  8B C8                         mov ecx, eax
+088846F1  58                            pop eax
+088846F2  23 C1                         and eax, ecx
+
+#149						)	{LNXT:58|-1|-1}
+(*) BOOL
+088846F4  8B C8                         mov ecx, eax
+088846F6  58                            pop eax
+088846F7  23 C1                         and eax, ecx
+
+#150						JMPCN	$label10	{LNXT:58|60|119}
+(-) BOOL
+088846F9  84 C0                         test al, al
+088846FB  0F 84 99 00 00 00             je 0888479AH
+
+#151		
+#152						(* THEN *)
+#153		
+#154		
+#155							(* IF Fault_B AND Avto_B *)
+#156							LD		Fault_B	{LNXT:60|-1|-1}
+(*) UNDEF
+08884701  33 C0                         xor eax, eax
+08884703  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#157							NOT	{LNXT:60|-1|-1}
+(*) BOOL
+08884709  84 C0                         test al, al
+0888470B  0F 94 C0                      sete al
+
+#158							AND		Avto_B	{LNXT:60|-1|-1}
+(*) BOOL
+0888470E  33 C9                         xor ecx, ecx
+08884710  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08884716  23 C1                         and eax, ecx
+
+#159							JMPCN	$label11	{LNXT:60|61|64}
+(-) BOOL
+08884718  84 C0                         test al, al
+0888471A  90 74 33 90 90 90             je 08884750H
+
+#160		
+#161							(* THEN *)
+#162		
+#163								(* Motor_B := TRUE; *)
+#164								MOVE		TRUE,Motor_B	{LNXT:61|62|-1}
+(*) BOOL
+08884720  B8 01 00 00 00                mov eax, 01H
+08884725  84 C0                         test al, al
+08884727  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#165		
+#166								(* Rotationnumber := (Rotationnumber + 1) MOD 3; *)
+#167								LD		Rotationnumber	{LNXT:62|119|-1}
+(*) UNDEF
+0888472E  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#168								ADD		1	{LNXT:62|119|-1}
+(*) INT
+08884735  05 01 00 00 00                add eax, 1
+
+#169								MOD		3	{LNXT:62|119|-1}
+(*) INT
+0888473A  99                            cdq
+0888473B  B9 03 00 00 00                mov ecx, 3
+08884740  F7 F9                         idiv ecx
+08884742  8B C2                         mov eax, edx
+
+#170								ST		Rotationnumber	{LNXT:62|119|-1}
+(*) INT
+08884744  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#171								JMP		$label12	{LNXT:60|61|64}
+(-) INT
+0888474B  EB 4D 90 90 90                jmp 0888479AH
+
+#172		$label11:
+#173		
+#174							(* ELSE *)
+#175		
+#176		
+#177								(* IF Fault_C AND Avto_C *)
+#178								LD		Fault_C	{LNXT:64|-1|-1}
+(*) UNDEF
+08884750  33 C0                         xor eax, eax
+08884752  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#179								NOT	{LNXT:64|-1|-1}
+(*) BOOL
+08884758  84 C0                         test al, al
+0888475A  0F 94 C0                      sete al
+
+#180								AND		Avto_C	{LNXT:64|-1|-1}
+(*) BOOL
+0888475D  33 C9                         xor ecx, ecx
+0888475F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+08884765  23 C1                         and eax, ecx
+
+#181								JMPCN	$label13	{LNXT:64|65|119}
+(-) BOOL
+08884767  84 C0                         test al, al
+08884769  90 74 2E 90 90 90             je 0888479AH
+
+#182		
+#183								(* THEN *)
+#184		
+#185									(* Motor_C := TRUE; *)
+#186									MOVE		TRUE,Motor_C	{LNXT:65|66|-1}
+(*) BOOL
+0888476F  B8 01 00 00 00                mov eax, 01H
+08884774  84 C0                         test al, al
+08884776  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#187		
+#188									(* Rotationnumber := (Rotationnumber + 2) MOD 3; *)
+#189									LD		Rotationnumber	{LNXT:66|119|-1}
+(*) UNDEF
+0888477D  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#190									ADD		2	{LNXT:66|119|-1}
+(*) INT
+08884784  05 02 00 00 00                add eax, 2
+
+#191									MOD		3	{LNXT:66|119|-1}
+(*) INT
+08884789  99                            cdq
+0888478A  B9 03 00 00 00                mov ecx, 3
+0888478F  F7 F9                         idiv ecx
+08884791  8B C2                         mov eax, edx
+
+#192									ST		Rotationnumber	{LNXT:66|119|-1}
+(*) INT
+08884793  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#193		
+#194		$label13:
+#195								(* END_IF *)
+#196		
+#197		$label12:
+#198							(* END_IF *)
+#199		
+#200		$label10:
+#201						(* END_IF *)
+#202		
+#203		$label9:
+#204					(* END_IF *)
+#205					JMP		$label4	{LNXT:1|58|-1}
+(-) INT
+0888479A  E9 BD 02 00 00                jmp 08884A5CH
+
+#206		
+#207		$label6:
+#208		
+#209					(* IF Fault_B AND Avto_B AND NOT Motor_A AND NOT Motor_C *)
+#210					LD		Motor_C	{LNXT:75|-1|-1}
+(*) UNDEF
+0888479F  33 C0                         xor eax, eax
+088847A1  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#211					NOT	{LNXT:75|-1|-1}
+(*) BOOL
+088847A7  84 C0                         test al, al
+088847A9  0F 94 C0                      sete al
+
+#212					AND(		Motor_A	{LNXT:75|-1|-1}
+(*) BOOL
+088847AC  50                            push eax
+088847AD  33 C0                         xor eax, eax
+088847AF  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#213					NOT	{LNXT:75|-1|-1}
+(*) BOOL
+088847B5  84 C0                         test al, al
+088847B7  0F 94 C0                      sete al
+
+#214					AND(		Fault_B	{LNXT:75|-1|-1}
+(*) BOOL
+088847BA  50                            push eax
+088847BB  33 C0                         xor eax, eax
+088847BD  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#215					NOT	{LNXT:75|-1|-1}
+(*) BOOL
+088847C3  84 C0                         test al, al
+088847C5  0F 94 C0                      sete al
+
+#216					AND		Avto_B	{LNXT:75|-1|-1}
+(*) BOOL
+088847C8  33 C9                         xor ecx, ecx
+088847CA  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+088847D0  23 C1                         and eax, ecx
+
+#217					)	{LNXT:75|-1|-1}
+(*) BOOL
+088847D2  8B C8                         mov ecx, eax
+088847D4  58                            pop eax
+088847D5  23 C1                         and eax, ecx
+
+#218					)	{LNXT:75|-1|-1}
+(*) BOOL
+088847D7  8B C8                         mov ecx, eax
+088847D9  58                            pop eax
+088847DA  23 C1                         and eax, ecx
+
+#219					JMPCN	$label14	{LNXT:75|76|79}
+(-) BOOL
+088847DC  84 C0                         test al, al
+088847DE  90 74 33 90 90 90             je 08884814H
+
+#220		
+#221					(* THEN *)
+#222		
+#223						(* Motor_B := TRUE; *)
+#224						MOVE		TRUE,Motor_B	{LNXT:76|77|-1}
+(*) BOOL
+088847E4  B8 01 00 00 00                mov eax, 01H
+088847E9  84 C0                         test al, al
+088847EB  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#225		
+#226						(* Rotationnumber := (Rotationnumber + 1) MOD 3; *)
+#227						LD		Rotationnumber	{LNXT:77|119|-1}
+(*) UNDEF
+088847F2  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#228						ADD		1	{LNXT:77|119|-1}
+(*) INT
+088847F9  05 01 00 00 00                add eax, 1
+
+#229						MOD		3	{LNXT:77|119|-1}
+(*) INT
+088847FE  99                            cdq
+088847FF  B9 03 00 00 00                mov ecx, 3
+08884804  F7 F9                         idiv ecx
+08884806  8B C2                         mov eax, edx
+
+#230						ST		Rotationnumber	{LNXT:77|119|-1}
+(*) INT
+08884808  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#231						JMP		$label15	{LNXT:75|76|79}
+(-) INT
+0888480F  E9 E7 00 00 00                jmp 088848FBH
+
+#232		$label14:
+#233		
+#234					(* ELSE *)
+#235		
+#236		
+#237						(* IF Fault_B AND NOT Avto_B AND NOT Motor_A AND NOT Motor_C *)
+#238						LD		Motor_C	{LNXT:79|-1|-1}
+(*) UNDEF
+08884814  33 C0                         xor eax, eax
+08884816  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#239						NOT	{LNXT:79|-1|-1}
+(*) BOOL
+0888481C  84 C0                         test al, al
+0888481E  0F 94 C0                      sete al
+
+#240						AND(		Motor_A	{LNXT:79|-1|-1}
+(*) BOOL
+08884821  50                            push eax
+08884822  33 C0                         xor eax, eax
+08884824  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#241						NOT	{LNXT:79|-1|-1}
+(*) BOOL
+0888482A  84 C0                         test al, al
+0888482C  0F 94 C0                      sete al
+
+#242						AND(		Avto_B	{LNXT:79|-1|-1}
+(*) BOOL
+0888482F  50                            push eax
+08884830  33 C0                         xor eax, eax
+08884832  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#243						NOT	{LNXT:79|-1|-1}
+(*) BOOL
+08884838  84 C0                         test al, al
+0888483A  0F 94 C0                      sete al
+
+#244						AND(		Fault_B	{LNXT:79|-1|-1}
+(*) BOOL
+0888483D  50                            push eax
+0888483E  33 C0                         xor eax, eax
+08884840  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#245						NOT	{LNXT:79|-1|-1}
+(*) BOOL
+08884846  84 C0                         test al, al
+08884848  0F 94 C0                      sete al
+
+#246						)	{LNXT:79|-1|-1}
+(*) BOOL
+0888484B  8B C8                         mov ecx, eax
+0888484D  58                            pop eax
+0888484E  23 C1                         and eax, ecx
+
+#247						)	{LNXT:79|-1|-1}
+(*) BOOL
+08884850  8B C8                         mov ecx, eax
+08884852  58                            pop eax
+08884853  23 C1                         and eax, ecx
+
+#248						)	{LNXT:79|-1|-1}
+(*) BOOL
+08884855  8B C8                         mov ecx, eax
+08884857  58                            pop eax
+08884858  23 C1                         and eax, ecx
+
+#249						JMPCN	$label16	{LNXT:79|81|119}
+(-) BOOL
+0888485A  84 C0                         test al, al
+0888485C  0F 84 99 00 00 00             je 088848FBH
+
+#250		
+#251						(* THEN *)
+#252		
+#253		
+#254							(* IF Fault_A AND Avto_A *)
+#255							LD		Fault_A	{LNXT:81|-1|-1}
+(*) UNDEF
+08884862  33 C0                         xor eax, eax
+08884864  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#256							NOT	{LNXT:81|-1|-1}
+(*) BOOL
+0888486A  84 C0                         test al, al
+0888486C  0F 94 C0                      sete al
+
+#257							AND		Avto_A	{LNXT:81|-1|-1}
+(*) BOOL
+0888486F  33 C9                         xor ecx, ecx
+08884871  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+08884877  23 C1                         and eax, ecx
+
+#258							JMPCN	$label17	{LNXT:81|82|85}
+(-) BOOL
+08884879  84 C0                         test al, al
+0888487B  90 74 33 90 90 90             je 088848B1H
+
+#259		
+#260							(* THEN *)
+#261		
+#262								(* Motor_A := TRUE; *)
+#263								MOVE		TRUE,Motor_A	{LNXT:82|83|-1}
+(*) BOOL
+08884881  B8 01 00 00 00                mov eax, 01H
+08884886  84 C0                         test al, al
+08884888  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#264		
+#265								(* Rotationnumber := (Rotationnumber - 1) MOD 3; *)
+#266								LD		Rotationnumber	{LNXT:83|119|-1}
+(*) UNDEF
+0888488F  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#267								SUB		1	{LNXT:83|119|-1}
+(*) INT
+08884896  2D 01 00 00 00                sub eax, 1
+
+#268								MOD		3	{LNXT:83|119|-1}
+(*) INT
+0888489B  99                            cdq
+0888489C  B9 03 00 00 00                mov ecx, 3
+088848A1  F7 F9                         idiv ecx
+088848A3  8B C2                         mov eax, edx
+
+#269								ST		Rotationnumber	{LNXT:83|119|-1}
+(*) INT
+088848A5  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#270								JMP		$label18	{LNXT:81|82|85}
+(-) INT
+088848AC  EB 4D 90 90 90                jmp 088848FBH
+
+#271		$label17:
+#272		
+#273							(* ELSE *)
+#274		
+#275		
+#276								(* IF Fault_C AND Avto_C *)
+#277								LD		Fault_C	{LNXT:85|-1|-1}
+(*) UNDEF
+088848B1  33 C0                         xor eax, eax
+088848B3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#278								NOT	{LNXT:85|-1|-1}
+(*) BOOL
+088848B9  84 C0                         test al, al
+088848BB  0F 94 C0                      sete al
+
+#279								AND		Avto_C	{LNXT:85|-1|-1}
+(*) BOOL
+088848BE  33 C9                         xor ecx, ecx
+088848C0  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+088848C6  23 C1                         and eax, ecx
+
+#280								JMPCN	$label19	{LNXT:85|86|119}
+(-) BOOL
+088848C8  84 C0                         test al, al
+088848CA  90 74 2E 90 90 90             je 088848FBH
+
+#281		
+#282								(* THEN *)
+#283		
+#284									(* Motor_C := TRUE; *)
+#285									MOVE		TRUE,Motor_C	{LNXT:86|87|-1}
+(*) BOOL
+088848D0  B8 01 00 00 00                mov eax, 01H
+088848D5  84 C0                         test al, al
+088848D7  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#286		
+#287									(* Rotationnumber := (Rotationnumber + 1) MOD 3; *)
+#288									LD		Rotationnumber	{LNXT:87|119|-1}
+(*) UNDEF
+088848DE  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#289									ADD		1	{LNXT:87|119|-1}
+(*) INT
+088848E5  05 01 00 00 00                add eax, 1
+
+#290									MOD		3	{LNXT:87|119|-1}
+(*) INT
+088848EA  99                            cdq
+088848EB  B9 03 00 00 00                mov ecx, 3
+088848F0  F7 F9                         idiv ecx
+088848F2  8B C2                         mov eax, edx
+
+#291									ST		Rotationnumber	{LNXT:87|119|-1}
+(*) INT
+088848F4  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#292		
+#293		$label19:
+#294								(* END_IF *)
+#295		
+#296		$label18:
+#297							(* END_IF *)
+#298		
+#299		$label16:
+#300						(* END_IF *)
+#301		
+#302		$label15:
+#303					(* END_IF *)
+#304					JMP		$label4	{LNXT:1|79|-1}
+(-) INT
+088848FB  E9 5C 01 00 00                jmp 08884A5CH
+
+#305		
+#306		$label7:
+#307		
+#308					(* IF Fault_C AND Avto_C AND NOT Motor_A AND NOT Motor_B *)
+#309					LD		Motor_B	{LNXT:96|-1|-1}
+(*) UNDEF
+08884900  33 C0                         xor eax, eax
+08884902  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#310					NOT	{LNXT:96|-1|-1}
+(*) BOOL
+08884908  84 C0                         test al, al
+0888490A  0F 94 C0                      sete al
+
+#311					AND(		Motor_A	{LNXT:96|-1|-1}
+(*) BOOL
+0888490D  50                            push eax
+0888490E  33 C0                         xor eax, eax
+08884910  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#312					NOT	{LNXT:96|-1|-1}
+(*) BOOL
+08884916  84 C0                         test al, al
+08884918  0F 94 C0                      sete al
+
+#313					AND(		Fault_C	{LNXT:96|-1|-1}
+(*) BOOL
+0888491B  50                            push eax
+0888491C  33 C0                         xor eax, eax
+0888491E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#314					NOT	{LNXT:96|-1|-1}
+(*) BOOL
+08884924  84 C0                         test al, al
+08884926  0F 94 C0                      sete al
+
+#315					AND		Avto_C	{LNXT:96|-1|-1}
+(*) BOOL
+08884929  33 C9                         xor ecx, ecx
+0888492B  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+08884931  23 C1                         and eax, ecx
+
+#316					)	{LNXT:96|-1|-1}
+(*) BOOL
+08884933  8B C8                         mov ecx, eax
+08884935  58                            pop eax
+08884936  23 C1                         and eax, ecx
+
+#317					)	{LNXT:96|-1|-1}
+(*) BOOL
+08884938  8B C8                         mov ecx, eax
+0888493A  58                            pop eax
+0888493B  23 C1                         and eax, ecx
+
+#318					JMPCN	$label20	{LNXT:96|97|100}
+(-) BOOL
+0888493D  84 C0                         test al, al
+0888493F  90 74 33 90 90 90             je 08884975H
+
+#319		
+#320					(* THEN *)
+#321		
+#322						(* Motor_C := TRUE; *)
+#323						MOVE		TRUE,Motor_C	{LNXT:97|98|-1}
+(*) BOOL
+08884945  B8 01 00 00 00                mov eax, 01H
+0888494A  84 C0                         test al, al
+0888494C  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#324		
+#325						(* Rotationnumber := (Rotationnumber + 1) MOD 3; *)
+#326						LD		Rotationnumber	{LNXT:98|119|-1}
+(*) UNDEF
+08884953  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#327						ADD		1	{LNXT:98|119|-1}
+(*) INT
+0888495A  05 01 00 00 00                add eax, 1
+
+#328						MOD		3	{LNXT:98|119|-1}
+(*) INT
+0888495F  99                            cdq
+08884960  B9 03 00 00 00                mov ecx, 3
+08884965  F7 F9                         idiv ecx
+08884967  8B C2                         mov eax, edx
+
+#329						ST		Rotationnumber	{LNXT:98|119|-1}
+(*) INT
+08884969  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#330						JMP		$label21	{LNXT:96|97|100}
+(-) INT
+08884970  E9 E7 00 00 00                jmp 08884A5CH
+
+#331		$label20:
+#332		
+#333					(* ELSE *)
+#334		
+#335		
+#336						(* IF Fault_C AND NOT Avto_C AND NOT Motor_A AND NOT Motor_B *)
+#337						LD		Motor_B	{LNXT:100|-1|-1}
+(*) UNDEF
+08884975  33 C0                         xor eax, eax
+08884977  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#338						NOT	{LNXT:100|-1|-1}
+(*) BOOL
+0888497D  84 C0                         test al, al
+0888497F  0F 94 C0                      sete al
+
+#339						AND(		Motor_A	{LNXT:100|-1|-1}
+(*) BOOL
+08884982  50                            push eax
+08884983  33 C0                         xor eax, eax
+08884985  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#340						NOT	{LNXT:100|-1|-1}
+(*) BOOL
+0888498B  84 C0                         test al, al
+0888498D  0F 94 C0                      sete al
+
+#341						AND(		Avto_C	{LNXT:100|-1|-1}
+(*) BOOL
+08884990  50                            push eax
+08884991  33 C0                         xor eax, eax
+08884993  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#342						NOT	{LNXT:100|-1|-1}
+(*) BOOL
+08884999  84 C0                         test al, al
+0888499B  0F 94 C0                      sete al
+
+#343						AND(		Fault_C	{LNXT:100|-1|-1}
+(*) BOOL
+0888499E  50                            push eax
+0888499F  33 C0                         xor eax, eax
+088849A1  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#344						NOT	{LNXT:100|-1|-1}
+(*) BOOL
+088849A7  84 C0                         test al, al
+088849A9  0F 94 C0                      sete al
+
+#345						)	{LNXT:100|-1|-1}
+(*) BOOL
+088849AC  8B C8                         mov ecx, eax
+088849AE  58                            pop eax
+088849AF  23 C1                         and eax, ecx
+
+#346						)	{LNXT:100|-1|-1}
+(*) BOOL
+088849B1  8B C8                         mov ecx, eax
+088849B3  58                            pop eax
+088849B4  23 C1                         and eax, ecx
+
+#347						)	{LNXT:100|-1|-1}
+(*) BOOL
+088849B6  8B C8                         mov ecx, eax
+088849B8  58                            pop eax
+088849B9  23 C1                         and eax, ecx
+
+#348						JMPCN	$label22	{LNXT:100|102|119}
+(-) BOOL
+088849BB  84 C0                         test al, al
+088849BD  0F 84 99 00 00 00             je 08884A5CH
+
+#349		
+#350						(* THEN *)
+#351		
+#352		
+#353							(* IF Fault_A AND Avto_A *)
+#354							LD		Fault_A	{LNXT:102|-1|-1}
+(*) UNDEF
+088849C3  33 C0                         xor eax, eax
+088849C5  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#355							NOT	{LNXT:102|-1|-1}
+(*) BOOL
+088849CB  84 C0                         test al, al
+088849CD  0F 94 C0                      sete al
+
+#356							AND		Avto_A	{LNXT:102|-1|-1}
+(*) BOOL
+088849D0  33 C9                         xor ecx, ecx
+088849D2  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+088849D8  23 C1                         and eax, ecx
+
+#357							JMPCN	$label23	{LNXT:102|103|106}
+(-) BOOL
+088849DA  84 C0                         test al, al
+088849DC  90 74 33 90 90 90             je 08884A12H
+
+#358		
+#359							(* THEN *)
+#360		
+#361								(* Motor_A := TRUE; *)
+#362								MOVE		TRUE,Motor_A	{LNXT:103|104|-1}
+(*) BOOL
+088849E2  B8 01 00 00 00                mov eax, 01H
+088849E7  84 C0                         test al, al
+088849E9  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#363		
+#364								(* Rotationnumber := (Rotationnumber + 1) MOD 3; *)
+#365								LD		Rotationnumber	{LNXT:104|119|-1}
+(*) UNDEF
+088849F0  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#366								ADD		1	{LNXT:104|119|-1}
+(*) INT
+088849F7  05 01 00 00 00                add eax, 1
+
+#367								MOD		3	{LNXT:104|119|-1}
+(*) INT
+088849FC  99                            cdq
+088849FD  B9 03 00 00 00                mov ecx, 3
+08884A02  F7 F9                         idiv ecx
+08884A04  8B C2                         mov eax, edx
+
+#368								ST		Rotationnumber	{LNXT:104|119|-1}
+(*) INT
+08884A06  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#369								JMP		$label24	{LNXT:102|103|106}
+(-) INT
+08884A0D  EB 4D 90 90 90                jmp 08884A5CH
+
+#370		$label23:
+#371		
+#372							(* ELSE *)
+#373		
+#374		
+#375								(* IF Fault_B AND Avto_B *)
+#376								LD		Fault_B	{LNXT:106|-1|-1}
+(*) UNDEF
+08884A12  33 C0                         xor eax, eax
+08884A14  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#377								NOT	{LNXT:106|-1|-1}
+(*) BOOL
+08884A1A  84 C0                         test al, al
+08884A1C  0F 94 C0                      sete al
+
+#378								AND		Avto_B	{LNXT:106|-1|-1}
+(*) BOOL
+08884A1F  33 C9                         xor ecx, ecx
+08884A21  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08884A27  23 C1                         and eax, ecx
+
+#379								JMPCN	$label25	{LNXT:106|107|119}
+(-) BOOL
+08884A29  84 C0                         test al, al
+08884A2B  90 74 2E 90 90 90             je 08884A5CH
+
+#380		
+#381								(* THEN *)
+#382		
+#383									(* Motor_B := TRUE; *)
+#384									MOVE		TRUE,Motor_B	{LNXT:107|108|-1}
+(*) BOOL
+08884A31  B8 01 00 00 00                mov eax, 01H
+08884A36  84 C0                         test al, al
+08884A38  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#385		
+#386									(* Rotationnumber := (Rotationnumber - 1) MOD 3; *)
+#387									LD		Rotationnumber	{LNXT:108|119|-1}
+(*) UNDEF
+08884A3F  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+40
+
+#388									SUB		1	{LNXT:108|119|-1}
+(*) INT
+08884A46  2D 01 00 00 00                sub eax, 1
+
+#389									MOD		3	{LNXT:108|119|-1}
+(*) INT
+08884A4B  99                            cdq
+08884A4C  B9 03 00 00 00                mov ecx, 3
+08884A51  F7 F9                         idiv ecx
+08884A53  8B C2                         mov eax, edx
+
+#390									ST		Rotationnumber	{LNXT:108|119|-1}
+(*) INT
+08884A55  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+40
+
+#391		
+#392		$label25:
+#393								(* END_IF *)
+#394		
+#395		$label24:
+#396							(* END_IF *)
+#397		
+#398		$label22:
+#399						(* END_IF *)
+#400		
+#401		$label21:
+#402					(* END_IF *)
+#403		
+#404		$label4:
+#405		
+#406				(* END_CASE *)
+#407		
+#408		
+#409				(* IF Fault_A or NOT Avto_A *)
+#410				LD		Avto_A	{LNXT:119|-1|-1}
+(*) UNDEF
+08884A5C  33 C0                         xor eax, eax
+08884A5E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#411				NOT	{LNXT:119|-1|-1}
+(*) BOOL
+08884A64  84 C0                         test al, al
+08884A66  0F 94 C0                      sete al
+
+#412				OR		Fault_A	{LNXT:119|-1|-1}
+(*) BOOL
+08884A69  33 C9                         xor ecx, ecx
+08884A6B  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+37
+08884A71  0B C1                         or eax, ecx
+
+#413				JMPCN	$label26	{LNXT:119|120|122}
+(-) BOOL
+08884A73  84 C0                         test al, al
+08884A75  90 74 11 90 90 90             je 08884A89H
+
+#414		
+#415				(* THEN *)
+#416		
+#417					(* Motor_A := False; *)
+#418					MOVE		False,Motor_A	{LNXT:120|122|-1}
+(*) BOOL
+08884A7B  B8 00 00 00 00                mov eax, 00H
+08884A80  84 C0                         test al, al
+08884A82  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#419		
+#420		$label26:
+#421				(* END_IF *)
+#422		
+#423		
+#424				(* IF Fault_B or NOT Avto_B *)
+#425				LD		Avto_B	{LNXT:122|-1|-1}
+(*) UNDEF
+08884A89  33 C0                         xor eax, eax
+08884A8B  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#426				NOT	{LNXT:122|-1|-1}
+(*) BOOL
+08884A91  84 C0                         test al, al
+08884A93  0F 94 C0                      sete al
+
+#427				OR		Fault_B	{LNXT:122|-1|-1}
+(*) BOOL
+08884A96  33 C9                         xor ecx, ecx
+08884A98  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+42
+08884A9E  0B C1                         or eax, ecx
+
+#428				JMPCN	$label27	{LNXT:122|123|125}
+(-) BOOL
+08884AA0  84 C0                         test al, al
+08884AA2  90 74 11 90 90 90             je 08884AB6H
+
+#429		
+#430				(* THEN *)
+#431		
+#432					(* Motor_B := False; *)
+#433					MOVE		False,Motor_B	{LNXT:123|125|-1}
+(*) BOOL
+08884AA8  B8 00 00 00 00                mov eax, 00H
+08884AAD  84 C0                         test al, al
+08884AAF  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#434		
+#435		$label27:
+#436				(* END_IF *)
+#437		
+#438		
+#439				(* IF Fault_C or NOT Avto_C *)
+#440				LD		Avto_C	{LNXT:125|-1|-1}
+(*) UNDEF
+08884AB6  33 C0                         xor eax, eax
+08884AB8  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#441				NOT	{LNXT:125|-1|-1}
+(*) BOOL
+08884ABE  84 C0                         test al, al
+08884AC0  0F 94 C0                      sete al
+
+#442				OR		Fault_C	{LNXT:125|-1|-1}
+(*) BOOL
+08884AC3  33 C9                         xor ecx, ecx
+08884AC5  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+43
+08884ACB  0B C1                         or eax, ecx
+
+#443				JMPCN	$label28	{LNXT:125|126|136}
+(-) BOOL
+08884ACD  84 C0                         test al, al
+08884ACF  90 74 11 90 90 90             je 08884AE3H
+
+#444		
+#445				(* THEN *)
+#446		
+#447					(* Motor_C := False; *)
+#448					MOVE		False,Motor_C	{LNXT:126|136|-1}
+(*) BOOL
+08884AD5  B8 00 00 00 00                mov eax, 00H
+08884ADA  84 C0                         test al, al
+08884ADC  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#449		
+#450		$label28:
+#451				(* END_IF *)
+#452		
+#453		$label3:
+#454			(* END_IF *)
+#455		
+#456		
+#457			(* IF Tank_Level >= Max_Level_1 AND NOT RotationMode AND NOT FastRunMode *)
+#458			LD		FastRunMode	{LNXT:136|-1|-1}
+(*) UNDEF
+08884AE3  33 C0                         xor eax, eax
+08884AE5  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+36
+
+#459			NOT	{LNXT:136|-1|-1}
+(*) BOOL
+08884AEB  84 C0                         test al, al
+08884AED  0F 94 C0                      sete al
+
+#460			AND(		RotationMode	{LNXT:136|-1|-1}
+(*) BOOL
+08884AF0  50                            push eax
+08884AF1  33 C0                         xor eax, eax
+08884AF3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+33
+
+#461			NOT	{LNXT:136|-1|-1}
+(*) BOOL
+08884AF9  84 C0                         test al, al
+08884AFB  0F 94 C0                      sete al
+
+#462			AND(		Tank_Level	{LNXT:136|-1|-1}
+(*) BOOL
+08884AFE  50                            push eax
+08884AFF  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#463			GE		Max_Level_1	{LNXT:136|-1|-1}
+(*) INT
+08884B06  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+22
+08884B0D  3B C1                         cmp eax, ecx
+08884B0F  0F 9D C0                      setge al
+08884B12  25 FF 00 00 00                and eax, 0FFh
+
+#464			)	{LNXT:136|-1|-1}
+(*) BOOL
+08884B17  8B C8                         mov ecx, eax
+08884B19  58                            pop eax
+08884B1A  23 C1                         and eax, ecx
+
+#465			)	{LNXT:136|-1|-1}
+(*) BOOL
+08884B1C  8B C8                         mov ecx, eax
+08884B1E  58                            pop eax
+08884B1F  23 C1                         and eax, ecx
+
+#466			JMPCN	$label29	{LNXT:136|139|215}
+(-) BOOL
+08884B21  84 C0                         test al, al
+08884B23  0F 84 65 04 00 00             je 08884F8EH
+
+#467		
+#468			(* THEN *)
+#469		
+#470		
+#471				(* CASE PriorityMotor OF *)
+#472		
+#473				(* 0: *)
+#474				LD		PriorityMotor	{LNXT:139|-1|-1}
+(*) UNDEF
+08884B29  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+34
+
+#475				EQ		0	{LNXT:139|-1|-1}
+(*) INT
+08884B30  3D 00 00 00 00                cmp eax, 0
+08884B35  0F 94 C0                      sete al
+08884B38  25 FF 00 00 00                and eax, 0FFh
+
+#476				JMPC		$label31	{LNXT:139|140|161}
+(-) BOOL
+08884B3D  84 C0                         test al, al
+08884B3F  90 75 40 90 90 90             jne 08884B82H
+
+#477		
+#478				(* 1: *)
+#479				LD		PriorityMotor	{LNXT:161|-1|-1}
+(*) UNDEF
+08884B45  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+34
+
+#480				EQ		1	{LNXT:161|-1|-1}
+(*) INT
+08884B4C  3D 01 00 00 00                cmp eax, 1
+08884B51  0F 94 C0                      sete al
+08884B54  25 FF 00 00 00                and eax, 0FFh
+
+#481				JMPC		$label32	{LNXT:161|162|180}
+(-) BOOL
+08884B59  84 C0                         test al, al
+08884B5B  0F 85 4F 01 00 00             jne 08884CB0H
+
+#482		
+#483				(* 2: *)
+#484				LD		PriorityMotor	{LNXT:180|-1|-1}
+(*) UNDEF
+08884B61  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+34
+
+#485				EQ		2	{LNXT:180|-1|-1}
+(*) INT
+08884B68  3D 02 00 00 00                cmp eax, 2
+08884B6D  0F 94 C0                      sete al
+08884B70  25 FF 00 00 00                and eax, 0FFh
+
+#486				JMPC		$label33	{LNXT:180|181|201}
+(-) BOOL
+08884B75  84 C0                         test al, al
+08884B77  0F 85 61 02 00 00             jne 08884DDEH
+
+#487				JMP		$label30	{LNXT:180|181|201}
+(-) BOOL
+08884B7D  E9 85 03 00 00                jmp 08884F07H
+
+#488		
+#489				(* Istruzioni di ciascun CASE: *)
+#490		
+#491		$label31:
+#492		
+#493					(* IF Fault_A AND Avto_A AND NOT Motor_B AND NOT Motor_C *)
+#494					LD		Motor_C	{LNXT:140|-1|-1}
+(*) UNDEF
+08884B82  33 C0                         xor eax, eax
+08884B84  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#495					NOT	{LNXT:140|-1|-1}
+(*) BOOL
+08884B8A  84 C0                         test al, al
+08884B8C  0F 94 C0                      sete al
+
+#496					AND(		Motor_B	{LNXT:140|-1|-1}
+(*) BOOL
+08884B8F  50                            push eax
+08884B90  33 C0                         xor eax, eax
+08884B92  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#497					NOT	{LNXT:140|-1|-1}
+(*) BOOL
+08884B98  84 C0                         test al, al
+08884B9A  0F 94 C0                      sete al
+
+#498					AND(		Fault_A	{LNXT:140|-1|-1}
+(*) BOOL
+08884B9D  50                            push eax
+08884B9E  33 C0                         xor eax, eax
+08884BA0  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#499					NOT	{LNXT:140|-1|-1}
+(*) BOOL
+08884BA6  84 C0                         test al, al
+08884BA8  0F 94 C0                      sete al
+
+#500					AND		Avto_A	{LNXT:140|-1|-1}
+(*) BOOL
+08884BAB  33 C9                         xor ecx, ecx
+08884BAD  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+08884BB3  23 C1                         and eax, ecx
+
+#501					)	{LNXT:140|-1|-1}
+(*) BOOL
+08884BB5  8B C8                         mov ecx, eax
+08884BB7  58                            pop eax
+08884BB8  23 C1                         and eax, ecx
+
+#502					)	{LNXT:140|-1|-1}
+(*) BOOL
+08884BBA  8B C8                         mov ecx, eax
+08884BBC  58                            pop eax
+08884BBD  23 C1                         and eax, ecx
+
+#503					JMPCN	$label34	{LNXT:140|141|145}
+(-) BOOL
+08884BBF  84 C0                         test al, al
+08884BC1  90 74 22 90 90 90             je 08884BE6H
+
+#504		
+#505					(* THEN *)
+#506		
+#507						(* PriorityMotor := 0; *)
+#508						MOVE		0,PriorityMotor	{LNXT:141|142|-1}
+(*) BOOL
+08884BC7  B8 00 00 00 00                mov eax, 00H
+08884BCC  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#509		
+#510						(* Motor_A := TRUE; *)
+#511						MOVE		TRUE,Motor_A	{LNXT:142|201|-1}
+(*) INT
+08884BD3  B8 01 00 00 00                mov eax, 01H
+08884BD8  84 C0                         test al, al
+08884BDA  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#512						JMP		$label35	{LNXT:140|141|145}
+(-) BOOL
+08884BE1  E9 C5 00 00 00                jmp 08884CABH
+
+#513		$label34:
+#514		
+#515					(* ELSE *)
+#516		
+#517		
+#518						(* IF Fault_A AND Not Avto_A AND NOT Motor_B AND NOT Motor_C *)
+#519						LD		Motor_C	{LNXT:145|-1|-1}
+(*) UNDEF
+08884BE6  33 C0                         xor eax, eax
+08884BE8  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#520						NOT	{LNXT:145|-1|-1}
+(*) BOOL
+08884BEE  84 C0                         test al, al
+08884BF0  0F 94 C0                      sete al
+
+#521						AND(		Motor_B	{LNXT:145|-1|-1}
+(*) BOOL
+08884BF3  50                            push eax
+08884BF4  33 C0                         xor eax, eax
+08884BF6  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#522						NOT	{LNXT:145|-1|-1}
+(*) BOOL
+08884BFC  84 C0                         test al, al
+08884BFE  0F 94 C0                      sete al
+
+#523						AND(		Avto_A	{LNXT:145|-1|-1}
+(*) BOOL
+08884C01  50                            push eax
+08884C02  33 C0                         xor eax, eax
+08884C04  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#524						NOT	{LNXT:145|-1|-1}
+(*) BOOL
+08884C0A  84 C0                         test al, al
+08884C0C  0F 94 C0                      sete al
+
+#525						AND(		Fault_A	{LNXT:145|-1|-1}
+(*) BOOL
+08884C0F  50                            push eax
+08884C10  33 C0                         xor eax, eax
+08884C12  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#526						NOT	{LNXT:145|-1|-1}
+(*) BOOL
+08884C18  84 C0                         test al, al
+08884C1A  0F 94 C0                      sete al
+
+#527						)	{LNXT:145|-1|-1}
+(*) BOOL
+08884C1D  8B C8                         mov ecx, eax
+08884C1F  58                            pop eax
+08884C20  23 C1                         and eax, ecx
+
+#528						)	{LNXT:145|-1|-1}
+(*) BOOL
+08884C22  8B C8                         mov ecx, eax
+08884C24  58                            pop eax
+08884C25  23 C1                         and eax, ecx
+
+#529						)	{LNXT:145|-1|-1}
+(*) BOOL
+08884C27  8B C8                         mov ecx, eax
+08884C29  58                            pop eax
+08884C2A  23 C1                         and eax, ecx
+
+#530						JMPCN	$label36	{LNXT:145|147|201}
+(-) BOOL
+08884C2C  84 C0                         test al, al
+08884C2E  90 74 7A 90 90 90             je 08884CABH
+
+#531		
+#532						(* THEN *)
+#533		
+#534		
+#535							(* IF Fault_B AND Avto_B *)
+#536							LD		Fault_B	{LNXT:147|-1|-1}
+(*) UNDEF
+08884C34  33 C0                         xor eax, eax
+08884C36  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#537							NOT	{LNXT:147|-1|-1}
+(*) BOOL
+08884C3C  84 C0                         test al, al
+08884C3E  0F 94 C0                      sete al
+
+#538							AND		Avto_B	{LNXT:147|-1|-1}
+(*) BOOL
+08884C41  33 C9                         xor ecx, ecx
+08884C43  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08884C49  23 C1                         and eax, ecx
+
+#539							JMPCN	$label37	{LNXT:147|148|151}
+(-) BOOL
+08884C4B  84 C0                         test al, al
+08884C4D  90 74 22 90 90 90             je 08884C72H
+
+#540		
+#541							(* THEN *)
+#542		
+#543								(* PriorityMotor := 1; *)
+#544								MOVE		1,PriorityMotor	{LNXT:148|149|-1}
+(*) BOOL
+08884C53  B8 01 00 00 00                mov eax, 01H
+08884C58  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#545		
+#546								(* Motor_B := TRUE; *)
+#547								MOVE		TRUE,Motor_B	{LNXT:149|201|-1}
+(*) INT
+08884C5F  B8 01 00 00 00                mov eax, 01H
+08884C64  84 C0                         test al, al
+08884C66  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#548								JMP		$label38	{LNXT:147|148|151}
+(-) BOOL
+08884C6D  EB 3C 90 90 90                jmp 08884CABH
+
+#549		$label37:
+#550		
+#551							(* ELSE *)
+#552		
+#553		
+#554								(* IF Fault_C AND Avto_C *)
+#555								LD		Fault_C	{LNXT:151|-1|-1}
+(*) UNDEF
+08884C72  33 C0                         xor eax, eax
+08884C74  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#556								NOT	{LNXT:151|-1|-1}
+(*) BOOL
+08884C7A  84 C0                         test al, al
+08884C7C  0F 94 C0                      sete al
+
+#557								AND		Avto_C	{LNXT:151|-1|-1}
+(*) BOOL
+08884C7F  33 C9                         xor ecx, ecx
+08884C81  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+08884C87  23 C1                         and eax, ecx
+
+#558								JMPCN	$label39	{LNXT:151|152|201}
+(-) BOOL
+08884C89  84 C0                         test al, al
+08884C8B  90 74 1D 90 90 90             je 08884CABH
+
+#559		
+#560								(* THEN *)
+#561		
+#562									(* PriorityMotor := 2; *)
+#563									MOVE		2,PriorityMotor	{LNXT:152|153|-1}
+(*) BOOL
+08884C91  B8 02 00 00 00                mov eax, 02H
+08884C96  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#564		
+#565									(* Motor_C := TRUE; *)
+#566									MOVE		TRUE,Motor_C	{LNXT:153|201|-1}
+(*) INT
+08884C9D  B8 01 00 00 00                mov eax, 01H
+08884CA2  84 C0                         test al, al
+08884CA4  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#567		
+#568		$label39:
+#569								(* END_IF *)
+#570		
+#571		$label38:
+#572							(* END_IF *)
+#573		
+#574		$label36:
+#575						(* END_IF *)
+#576		
+#577		$label35:
+#578					(* END_IF *)
+#579					JMP		$label30	{LNXT:1|145|-1}
+(-) BOOL
+08884CAB  E9 57 02 00 00                jmp 08884F07H
+
+#580		
+#581		$label32:
+#582		
+#583					(* IF Fault_B AND Avto_B AND NOT Motor_A AND NOT Motor_C *)
+#584					LD		Motor_C	{LNXT:162|-1|-1}
+(*) UNDEF
+08884CB0  33 C0                         xor eax, eax
+08884CB2  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#585					NOT	{LNXT:162|-1|-1}
+(*) BOOL
+08884CB8  84 C0                         test al, al
+08884CBA  0F 94 C0                      sete al
+
+#586					AND(		Motor_A	{LNXT:162|-1|-1}
+(*) BOOL
+08884CBD  50                            push eax
+08884CBE  33 C0                         xor eax, eax
+08884CC0  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#587					NOT	{LNXT:162|-1|-1}
+(*) BOOL
+08884CC6  84 C0                         test al, al
+08884CC8  0F 94 C0                      sete al
+
+#588					AND(		Fault_B	{LNXT:162|-1|-1}
+(*) BOOL
+08884CCB  50                            push eax
+08884CCC  33 C0                         xor eax, eax
+08884CCE  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#589					NOT	{LNXT:162|-1|-1}
+(*) BOOL
+08884CD4  84 C0                         test al, al
+08884CD6  0F 94 C0                      sete al
+
+#590					AND		Avto_B	{LNXT:162|-1|-1}
+(*) BOOL
+08884CD9  33 C9                         xor ecx, ecx
+08884CDB  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08884CE1  23 C1                         and eax, ecx
+
+#591					)	{LNXT:162|-1|-1}
+(*) BOOL
+08884CE3  8B C8                         mov ecx, eax
+08884CE5  58                            pop eax
+08884CE6  23 C1                         and eax, ecx
+
+#592					)	{LNXT:162|-1|-1}
+(*) BOOL
+08884CE8  8B C8                         mov ecx, eax
+08884CEA  58                            pop eax
+08884CEB  23 C1                         and eax, ecx
+
+#593					JMPCN	$label40	{LNXT:162|163|166}
+(-) BOOL
+08884CED  84 C0                         test al, al
+08884CEF  90 74 22 90 90 90             je 08884D14H
+
+#594		
+#595					(* THEN *)
+#596		
+#597						(* PriorityMotor := 1; *)
+#598						MOVE		1,PriorityMotor	{LNXT:163|164|-1}
+(*) BOOL
+08884CF5  B8 01 00 00 00                mov eax, 01H
+08884CFA  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#599		
+#600						(* Motor_B := TRUE; *)
+#601						MOVE		TRUE,Motor_B	{LNXT:164|201|-1}
+(*) INT
+08884D01  B8 01 00 00 00                mov eax, 01H
+08884D06  84 C0                         test al, al
+08884D08  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#602						JMP		$label41	{LNXT:162|163|166}
+(-) BOOL
+08884D0F  E9 C5 00 00 00                jmp 08884DD9H
+
+#603		$label40:
+#604		
+#605					(* ELSE *)
+#606		
+#607		
+#608						(* IF Fault_B  AND NOT Avto_B AND NOT Motor_A AND NOT Motor_C *)
+#609						LD		Motor_C	{LNXT:166|-1|-1}
+(*) UNDEF
+08884D14  33 C0                         xor eax, eax
+08884D16  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#610						NOT	{LNXT:166|-1|-1}
+(*) BOOL
+08884D1C  84 C0                         test al, al
+08884D1E  0F 94 C0                      sete al
+
+#611						AND(		Motor_A	{LNXT:166|-1|-1}
+(*) BOOL
+08884D21  50                            push eax
+08884D22  33 C0                         xor eax, eax
+08884D24  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#612						NOT	{LNXT:166|-1|-1}
+(*) BOOL
+08884D2A  84 C0                         test al, al
+08884D2C  0F 94 C0                      sete al
+
+#613						AND(		Avto_B	{LNXT:166|-1|-1}
+(*) BOOL
+08884D2F  50                            push eax
+08884D30  33 C0                         xor eax, eax
+08884D32  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#614						NOT	{LNXT:166|-1|-1}
+(*) BOOL
+08884D38  84 C0                         test al, al
+08884D3A  0F 94 C0                      sete al
+
+#615						AND(		Fault_B	{LNXT:166|-1|-1}
+(*) BOOL
+08884D3D  50                            push eax
+08884D3E  33 C0                         xor eax, eax
+08884D40  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#616						NOT	{LNXT:166|-1|-1}
+(*) BOOL
+08884D46  84 C0                         test al, al
+08884D48  0F 94 C0                      sete al
+
+#617						)	{LNXT:166|-1|-1}
+(*) BOOL
+08884D4B  8B C8                         mov ecx, eax
+08884D4D  58                            pop eax
+08884D4E  23 C1                         and eax, ecx
+
+#618						)	{LNXT:166|-1|-1}
+(*) BOOL
+08884D50  8B C8                         mov ecx, eax
+08884D52  58                            pop eax
+08884D53  23 C1                         and eax, ecx
+
+#619						)	{LNXT:166|-1|-1}
+(*) BOOL
+08884D55  8B C8                         mov ecx, eax
+08884D57  58                            pop eax
+08884D58  23 C1                         and eax, ecx
+
+#620						JMPCN	$label42	{LNXT:166|168|201}
+(-) BOOL
+08884D5A  84 C0                         test al, al
+08884D5C  90 74 7A 90 90 90             je 08884DD9H
+
+#621		
+#622						(* THEN *)
+#623		
+#624		
+#625							(* IF Fault_A AND Avto_A *)
+#626							LD		Fault_A	{LNXT:168|-1|-1}
+(*) UNDEF
+08884D62  33 C0                         xor eax, eax
+08884D64  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#627							NOT	{LNXT:168|-1|-1}
+(*) BOOL
+08884D6A  84 C0                         test al, al
+08884D6C  0F 94 C0                      sete al
+
+#628							AND		Avto_A	{LNXT:168|-1|-1}
+(*) BOOL
+08884D6F  33 C9                         xor ecx, ecx
+08884D71  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+08884D77  23 C1                         and eax, ecx
+
+#629							JMPCN	$label43	{LNXT:168|169|172}
+(-) BOOL
+08884D79  84 C0                         test al, al
+08884D7B  90 74 22 90 90 90             je 08884DA0H
+
+#630		
+#631							(* THEN *)
+#632		
+#633								(* PriorityMotor := 0; *)
+#634								MOVE		0,PriorityMotor	{LNXT:169|170|-1}
+(*) BOOL
+08884D81  B8 00 00 00 00                mov eax, 00H
+08884D86  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#635		
+#636								(* Motor_A := TRUE; *)
+#637								MOVE		TRUE,Motor_A	{LNXT:170|201|-1}
+(*) INT
+08884D8D  B8 01 00 00 00                mov eax, 01H
+08884D92  84 C0                         test al, al
+08884D94  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#638								JMP		$label44	{LNXT:168|169|172}
+(-) BOOL
+08884D9B  EB 3C 90 90 90                jmp 08884DD9H
+
+#639		$label43:
+#640		
+#641							(* ELSE *)
+#642		
+#643		
+#644								(* IF Fault_C AND Avto_C *)
+#645								LD		Fault_C	{LNXT:172|-1|-1}
+(*) UNDEF
+08884DA0  33 C0                         xor eax, eax
+08884DA2  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#646								NOT	{LNXT:172|-1|-1}
+(*) BOOL
+08884DA8  84 C0                         test al, al
+08884DAA  0F 94 C0                      sete al
+
+#647								AND		Avto_C	{LNXT:172|-1|-1}
+(*) BOOL
+08884DAD  33 C9                         xor ecx, ecx
+08884DAF  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+08884DB5  23 C1                         and eax, ecx
+
+#648								JMPCN	$label45	{LNXT:172|173|201}
+(-) BOOL
+08884DB7  84 C0                         test al, al
+08884DB9  90 74 1D 90 90 90             je 08884DD9H
+
+#649		
+#650								(* THEN *)
+#651		
+#652									(* PriorityMotor := 2; *)
+#653									MOVE		2,PriorityMotor	{LNXT:173|174|-1}
+(*) BOOL
+08884DBF  B8 02 00 00 00                mov eax, 02H
+08884DC4  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#654		
+#655									(* Motor_C := TRUE; *)
+#656									MOVE		TRUE,Motor_C	{LNXT:174|201|-1}
+(*) INT
+08884DCB  B8 01 00 00 00                mov eax, 01H
+08884DD0  84 C0                         test al, al
+08884DD2  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#657		
+#658		$label45:
+#659								(* END_IF *)
+#660		
+#661		$label44:
+#662							(* END_IF *)
+#663		
+#664		$label42:
+#665						(* END_IF *)
+#666		
+#667		$label41:
+#668					(* END_IF *)
+#669					JMP		$label30	{LNXT:1|166|-1}
+(-) BOOL
+08884DD9  E9 29 01 00 00                jmp 08884F07H
+
+#670		
+#671		$label33:
+#672		
+#673					(* IF Fault_C AND Avto_C AND NOT Motor_A AND NOT Motor_B *)
+#674					LD		Motor_B	{LNXT:181|-1|-1}
+(*) UNDEF
+08884DDE  33 C0                         xor eax, eax
+08884DE0  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#675					NOT	{LNXT:181|-1|-1}
+(*) BOOL
+08884DE6  84 C0                         test al, al
+08884DE8  0F 94 C0                      sete al
+
+#676					AND(		Motor_A	{LNXT:181|-1|-1}
+(*) BOOL
+08884DEB  50                            push eax
+08884DEC  33 C0                         xor eax, eax
+08884DEE  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#677					NOT	{LNXT:181|-1|-1}
+(*) BOOL
+08884DF4  84 C0                         test al, al
+08884DF6  0F 94 C0                      sete al
+
+#678					AND(		Fault_C	{LNXT:181|-1|-1}
+(*) BOOL
+08884DF9  50                            push eax
+08884DFA  33 C0                         xor eax, eax
+08884DFC  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#679					NOT	{LNXT:181|-1|-1}
+(*) BOOL
+08884E02  84 C0                         test al, al
+08884E04  0F 94 C0                      sete al
+
+#680					AND		Avto_C	{LNXT:181|-1|-1}
+(*) BOOL
+08884E07  33 C9                         xor ecx, ecx
+08884E09  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+08884E0F  23 C1                         and eax, ecx
+
+#681					)	{LNXT:181|-1|-1}
+(*) BOOL
+08884E11  8B C8                         mov ecx, eax
+08884E13  58                            pop eax
+08884E14  23 C1                         and eax, ecx
+
+#682					)	{LNXT:181|-1|-1}
+(*) BOOL
+08884E16  8B C8                         mov ecx, eax
+08884E18  58                            pop eax
+08884E19  23 C1                         and eax, ecx
+
+#683					JMPCN	$label46	{LNXT:181|182|185}
+(-) BOOL
+08884E1B  84 C0                         test al, al
+08884E1D  90 74 22 90 90 90             je 08884E42H
+
+#684		
+#685					(* THEN *)
+#686		
+#687						(* PriorityMotor := 2; *)
+#688						MOVE		2,PriorityMotor	{LNXT:182|183|-1}
+(*) BOOL
+08884E23  B8 02 00 00 00                mov eax, 02H
+08884E28  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#689		
+#690						(* Motor_C := TRUE; *)
+#691						MOVE		TRUE,Motor_C	{LNXT:183|201|-1}
+(*) INT
+08884E2F  B8 01 00 00 00                mov eax, 01H
+08884E34  84 C0                         test al, al
+08884E36  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#692						JMP		$label47	{LNXT:181|182|185}
+(-) BOOL
+08884E3D  E9 C5 00 00 00                jmp 08884F07H
+
+#693		$label46:
+#694		
+#695					(* ELSE *)
+#696		
+#697		
+#698						(* IF Fault_C AND NOT Avto_C AND NOT Motor_A AND NOT Motor_B *)
+#699						LD		Motor_B	{LNXT:185|-1|-1}
+(*) UNDEF
+08884E42  33 C0                         xor eax, eax
+08884E44  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#700						NOT	{LNXT:185|-1|-1}
+(*) BOOL
+08884E4A  84 C0                         test al, al
+08884E4C  0F 94 C0                      sete al
+
+#701						AND(		Motor_A	{LNXT:185|-1|-1}
+(*) BOOL
+08884E4F  50                            push eax
+08884E50  33 C0                         xor eax, eax
+08884E52  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#702						NOT	{LNXT:185|-1|-1}
+(*) BOOL
+08884E58  84 C0                         test al, al
+08884E5A  0F 94 C0                      sete al
+
+#703						AND(		Avto_C	{LNXT:185|-1|-1}
+(*) BOOL
+08884E5D  50                            push eax
+08884E5E  33 C0                         xor eax, eax
+08884E60  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#704						NOT	{LNXT:185|-1|-1}
+(*) BOOL
+08884E66  84 C0                         test al, al
+08884E68  0F 94 C0                      sete al
+
+#705						AND(		Fault_C	{LNXT:185|-1|-1}
+(*) BOOL
+08884E6B  50                            push eax
+08884E6C  33 C0                         xor eax, eax
+08884E6E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#706						NOT	{LNXT:185|-1|-1}
+(*) BOOL
+08884E74  84 C0                         test al, al
+08884E76  0F 94 C0                      sete al
+
+#707						)	{LNXT:185|-1|-1}
+(*) BOOL
+08884E79  8B C8                         mov ecx, eax
+08884E7B  58                            pop eax
+08884E7C  23 C1                         and eax, ecx
+
+#708						)	{LNXT:185|-1|-1}
+(*) BOOL
+08884E7E  8B C8                         mov ecx, eax
+08884E80  58                            pop eax
+08884E81  23 C1                         and eax, ecx
+
+#709						)	{LNXT:185|-1|-1}
+(*) BOOL
+08884E83  8B C8                         mov ecx, eax
+08884E85  58                            pop eax
+08884E86  23 C1                         and eax, ecx
+
+#710						JMPCN	$label48	{LNXT:185|187|201}
+(-) BOOL
+08884E88  84 C0                         test al, al
+08884E8A  90 74 7A 90 90 90             je 08884F07H
+
+#711		
+#712						(* THEN *)
+#713		
+#714		
+#715							(* IF Fault_A AND Avto_A *)
+#716							LD		Fault_A	{LNXT:187|-1|-1}
+(*) UNDEF
+08884E90  33 C0                         xor eax, eax
+08884E92  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#717							NOT	{LNXT:187|-1|-1}
+(*) BOOL
+08884E98  84 C0                         test al, al
+08884E9A  0F 94 C0                      sete al
+
+#718							AND		Avto_A	{LNXT:187|-1|-1}
+(*) BOOL
+08884E9D  33 C9                         xor ecx, ecx
+08884E9F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+08884EA5  23 C1                         and eax, ecx
+
+#719							JMPCN	$label49	{LNXT:187|188|191}
+(-) BOOL
+08884EA7  84 C0                         test al, al
+08884EA9  90 74 22 90 90 90             je 08884ECEH
+
+#720		
+#721							(* THEN *)
+#722		
+#723								(* PriorityMotor := 0; *)
+#724								MOVE		0,PriorityMotor	{LNXT:188|189|-1}
+(*) BOOL
+08884EAF  B8 00 00 00 00                mov eax, 00H
+08884EB4  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#725		
+#726								(* Motor_A := TRUE; *)
+#727								MOVE		TRUE,Motor_A	{LNXT:189|201|-1}
+(*) INT
+08884EBB  B8 01 00 00 00                mov eax, 01H
+08884EC0  84 C0                         test al, al
+08884EC2  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#728								JMP		$label50	{LNXT:187|188|191}
+(-) BOOL
+08884EC9  EB 3C 90 90 90                jmp 08884F07H
+
+#729		$label49:
+#730		
+#731							(* ELSE *)
+#732		
+#733		
+#734								(* IF Fault_B AND Avto_B *)
+#735								LD		Fault_B	{LNXT:191|-1|-1}
+(*) UNDEF
+08884ECE  33 C0                         xor eax, eax
+08884ED0  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#736								NOT	{LNXT:191|-1|-1}
+(*) BOOL
+08884ED6  84 C0                         test al, al
+08884ED8  0F 94 C0                      sete al
+
+#737								AND		Avto_B	{LNXT:191|-1|-1}
+(*) BOOL
+08884EDB  33 C9                         xor ecx, ecx
+08884EDD  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08884EE3  23 C1                         and eax, ecx
+
+#738								JMPCN	$label51	{LNXT:191|192|201}
+(-) BOOL
+08884EE5  84 C0                         test al, al
+08884EE7  90 74 1D 90 90 90             je 08884F07H
+
+#739		
+#740								(* THEN *)
+#741		
+#742									(* PriorityMotor := 1; *)
+#743									MOVE		1,PriorityMotor	{LNXT:192|193|-1}
+(*) BOOL
+08884EED  B8 01 00 00 00                mov eax, 01H
+08884EF2  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+34
+
+#744		
+#745									(* Motor_B := TRUE; *)
+#746									MOVE		TRUE,Motor_B	{LNXT:193|201|-1}
+(*) INT
+08884EF9  B8 01 00 00 00                mov eax, 01H
+08884EFE  84 C0                         test al, al
+08884F00  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#747		
+#748		$label51:
+#749								(* END_IF *)
+#750		
+#751		$label50:
+#752							(* END_IF *)
+#753		
+#754		$label48:
+#755						(* END_IF *)
+#756		
+#757		$label47:
+#758					(* END_IF *)
+#759		
+#760		$label30:
+#761		
+#762				(* END_CASE *)
+#763		
+#764		
+#765				(* IF Fault_A or NOT Avto_A *)
+#766				LD		Avto_A	{LNXT:201|-1|-1}
+(*) UNDEF
+08884F07  33 C0                         xor eax, eax
+08884F09  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#767				NOT	{LNXT:201|-1|-1}
+(*) BOOL
+08884F0F  84 C0                         test al, al
+08884F11  0F 94 C0                      sete al
+
+#768				OR		Fault_A	{LNXT:201|-1|-1}
+(*) BOOL
+08884F14  33 C9                         xor ecx, ecx
+08884F16  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+37
+08884F1C  0B C1                         or eax, ecx
+
+#769				JMPCN	$label52	{LNXT:201|202|204}
+(-) BOOL
+08884F1E  84 C0                         test al, al
+08884F20  90 74 11 90 90 90             je 08884F34H
+
+#770		
+#771				(* THEN *)
+#772		
+#773					(* Motor_A := False; *)
+#774					MOVE		False,Motor_A	{LNXT:202|204|-1}
+(*) BOOL
+08884F26  B8 00 00 00 00                mov eax, 00H
+08884F2B  84 C0                         test al, al
+08884F2D  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#775		
+#776		$label52:
+#777				(* END_IF *)
+#778		
+#779		
+#780				(* IF Fault_B or NOT Avto_B *)
+#781				LD		Avto_B	{LNXT:204|-1|-1}
+(*) UNDEF
+08884F34  33 C0                         xor eax, eax
+08884F36  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#782				NOT	{LNXT:204|-1|-1}
+(*) BOOL
+08884F3C  84 C0                         test al, al
+08884F3E  0F 94 C0                      sete al
+
+#783				OR		Fault_B	{LNXT:204|-1|-1}
+(*) BOOL
+08884F41  33 C9                         xor ecx, ecx
+08884F43  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+42
+08884F49  0B C1                         or eax, ecx
+
+#784				JMPCN	$label53	{LNXT:204|205|207}
+(-) BOOL
+08884F4B  84 C0                         test al, al
+08884F4D  90 74 11 90 90 90             je 08884F61H
+
+#785		
+#786				(* THEN *)
+#787		
+#788					(* Motor_B := False; *)
+#789					MOVE		False,Motor_B	{LNXT:205|207|-1}
+(*) BOOL
+08884F53  B8 00 00 00 00                mov eax, 00H
+08884F58  84 C0                         test al, al
+08884F5A  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#790		
+#791		$label53:
+#792				(* END_IF *)
+#793		
+#794		
+#795				(* IF Fault_C or NOT Avto_C *)
+#796				LD		Avto_C	{LNXT:207|-1|-1}
+(*) UNDEF
+08884F61  33 C0                         xor eax, eax
+08884F63  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#797				NOT	{LNXT:207|-1|-1}
+(*) BOOL
+08884F69  84 C0                         test al, al
+08884F6B  0F 94 C0                      sete al
+
+#798				OR		Fault_C	{LNXT:207|-1|-1}
+(*) BOOL
+08884F6E  33 C9                         xor ecx, ecx
+08884F70  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+43
+08884F76  0B C1                         or eax, ecx
+
+#799				JMPCN	$label54	{LNXT:207|208|215}
+(-) BOOL
+08884F78  84 C0                         test al, al
+08884F7A  90 74 11 90 90 90             je 08884F8EH
+
+#800		
+#801				(* THEN *)
+#802		
+#803					(* Motor_C := False; *)
+#804					MOVE		False,Motor_C	{LNXT:208|215|-1}
+(*) BOOL
+08884F80  B8 00 00 00 00                mov eax, 00H
+08884F85  84 C0                         test al, al
+08884F87  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#805		
+#806		$label54:
+#807				(* END_IF *)
+#808		
+#809		$label29:
+#810			(* END_IF *)
+#811		
+#812		
+#813			(* IF RotationMode AND FastRunMode *)
+#814			LD		RotationMode	{LNXT:215|-1|-1}
+(*) UNDEF
+08884F8E  33 C0                         xor eax, eax
+08884F90  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+33
+
+#815			NOT	{LNXT:215|-1|-1}
+(*) BOOL
+08884F96  84 C0                         test al, al
+08884F98  0F 94 C0                      sete al
+
+#816			AND		FastRunMode	{LNXT:215|-1|-1}
+(*) BOOL
+08884F9B  33 C9                         xor ecx, ecx
+08884F9D  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+36
+08884FA3  23 C1                         and eax, ecx
+
+#817			JMPCN	$label55	{LNXT:215|218|336}
+(-) BOOL
+08884FA5  84 C0                         test al, al
+08884FA7  0F 84 77 07 00 00             je 08885724H
+
+#818		
+#819			(* THEN *)
+#820		
+#821		
+#822				(* CASE CurrentPump OF *)
+#823		
+#824				(* 1: *)
+#825				LD		CurrentPump	{LNXT:219|-1|-1}
+(*) UNDEF
+08884FAD  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#826				EQ		1	{LNXT:219|-1|-1}
+(*) INT
+08884FB4  3D 01 00 00 00                cmp eax, 1
+08884FB9  0F 94 C0                      sete al
+08884FBC  25 FF 00 00 00                and eax, 0FFh
+
+#827				JMPC		$label57	{LNXT:219|222|254}
+(-) BOOL
+08884FC1  84 C0                         test al, al
+08884FC3  90 75 40 90 90 90             jne 08885006H
+
+#828		
+#829				(* 2: *)
+#830				LD		CurrentPump	{LNXT:254|-1|-1}
+(*) UNDEF
+08884FC9  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#831				EQ		2	{LNXT:254|-1|-1}
+(*) INT
+08884FD0  3D 02 00 00 00                cmp eax, 2
+08884FD5  0F 94 C0                      sete al
+08884FD8  25 FF 00 00 00                and eax, 0FFh
+
+#832				JMPC		$label58	{LNXT:254|255|285}
+(-) BOOL
+08884FDD  84 C0                         test al, al
+08884FDF  0F 85 55 02 00 00             jne 0888523AH
+
+#833		
+#834				(* 3: *)
+#835				LD		CurrentPump	{LNXT:285|-1|-1}
+(*) UNDEF
+08884FE5  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#836				EQ		3	{LNXT:285|-1|-1}
+(*) INT
+08884FEC  3D 03 00 00 00                cmp eax, 3
+08884FF1  0F 94 C0                      sete al
+08884FF4  25 FF 00 00 00                and eax, 0FFh
+
+#837				JMPC		$label59	{LNXT:285|286|319}
+(-) BOOL
+08884FF9  84 C0                         test al, al
+08884FFB  0F 85 6D 04 00 00             jne 0888546EH
+
+#838				JMP		$label56	{LNXT:285|286|319}
+(-) BOOL
+08885001  E9 97 06 00 00                jmp 0888569DH
+
+#839		
+#840				(* Istruzioni di ciascun CASE: *)
+#841		
+#842		$label57:
+#843		
+#844					(* IF Tank_Level >= Max_Level_1 AND PriorityMotor = 0 *)
+#845					LD		PriorityMotor	{LNXT:222|-1|-1}
+(*) UNDEF
+08885006  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+34
+
+#846					EQ		0	{LNXT:222|-1|-1}
+(*) INT
+0888500D  3D 00 00 00 00                cmp eax, 0
+08885012  0F 94 C0                      sete al
+08885015  25 FF 00 00 00                and eax, 0FFh
+
+#847					AND(		Tank_Level	{LNXT:222|-1|-1}
+(*) BOOL
+0888501A  50                            push eax
+0888501B  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#848					GE		Max_Level_1	{LNXT:222|-1|-1}
+(*) INT
+08885022  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+22
+08885029  3B C1                         cmp eax, ecx
+0888502B  0F 9D C0                      setge al
+0888502E  25 FF 00 00 00                and eax, 0FFh
+
+#849					)	{LNXT:222|-1|-1}
+(*) BOOL
+08885033  8B C8                         mov ecx, eax
+08885035  58                            pop eax
+08885036  23 C1                         and eax, ecx
+
+#850					JMPCN	$label60	{LNXT:222|223|226}
+(-) BOOL
+08885038  84 C0                         test al, al
+0888503A  90 74 33 90 90 90             je 08885070H
+
+#851		
+#852					(* THEN *)
+#853		
+#854						(* CurrentPump := ((CurrentPump) MOD 3) + 1; *)
+#855						LD		CurrentPump	{LNXT:223|224|-1}
+(*) UNDEF
+08885040  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#856						MOD		3	{LNXT:223|224|-1}
+(*) INT
+08885047  99                            cdq
+08885048  B9 03 00 00 00                mov ecx, 3
+0888504D  F7 F9                         idiv ecx
+0888504F  8B C2                         mov eax, edx
+
+#857						ADD		1	{LNXT:223|224|-1}
+(*) INT
+08885051  05 01 00 00 00                add eax, 1
+
+#858						ST		CurrentPump	{LNXT:223|224|-1}
+(*) INT
+08885056  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+44
+
+#859		
+#860						(* Motor_A := TRUE; *)
+#861						MOVE		TRUE,Motor_A	{LNXT:224|235|-1}
+(*) INT
+0888505D  B8 01 00 00 00                mov eax, 01H
+08885062  84 C0                         test al, al
+08885064  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#862						JMP		$label61	{LNXT:222|223|226}
+(-) BOOL
+0888506B  E9 85 00 00 00                jmp 088850F5H
+
+#863		$label60:
+#864		
+#865					(* ELSE *)
+#866		
+#867		
+#868						(* IF TestRunActive_1 AND NOT TestRunRunning_1 *)
+#869						LD		TestRunRunning_1	{LNXT:226|-1|-1}
+(*) UNDEF
+08885070  33 C0                         xor eax, eax
+08885072  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+46
+
+#870						NOT	{LNXT:226|-1|-1}
+(*) BOOL
+08885078  84 C0                         test al, al
+0888507A  0F 94 C0                      sete al
+
+#871						AND(		TestRunActive_1	{LNXT:226|-1|-1}
+(*) BOOL
+0888507D  50                            push eax
+0888507E  33 C0                         xor eax, eax
+08885080  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+47
+
+#872						NOT	{LNXT:226|-1|-1}
+(*) BOOL
+08885086  84 C0                         test al, al
+08885088  0F 94 C0                      sete al
+
+#873						)	{LNXT:226|-1|-1}
+(*) BOOL
+0888508B  8B C8                         mov ecx, eax
+0888508D  58                            pop eax
+0888508E  23 C1                         and eax, ecx
+
+#874						JMPCN	$label62	{LNXT:226|227|235}
+(-) BOOL
+08885090  84 C0                         test al, al
+08885092  90 74 60 90 90 90             je 088850F5H
+
+#875		
+#876						(* THEN *)
+#877		
+#878							(* PumpIntervalTimer_1 *)
+#879							MOVE		TRUE,PumpIntervalTimer_1.IN	{LNXT:227|-1|-1}
+(*) BOOL
+08885098  B8 01 00 00 00                mov eax, 01H
+0888509D  84 C0                         test al, al
+0888509F  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+52
+
+#880							MOVE		5000,PumpIntervalTimer_1.PT	{LNXT:227|-1|-1}
+(*) BOOL
+088850A6  B8 88 13 00 00                mov eax, 1388H
+088850AB  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+53
+
+#881							CAL		PumpIntervalTimer_1	{LNXT:227|228|-1}
+(*) UDINT
+088850B1  50                            push eax
+088850B2  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+48
+088850B7  E8 34 F2 FF FF                call 088842F0H ; $$CODE$$+17136
+088850BC  58                            pop eax
+
+#882		
+#883		
+#884							(* IF PumpIntervalTimer_1.Q *)
+#885							LD		PumpIntervalTimer_1.Q	{LNXT:228|-1|-1}
+(*) UNDEF
+088850BD  33 C0                         xor eax, eax
+088850BF  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+57
+
+#886							JMPCN	$label63	{LNXT:228|229|235}
+(-) BOOL
+088850C5  84 C0                         test al, al
+088850C7  90 74 2B 90 90 90             je 088850F5H
+
+#887		
+#888							(* THEN *)
+#889		
+#890								(* TestRunActive_1 := TRUE; *)
+#891								MOVE		TRUE,TestRunActive_1	{LNXT:229|230|-1}
+(*) BOOL
+088850CD  B8 01 00 00 00                mov eax, 01H
+088850D2  84 C0                         test al, al
+088850D4  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+47
+
+#892		
+#893								(* PumpIntervalTimer_1 *)
+#894								MOVE		FALSE,PumpIntervalTimer_1.IN	{LNXT:230|-1|-1}
+(*) BOOL
+088850DB  B8 00 00 00 00                mov eax, 00H
+088850E0  84 C0                         test al, al
+088850E2  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+52
+
+#895								CAL		PumpIntervalTimer_1	{LNXT:230|235|-1}
+(*) BOOL
+088850E9  50                            push eax
+088850EA  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+48
+088850EF  E8 FC F1 FF FF                call 088842F0H ; $$CODE$$+17136
+088850F4  58                            pop eax
+
+#896		
+#897		$label63:
+#898							(* END_IF *)
+#899		
+#900		$label62:
+#901						(* END_IF *)
+#902		
+#903		$label61:
+#904					(* END_IF *)
+#905		
+#906		
+#907					(* IF TestRunActive_1 *)
+#908					LD		TestRunActive_1	{LNXT:235|-1|-1}
+(*) UNDEF
+088850F5  33 C0                         xor eax, eax
+088850F7  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+47
+
+#909					JMPCN	$label64	{LNXT:235|236|319}
+(-) BOOL
+088850FD  84 C0                         test al, al
+088850FF  0F 84 30 01 00 00             je 08885235H
+
+#910		
+#911					(* THEN *)
+#912		
+#913		
+#914						(* IF TestRunRunning_1 *)
+#915						LD		TestRunRunning_1	{LNXT:236|-1|-1}
+(*) UNDEF
+08885105  33 C0                         xor eax, eax
+08885107  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+46
+
+#916						NOT	{LNXT:236|-1|-1}
+(*) BOOL
+0888510D  84 C0                         test al, al
+0888510F  0F 94 C0                      sete al
+
+#917						JMPCN	$label65	{LNXT:236|237|240}
+(-) BOOL
+08885112  84 C0                         test al, al
+08885114  90 74 11 90 90 90             je 08885128H
+
+#918		
+#919						(* THEN *)
+#920		
+#921							(* TestRunRunning_1 := TRUE; *)
+#922							MOVE		TRUE,TestRunRunning_1	{LNXT:237|240|-1}
+(*) BOOL
+0888511A  B8 01 00 00 00                mov eax, 01H
+0888511F  84 C0                         test al, al
+08885121  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+46
+
+#923		
+#924		$label65:
+#925						(* END_IF *)
+#926		
+#927		
+#928						(* IF TestRunRunning_1 AND Tank_Level < Max_Level_2 And Not Fault_A AND Avto_A *)
+#929						LD		Fault_A	{LNXT:240|-1|-1}
+(*) UNDEF
+08885128  33 C0                         xor eax, eax
+0888512A  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#930						NOT	{LNXT:240|-1|-1}
+(*) BOOL
+08885130  84 C0                         test al, al
+08885132  0F 94 C0                      sete al
+
+#931						AND(		Tank_Level	{LNXT:240|-1|-1}
+(*) BOOL
+08885135  50                            push eax
+08885136  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#932						LT		Max_Level_2	{LNXT:240|-1|-1}
+(*) INT
+0888513D  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+24
+08885144  3B C1                         cmp eax, ecx
+08885146  0F 9C C0                      setl al
+08885149  25 FF 00 00 00                and eax, 0FFh
+
+#933						AND		TestRunRunning_1	{LNXT:240|-1|-1}
+(*) BOOL
+0888514E  33 C9                         xor ecx, ecx
+08885150  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+46
+08885156  23 C1                         and eax, ecx
+
+#934						)	{LNXT:240|-1|-1}
+(*) BOOL
+08885158  8B C8                         mov ecx, eax
+0888515A  58                            pop eax
+0888515B  23 C1                         and eax, ecx
+
+#935						AND		Avto_A	{LNXT:240|-1|-1}
+(*) BOOL
+0888515D  33 C9                         xor ecx, ecx
+0888515F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+08885165  23 C1                         and eax, ecx
+
+#936						JMPCN	$label66	{LNXT:240|241|319}
+(-) BOOL
+08885167  84 C0                         test al, al
+08885169  0F 84 C6 00 00 00             je 08885235H
+
+#937		
+#938						(* THEN *)
+#939		
+#940							(* PumpRunTimer_1 *)
+#941							LD		TestRunActive_1	{LNXT:241|-1|-1}
+(*) UNDEF
+0888516F  33 C0                         xor eax, eax
+08885171  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+47
+
+#942							AND		TestRunRunning_1	{LNXT:241|-1|-1}
+(*) BOOL
+08885177  33 C9                         xor ecx, ecx
+08885179  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+46
+0888517F  23 C1                         and eax, ecx
+
+#943							ST		PumpRunTimer_1.IN	{LNXT:241|-1|-1}
+(*) BOOL
+08885181  84 C0                         test al, al
+08885183  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+74
+
+#944							MOVE		5000,PumpRunTimer_1.PT	{LNXT:241|-1|-1}
+(*) BOOL
+0888518A  B8 88 13 00 00                mov eax, 1388H
+0888518F  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+75
+
+#945							CAL		PumpRunTimer_1	{LNXT:241|242|-1}
+(*) UDINT
+08885195  50                            push eax
+08885196  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+70
+0888519B  E8 50 F1 FF FF                call 088842F0H ; $$CODE$$+17136
+088851A0  58                            pop eax
+
+#946		
+#947		
+#948							(* IF PumpRunTimer_1.Q *)
+#949							LD		PumpRunTimer_1.Q	{LNXT:242|-1|-1}
+(*) UNDEF
+088851A1  33 C0                         xor eax, eax
+088851A3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+79
+
+#950							NOT	{LNXT:242|-1|-1}
+(*) BOOL
+088851A9  84 C0                         test al, al
+088851AB  0F 94 C0                      sete al
+
+#951							JMPCN	$label67	{LNXT:242|243|245}
+(-) BOOL
+088851AE  84 C0                         test al, al
+088851B0  90 74 16 90 90 90             je 088851C9H
+
+#952		
+#953							(* THEN *)
+#954		
+#955								(* Motor_A := TRUE; *)
+#956								MOVE		TRUE,Motor_A	{LNXT:243|319|-1}
+(*) BOOL
+088851B6  B8 01 00 00 00                mov eax, 01H
+088851BB  84 C0                         test al, al
+088851BD  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#957								JMP		$label68	{LNXT:242|243|245}
+(-) BOOL
+088851C4  EB 6F 90 90 90                jmp 08885235H
+
+#958		$label67:
+#959		
+#960							(* ELSE *)
+#961		
+#962								(* Motor_A := FALSE; *)
+#963								MOVE		FALSE,Motor_A	{LNXT:245|246|-1}
+(*) BOOL
+088851C9  B8 00 00 00 00                mov eax, 00H
+088851CE  84 C0                         test al, al
+088851D0  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#964		
+#965								(* TestRunRunning_1 := FALSE; *)
+#966								MOVE		FALSE,TestRunRunning_1	{LNXT:246|247|-1}
+(*) BOOL
+088851D7  B8 00 00 00 00                mov eax, 00H
+088851DC  84 C0                         test al, al
+088851DE  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+46
+
+#967		
+#968								(* TestRunActive_1 := FALSE; *)
+#969								MOVE		FALSE,TestRunActive_1	{LNXT:247|248|-1}
+(*) BOOL
+088851E5  B8 00 00 00 00                mov eax, 00H
+088851EA  84 C0                         test al, al
+088851EC  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+47
+
+#970		
+#971								(* PumpRunTimer_1 *)
+#972								MOVE		FALSE,PumpRunTimer_1.IN	{LNXT:248|-1|-1}
+(*) BOOL
+088851F3  B8 00 00 00 00                mov eax, 00H
+088851F8  84 C0                         test al, al
+088851FA  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+74
+
+#973								MOVE		5000,PumpRunTimer_1.PT	{LNXT:248|-1|-1}
+(*) BOOL
+08885201  B8 88 13 00 00                mov eax, 1388H
+08885206  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+75
+
+#974								CAL		PumpRunTimer_1	{LNXT:248|249|-1}
+(*) UDINT
+0888520C  50                            push eax
+0888520D  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+70
+08885212  E8 D9 F0 FF FF                call 088842F0H ; $$CODE$$+17136
+08885217  58                            pop eax
+
+#975		
+#976								(* CurrentPump := ((CurrentPump) MOD 3) + 1; *)
+#977								LD		CurrentPump	{LNXT:249|319|-1}
+(*) UNDEF
+08885218  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#978								MOD		3	{LNXT:249|319|-1}
+(*) INT
+0888521F  99                            cdq
+08885220  B9 03 00 00 00                mov ecx, 3
+08885225  F7 F9                         idiv ecx
+08885227  8B C2                         mov eax, edx
+
+#979								ADD		1	{LNXT:249|319|-1}
+(*) INT
+08885229  05 01 00 00 00                add eax, 1
+
+#980								ST		CurrentPump	{LNXT:249|319|-1}
+(*) INT
+0888522E  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+44
+
+#981		
+#982		$label68:
+#983							(* END_IF *)
+#984		
+#985		$label66:
+#986						(* END_IF *)
+#987		
+#988		$label64:
+#989					(* END_IF *)
+#990					JMP		$label56	{LNXT:1|319|-1}
+(-) INT
+08885235  E9 63 04 00 00                jmp 0888569DH
+
+#991		
+#992		$label58:
+#993		
+#994					(* IF Tank_Level >= Max_Level_1 AND PriorityMotor = 1 *)
+#995					LD		PriorityMotor	{LNXT:255|-1|-1}
+(*) UNDEF
+0888523A  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+34
+
+#996					EQ		1	{LNXT:255|-1|-1}
+(*) INT
+08885241  3D 01 00 00 00                cmp eax, 1
+08885246  0F 94 C0                      sete al
+08885249  25 FF 00 00 00                and eax, 0FFh
+
+#997					AND(		Tank_Level	{LNXT:255|-1|-1}
+(*) BOOL
+0888524E  50                            push eax
+0888524F  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#998					GE		Max_Level_1	{LNXT:255|-1|-1}
+(*) INT
+08885256  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+22
+0888525D  3B C1                         cmp eax, ecx
+0888525F  0F 9D C0                      setge al
+08885262  25 FF 00 00 00                and eax, 0FFh
+
+#999					)	{LNXT:255|-1|-1}
+(*) BOOL
+08885267  8B C8                         mov ecx, eax
+08885269  58                            pop eax
+0888526A  23 C1                         and eax, ecx
+
+#1000					JMPCN	$label69	{LNXT:255|256|259}
+(-) BOOL
+0888526C  84 C0                         test al, al
+0888526E  90 74 33 90 90 90             je 088852A4H
+
+#1001		
+#1002					(* THEN *)
+#1003		
+#1004						(* CurrentPump := ((CurrentPump) MOD 3) + 1; *)
+#1005						LD		CurrentPump	{LNXT:256|257|-1}
+(*) UNDEF
+08885274  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#1006						MOD		3	{LNXT:256|257|-1}
+(*) INT
+0888527B  99                            cdq
+0888527C  B9 03 00 00 00                mov ecx, 3
+08885281  F7 F9                         idiv ecx
+08885283  8B C2                         mov eax, edx
+
+#1007						ADD		1	{LNXT:256|257|-1}
+(*) INT
+08885285  05 01 00 00 00                add eax, 1
+
+#1008						ST		CurrentPump	{LNXT:256|257|-1}
+(*) INT
+0888528A  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+44
+
+#1009		
+#1010						(* Motor_B := TRUE; *)
+#1011						MOVE		TRUE,Motor_B	{LNXT:257|267|-1}
+(*) INT
+08885291  B8 01 00 00 00                mov eax, 01H
+08885296  84 C0                         test al, al
+08885298  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1012						JMP		$label70	{LNXT:255|256|259}
+(-) BOOL
+0888529F  E9 85 00 00 00                jmp 08885329H
+
+#1013		$label69:
+#1014		
+#1015					(* ELSE *)
+#1016		
+#1017		
+#1018						(* IF TestRunActive_2 AND NOT TestRunRunning_2 *)
+#1019						LD		TestRunRunning_2	{LNXT:259|-1|-1}
+(*) UNDEF
+088852A4  33 C0                         xor eax, eax
+088852A6  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+92
+
+#1020						NOT	{LNXT:259|-1|-1}
+(*) BOOL
+088852AC  84 C0                         test al, al
+088852AE  0F 94 C0                      sete al
+
+#1021						AND(		TestRunActive_2	{LNXT:259|-1|-1}
+(*) BOOL
+088852B1  50                            push eax
+088852B2  33 C0                         xor eax, eax
+088852B4  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+93
+
+#1022						NOT	{LNXT:259|-1|-1}
+(*) BOOL
+088852BA  84 C0                         test al, al
+088852BC  0F 94 C0                      sete al
+
+#1023						)	{LNXT:259|-1|-1}
+(*) BOOL
+088852BF  8B C8                         mov ecx, eax
+088852C1  58                            pop eax
+088852C2  23 C1                         and eax, ecx
+
+#1024						JMPCN	$label71	{LNXT:259|260|267}
+(-) BOOL
+088852C4  84 C0                         test al, al
+088852C6  90 74 60 90 90 90             je 08885329H
+
+#1025		
+#1026						(* THEN *)
+#1027		
+#1028							(* PumpIntervalTimer_2 *)
+#1029							MOVE		TRUE,PumpIntervalTimer_2.IN	{LNXT:260|-1|-1}
+(*) BOOL
+088852CC  B8 01 00 00 00                mov eax, 01H
+088852D1  84 C0                         test al, al
+088852D3  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+98
+
+#1030							MOVE		6000,PumpIntervalTimer_2.PT	{LNXT:260|-1|-1}
+(*) BOOL
+088852DA  B8 70 17 00 00                mov eax, 1770H
+088852DF  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+99
+
+#1031							CAL		PumpIntervalTimer_2	{LNXT:260|261|-1}
+(*) UDINT
+088852E5  50                            push eax
+088852E6  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+94
+088852EB  E8 00 F0 FF FF                call 088842F0H ; $$CODE$$+17136
+088852F0  58                            pop eax
+
+#1032		
+#1033		
+#1034							(* IF PumpIntervalTimer_2.Q *)
+#1035							LD		PumpIntervalTimer_2.Q	{LNXT:261|-1|-1}
+(*) UNDEF
+088852F1  33 C0                         xor eax, eax
+088852F3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+103
+
+#1036							JMPCN	$label72	{LNXT:261|262|267}
+(-) BOOL
+088852F9  84 C0                         test al, al
+088852FB  90 74 2B 90 90 90             je 08885329H
+
+#1037		
+#1038							(* THEN *)
+#1039		
+#1040								(* TestRunActive_2 := TRUE; *)
+#1041								MOVE		TRUE,TestRunActive_2	{LNXT:262|263|-1}
+(*) BOOL
+08885301  B8 01 00 00 00                mov eax, 01H
+08885306  84 C0                         test al, al
+08885308  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+93
+
+#1042		
+#1043								(* PumpIntervalTimer_2 *)
+#1044								MOVE		FALSE,PumpIntervalTimer_2.IN	{LNXT:263|-1|-1}
+(*) BOOL
+0888530F  B8 00 00 00 00                mov eax, 00H
+08885314  84 C0                         test al, al
+08885316  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+98
+
+#1045								CAL		PumpIntervalTimer_2	{LNXT:263|267|-1}
+(*) BOOL
+0888531D  50                            push eax
+0888531E  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+94
+08885323  E8 C8 EF FF FF                call 088842F0H ; $$CODE$$+17136
+08885328  58                            pop eax
+
+#1046		
+#1047		$label72:
+#1048							(* END_IF *)
+#1049		
+#1050		$label71:
+#1051						(* END_IF *)
+#1052		
+#1053		$label70:
+#1054					(* END_IF *)
+#1055		
+#1056		
+#1057					(* IF TestRunActive_2 *)
+#1058					LD		TestRunActive_2	{LNXT:267|-1|-1}
+(*) UNDEF
+08885329  33 C0                         xor eax, eax
+0888532B  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+93
+
+#1059					JMPCN	$label73	{LNXT:267|268|319}
+(-) BOOL
+08885331  84 C0                         test al, al
+08885333  0F 84 30 01 00 00             je 08885469H
+
+#1060		
+#1061					(* THEN *)
+#1062		
+#1063		
+#1064						(* IF TestRunRunning_2 *)
+#1065						LD		TestRunRunning_2	{LNXT:268|-1|-1}
+(*) UNDEF
+08885339  33 C0                         xor eax, eax
+0888533B  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+92
+
+#1066						NOT	{LNXT:268|-1|-1}
+(*) BOOL
+08885341  84 C0                         test al, al
+08885343  0F 94 C0                      sete al
+
+#1067						JMPCN	$label74	{LNXT:268|269|271}
+(-) BOOL
+08885346  84 C0                         test al, al
+08885348  90 74 11 90 90 90             je 0888535CH
+
+#1068		
+#1069						(* THEN *)
+#1070		
+#1071							(* TestRunRunning_2 := TRUE; *)
+#1072							MOVE		TRUE,TestRunRunning_2	{LNXT:269|271|-1}
+(*) BOOL
+0888534E  B8 01 00 00 00                mov eax, 01H
+08885353  84 C0                         test al, al
+08885355  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+92
+
+#1073		
+#1074		$label74:
+#1075						(* END_IF *)
+#1076		
+#1077		
+#1078						(* IF TestRunRunning_2 AND Tank_Level < Max_Level_2 And Not Fault_B AND Avto_B *)
+#1079						LD		Fault_B	{LNXT:271|-1|-1}
+(*) UNDEF
+0888535C  33 C0                         xor eax, eax
+0888535E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#1080						NOT	{LNXT:271|-1|-1}
+(*) BOOL
+08885364  84 C0                         test al, al
+08885366  0F 94 C0                      sete al
+
+#1081						AND(		Tank_Level	{LNXT:271|-1|-1}
+(*) BOOL
+08885369  50                            push eax
+0888536A  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1082						LT		Max_Level_2	{LNXT:271|-1|-1}
+(*) INT
+08885371  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+24
+08885378  3B C1                         cmp eax, ecx
+0888537A  0F 9C C0                      setl al
+0888537D  25 FF 00 00 00                and eax, 0FFh
+
+#1083						AND		TestRunRunning_2	{LNXT:271|-1|-1}
+(*) BOOL
+08885382  33 C9                         xor ecx, ecx
+08885384  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+92
+0888538A  23 C1                         and eax, ecx
+
+#1084						)	{LNXT:271|-1|-1}
+(*) BOOL
+0888538C  8B C8                         mov ecx, eax
+0888538E  58                            pop eax
+0888538F  23 C1                         and eax, ecx
+
+#1085						AND		Avto_B	{LNXT:271|-1|-1}
+(*) BOOL
+08885391  33 C9                         xor ecx, ecx
+08885393  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08885399  23 C1                         and eax, ecx
+
+#1086						JMPCN	$label75	{LNXT:271|272|319}
+(-) BOOL
+0888539B  84 C0                         test al, al
+0888539D  0F 84 C6 00 00 00             je 08885469H
+
+#1087		
+#1088						(* THEN *)
+#1089		
+#1090							(* PumpRunTimer_2 *)
+#1091							LD		TestRunActive_2	{LNXT:272|-1|-1}
+(*) UNDEF
+088853A3  33 C0                         xor eax, eax
+088853A5  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+93
+
+#1092							AND		TestRunRunning_2	{LNXT:272|-1|-1}
+(*) BOOL
+088853AB  33 C9                         xor ecx, ecx
+088853AD  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+92
+088853B3  23 C1                         and eax, ecx
+
+#1093							ST		PumpRunTimer_2.IN	{LNXT:272|-1|-1}
+(*) BOOL
+088853B5  84 C0                         test al, al
+088853B7  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+120
+
+#1094							MOVE		6000,PumpRunTimer_2.PT	{LNXT:272|-1|-1}
+(*) BOOL
+088853BE  B8 70 17 00 00                mov eax, 1770H
+088853C3  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+121
+
+#1095							CAL		PumpRunTimer_2	{LNXT:272|273|-1}
+(*) UDINT
+088853C9  50                            push eax
+088853CA  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+116
+088853CF  E8 1C EF FF FF                call 088842F0H ; $$CODE$$+17136
+088853D4  58                            pop eax
+
+#1096		
+#1097		
+#1098							(* IF PumpRunTimer_2.Q *)
+#1099							LD		PumpRunTimer_2.Q	{LNXT:273|-1|-1}
+(*) UNDEF
+088853D5  33 C0                         xor eax, eax
+088853D7  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+125
+
+#1100							NOT	{LNXT:273|-1|-1}
+(*) BOOL
+088853DD  84 C0                         test al, al
+088853DF  0F 94 C0                      sete al
+
+#1101							JMPCN	$label76	{LNXT:273|274|276}
+(-) BOOL
+088853E2  84 C0                         test al, al
+088853E4  90 74 16 90 90 90             je 088853FDH
+
+#1102		
+#1103							(* THEN *)
+#1104		
+#1105								(* Motor_B := TRUE; *)
+#1106								MOVE		TRUE,Motor_B	{LNXT:274|319|-1}
+(*) BOOL
+088853EA  B8 01 00 00 00                mov eax, 01H
+088853EF  84 C0                         test al, al
+088853F1  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1107								JMP		$label77	{LNXT:273|274|276}
+(-) BOOL
+088853F8  EB 6F 90 90 90                jmp 08885469H
+
+#1108		$label76:
+#1109		
+#1110							(* ELSE *)
+#1111		
+#1112								(* Motor_B := FALSE; *)
+#1113								MOVE		FALSE,Motor_B	{LNXT:276|277|-1}
+(*) BOOL
+088853FD  B8 00 00 00 00                mov eax, 00H
+08885402  84 C0                         test al, al
+08885404  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1114		
+#1115								(* TestRunRunning_2 := FALSE; *)
+#1116								MOVE		FALSE,TestRunRunning_2	{LNXT:277|278|-1}
+(*) BOOL
+0888540B  B8 00 00 00 00                mov eax, 00H
+08885410  84 C0                         test al, al
+08885412  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+92
+
+#1117		
+#1118								(* TestRunActive_2 := FALSE; *)
+#1119								MOVE		FALSE,TestRunActive_2	{LNXT:278|279|-1}
+(*) BOOL
+08885419  B8 00 00 00 00                mov eax, 00H
+0888541E  84 C0                         test al, al
+08885420  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+93
+
+#1120		
+#1121								(* PumpRunTimer_2 *)
+#1122								MOVE		FALSE,PumpRunTimer_2.IN	{LNXT:279|-1|-1}
+(*) BOOL
+08885427  B8 00 00 00 00                mov eax, 00H
+0888542C  84 C0                         test al, al
+0888542E  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+120
+
+#1123								MOVE		6000,PumpRunTimer_2.PT	{LNXT:279|-1|-1}
+(*) BOOL
+08885435  B8 70 17 00 00                mov eax, 1770H
+0888543A  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+121
+
+#1124								CAL		PumpRunTimer_2	{LNXT:279|280|-1}
+(*) UDINT
+08885440  50                            push eax
+08885441  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+116
+08885446  E8 A5 EE FF FF                call 088842F0H ; $$CODE$$+17136
+0888544B  58                            pop eax
+
+#1125		
+#1126								(* CurrentPump := ((CurrentPump) MOD 3) + 1; *)
+#1127								LD		CurrentPump	{LNXT:280|319|-1}
+(*) UNDEF
+0888544C  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#1128								MOD		3	{LNXT:280|319|-1}
+(*) INT
+08885453  99                            cdq
+08885454  B9 03 00 00 00                mov ecx, 3
+08885459  F7 F9                         idiv ecx
+0888545B  8B C2                         mov eax, edx
+
+#1129								ADD		1	{LNXT:280|319|-1}
+(*) INT
+0888545D  05 01 00 00 00                add eax, 1
+
+#1130								ST		CurrentPump	{LNXT:280|319|-1}
+(*) INT
+08885462  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+44
+
+#1131		
+#1132		$label77:
+#1133							(* END_IF *)
+#1134		
+#1135		$label75:
+#1136						(* END_IF *)
+#1137		
+#1138		$label73:
+#1139					(* END_IF *)
+#1140					JMP		$label56	{LNXT:1|319|-1}
+(-) INT
+08885469  E9 2F 02 00 00                jmp 0888569DH
+
+#1141		
+#1142		$label59:
+#1143		
+#1144					(* IF Tank_Level >= Max_Level_1 AND PriorityMotor = 2 *)
+#1145					LD		PriorityMotor	{LNXT:286|-1|-1}
+(*) UNDEF
+0888546E  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+34
+
+#1146					EQ		2	{LNXT:286|-1|-1}
+(*) INT
+08885475  3D 02 00 00 00                cmp eax, 2
+0888547A  0F 94 C0                      sete al
+0888547D  25 FF 00 00 00                and eax, 0FFh
+
+#1147					AND(		Tank_Level	{LNXT:286|-1|-1}
+(*) BOOL
+08885482  50                            push eax
+08885483  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1148					GE		Max_Level_1	{LNXT:286|-1|-1}
+(*) INT
+0888548A  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+22
+08885491  3B C1                         cmp eax, ecx
+08885493  0F 9D C0                      setge al
+08885496  25 FF 00 00 00                and eax, 0FFh
+
+#1149					)	{LNXT:286|-1|-1}
+(*) BOOL
+0888549B  8B C8                         mov ecx, eax
+0888549D  58                            pop eax
+0888549E  23 C1                         and eax, ecx
+
+#1150					JMPCN	$label78	{LNXT:286|287|290}
+(-) BOOL
+088854A0  84 C0                         test al, al
+088854A2  90 74 33 90 90 90             je 088854D8H
+
+#1151		
+#1152					(* THEN *)
+#1153		
+#1154						(* CurrentPump := ((CurrentPump) MOD 3) + 1; *)
+#1155						LD		CurrentPump	{LNXT:287|288|-1}
+(*) UNDEF
+088854A8  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#1156						MOD		3	{LNXT:287|288|-1}
+(*) INT
+088854AF  99                            cdq
+088854B0  B9 03 00 00 00                mov ecx, 3
+088854B5  F7 F9                         idiv ecx
+088854B7  8B C2                         mov eax, edx
+
+#1157						ADD		1	{LNXT:287|288|-1}
+(*) INT
+088854B9  05 01 00 00 00                add eax, 1
+
+#1158						ST		CurrentPump	{LNXT:287|288|-1}
+(*) INT
+088854BE  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+44
+
+#1159		
+#1160						(* Motor_C := TRUE; *)
+#1161						MOVE		TRUE,Motor_C	{LNXT:288|298|-1}
+(*) INT
+088854C5  B8 01 00 00 00                mov eax, 01H
+088854CA  84 C0                         test al, al
+088854CC  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1162						JMP		$label79	{LNXT:286|287|290}
+(-) BOOL
+088854D3  E9 85 00 00 00                jmp 0888555DH
+
+#1163		$label78:
+#1164		
+#1165					(* ELSE *)
+#1166		
+#1167		
+#1168						(* IF TestRunActive_3 AND NOT TestRunRunning_3 *)
+#1169						LD		TestRunRunning_3	{LNXT:290|-1|-1}
+(*) UNDEF
+088854D8  33 C0                         xor eax, eax
+088854DA  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+138
+
+#1170						NOT	{LNXT:290|-1|-1}
+(*) BOOL
+088854E0  84 C0                         test al, al
+088854E2  0F 94 C0                      sete al
+
+#1171						AND(		TestRunActive_3	{LNXT:290|-1|-1}
+(*) BOOL
+088854E5  50                            push eax
+088854E6  33 C0                         xor eax, eax
+088854E8  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+139
+
+#1172						NOT	{LNXT:290|-1|-1}
+(*) BOOL
+088854EE  84 C0                         test al, al
+088854F0  0F 94 C0                      sete al
+
+#1173						)	{LNXT:290|-1|-1}
+(*) BOOL
+088854F3  8B C8                         mov ecx, eax
+088854F5  58                            pop eax
+088854F6  23 C1                         and eax, ecx
+
+#1174						JMPCN	$label80	{LNXT:290|291|298}
+(-) BOOL
+088854F8  84 C0                         test al, al
+088854FA  90 74 60 90 90 90             je 0888555DH
+
+#1175		
+#1176						(* THEN *)
+#1177		
+#1178							(* PumpIntervalTimer_3 *)
+#1179							MOVE		TRUE,PumpIntervalTimer_3.IN	{LNXT:291|-1|-1}
+(*) BOOL
+08885500  B8 01 00 00 00                mov eax, 01H
+08885505  84 C0                         test al, al
+08885507  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+144
+
+#1180							MOVE		7000,PumpIntervalTimer_3.PT	{LNXT:291|-1|-1}
+(*) BOOL
+0888550E  B8 58 1B 00 00                mov eax, 1B58H
+08885513  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+145
+
+#1181							CAL		PumpIntervalTimer_3	{LNXT:291|292|-1}
+(*) UDINT
+08885519  50                            push eax
+0888551A  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+140
+0888551F  E8 CC ED FF FF                call 088842F0H ; $$CODE$$+17136
+08885524  58                            pop eax
+
+#1182		
+#1183		
+#1184							(* IF PumpIntervalTimer_3.Q *)
+#1185							LD		PumpIntervalTimer_3.Q	{LNXT:292|-1|-1}
+(*) UNDEF
+08885525  33 C0                         xor eax, eax
+08885527  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+149
+
+#1186							JMPCN	$label81	{LNXT:292|293|298}
+(-) BOOL
+0888552D  84 C0                         test al, al
+0888552F  90 74 2B 90 90 90             je 0888555DH
+
+#1187		
+#1188							(* THEN *)
+#1189		
+#1190								(* TestRunActive_3 := TRUE; *)
+#1191								MOVE		TRUE,TestRunActive_3	{LNXT:293|294|-1}
+(*) BOOL
+08885535  B8 01 00 00 00                mov eax, 01H
+0888553A  84 C0                         test al, al
+0888553C  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+139
+
+#1192		
+#1193								(* PumpIntervalTimer_3 *)
+#1194								MOVE		FALSE,PumpIntervalTimer_3.IN	{LNXT:294|-1|-1}
+(*) BOOL
+08885543  B8 00 00 00 00                mov eax, 00H
+08885548  84 C0                         test al, al
+0888554A  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+144
+
+#1195								CAL		PumpIntervalTimer_3	{LNXT:294|298|-1}
+(*) BOOL
+08885551  50                            push eax
+08885552  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+140
+08885557  E8 94 ED FF FF                call 088842F0H ; $$CODE$$+17136
+0888555C  58                            pop eax
+
+#1196		
+#1197		$label81:
+#1198							(* END_IF *)
+#1199		
+#1200		$label80:
+#1201						(* END_IF *)
+#1202		
+#1203		$label79:
+#1204					(* END_IF *)
+#1205		
+#1206		
+#1207					(* IF TestRunActive_3 *)
+#1208					LD		TestRunActive_3	{LNXT:298|-1|-1}
+(*) UNDEF
+0888555D  33 C0                         xor eax, eax
+0888555F  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+139
+
+#1209					JMPCN	$label82	{LNXT:298|299|319}
+(-) BOOL
+08885565  84 C0                         test al, al
+08885567  0F 84 30 01 00 00             je 0888569DH
+
+#1210		
+#1211					(* THEN *)
+#1212		
+#1213		
+#1214						(* IF TestRunRunning_3 *)
+#1215						LD		TestRunRunning_3	{LNXT:299|-1|-1}
+(*) UNDEF
+0888556D  33 C0                         xor eax, eax
+0888556F  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+138
+
+#1216						NOT	{LNXT:299|-1|-1}
+(*) BOOL
+08885575  84 C0                         test al, al
+08885577  0F 94 C0                      sete al
+
+#1217						JMPCN	$label83	{LNXT:299|300|302}
+(-) BOOL
+0888557A  84 C0                         test al, al
+0888557C  90 74 11 90 90 90             je 08885590H
+
+#1218		
+#1219						(* THEN *)
+#1220		
+#1221							(* TestRunRunning_3 := TRUE; *)
+#1222							MOVE		TRUE,TestRunRunning_3	{LNXT:300|302|-1}
+(*) BOOL
+08885582  B8 01 00 00 00                mov eax, 01H
+08885587  84 C0                         test al, al
+08885589  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+138
+
+#1223		
+#1224		$label83:
+#1225						(* END_IF *)
+#1226		
+#1227		
+#1228						(* IF TestRunRunning_3 AND Tank_Level < Max_Level_2 And Not Fault_C AND Avto_C *)
+#1229						LD		Fault_C	{LNXT:302|-1|-1}
+(*) UNDEF
+08885590  33 C0                         xor eax, eax
+08885592  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#1230						NOT	{LNXT:302|-1|-1}
+(*) BOOL
+08885598  84 C0                         test al, al
+0888559A  0F 94 C0                      sete al
+
+#1231						AND(		Tank_Level	{LNXT:302|-1|-1}
+(*) BOOL
+0888559D  50                            push eax
+0888559E  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1232						LT		Max_Level_2	{LNXT:302|-1|-1}
+(*) INT
+088855A5  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+24
+088855AC  3B C1                         cmp eax, ecx
+088855AE  0F 9C C0                      setl al
+088855B1  25 FF 00 00 00                and eax, 0FFh
+
+#1233						AND		TestRunRunning_3	{LNXT:302|-1|-1}
+(*) BOOL
+088855B6  33 C9                         xor ecx, ecx
+088855B8  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+138
+088855BE  23 C1                         and eax, ecx
+
+#1234						)	{LNXT:302|-1|-1}
+(*) BOOL
+088855C0  8B C8                         mov ecx, eax
+088855C2  58                            pop eax
+088855C3  23 C1                         and eax, ecx
+
+#1235						AND		Avto_C	{LNXT:302|-1|-1}
+(*) BOOL
+088855C5  33 C9                         xor ecx, ecx
+088855C7  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+088855CD  23 C1                         and eax, ecx
+
+#1236						JMPCN	$label84	{LNXT:302|303|319}
+(-) BOOL
+088855CF  84 C0                         test al, al
+088855D1  0F 84 C6 00 00 00             je 0888569DH
+
+#1237		
+#1238						(* THEN *)
+#1239		
+#1240							(* PumpRunTimer_3 *)
+#1241							LD		TestRunActive_3	{LNXT:303|-1|-1}
+(*) UNDEF
+088855D7  33 C0                         xor eax, eax
+088855D9  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+139
+
+#1242							AND		TestRunRunning_3	{LNXT:303|-1|-1}
+(*) BOOL
+088855DF  33 C9                         xor ecx, ecx
+088855E1  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+138
+088855E7  23 C1                         and eax, ecx
+
+#1243							ST		PumpRunTimer_3.IN	{LNXT:303|-1|-1}
+(*) BOOL
+088855E9  84 C0                         test al, al
+088855EB  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+166
+
+#1244							MOVE		7000,PumpRunTimer_3.PT	{LNXT:303|-1|-1}
+(*) BOOL
+088855F2  B8 58 1B 00 00                mov eax, 1B58H
+088855F7  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+167
+
+#1245							CAL		PumpRunTimer_3	{LNXT:303|304|-1}
+(*) UDINT
+088855FD  50                            push eax
+088855FE  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+162
+08885603  E8 E8 EC FF FF                call 088842F0H ; $$CODE$$+17136
+08885608  58                            pop eax
+
+#1246		
+#1247		
+#1248							(* IF PumpRunTimer_3.Q *)
+#1249							LD		PumpRunTimer_3.Q	{LNXT:304|-1|-1}
+(*) UNDEF
+08885609  33 C0                         xor eax, eax
+0888560B  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+171
+
+#1250							NOT	{LNXT:304|-1|-1}
+(*) BOOL
+08885611  84 C0                         test al, al
+08885613  0F 94 C0                      sete al
+
+#1251							JMPCN	$label85	{LNXT:304|305|307}
+(-) BOOL
+08885616  84 C0                         test al, al
+08885618  90 74 16 90 90 90             je 08885631H
+
+#1252		
+#1253							(* THEN *)
+#1254		
+#1255								(* Motor_C := TRUE; *)
+#1256								MOVE		TRUE,Motor_C	{LNXT:305|319|-1}
+(*) BOOL
+0888561E  B8 01 00 00 00                mov eax, 01H
+08885623  84 C0                         test al, al
+08885625  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1257								JMP		$label86	{LNXT:304|305|307}
+(-) BOOL
+0888562C  EB 6F 90 90 90                jmp 0888569DH
+
+#1258		$label85:
+#1259		
+#1260							(* ELSE *)
+#1261		
+#1262								(* Motor_C := FALSE; *)
+#1263								MOVE		FALSE,Motor_C	{LNXT:307|308|-1}
+(*) BOOL
+08885631  B8 00 00 00 00                mov eax, 00H
+08885636  84 C0                         test al, al
+08885638  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1264		
+#1265								(* TestRunRunning_3 := FALSE; *)
+#1266								MOVE		FALSE,TestRunRunning_3	{LNXT:308|309|-1}
+(*) BOOL
+0888563F  B8 00 00 00 00                mov eax, 00H
+08885644  84 C0                         test al, al
+08885646  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+138
+
+#1267		
+#1268								(* TestRunActive_3 := FALSE; *)
+#1269								MOVE		FALSE,TestRunActive_3	{LNXT:309|310|-1}
+(*) BOOL
+0888564D  B8 00 00 00 00                mov eax, 00H
+08885652  84 C0                         test al, al
+08885654  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+139
+
+#1270		
+#1271								(* PumpRunTimer_3 *)
+#1272								MOVE		FALSE,PumpRunTimer_3.IN	{LNXT:310|-1|-1}
+(*) BOOL
+0888565B  B8 00 00 00 00                mov eax, 00H
+08885660  84 C0                         test al, al
+08885662  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+166
+
+#1273								MOVE		7000,PumpRunTimer_3.PT	{LNXT:310|-1|-1}
+(*) BOOL
+08885669  B8 58 1B 00 00                mov eax, 1B58H
+0888566E  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+167
+
+#1274								CAL		PumpRunTimer_3	{LNXT:310|311|-1}
+(*) UDINT
+08885674  50                            push eax
+08885675  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+162
+0888567A  E8 71 EC FF FF                call 088842F0H ; $$CODE$$+17136
+0888567F  58                            pop eax
+
+#1275		
+#1276								(* CurrentPump := ((CurrentPump) MOD 3) + 1; *)
+#1277								LD		CurrentPump	{LNXT:311|319|-1}
+(*) UNDEF
+08885680  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+44
+
+#1278								MOD		3	{LNXT:311|319|-1}
+(*) INT
+08885687  99                            cdq
+08885688  B9 03 00 00 00                mov ecx, 3
+0888568D  F7 F9                         idiv ecx
+0888568F  8B C2                         mov eax, edx
+
+#1279								ADD		1	{LNXT:311|319|-1}
+(*) INT
+08885691  05 01 00 00 00                add eax, 1
+
+#1280								ST		CurrentPump	{LNXT:311|319|-1}
+(*) INT
+08885696  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; $$DATA$$+44
+
+#1281		
+#1282		$label86:
+#1283							(* END_IF *)
+#1284		
+#1285		$label84:
+#1286						(* END_IF *)
+#1287		
+#1288		$label82:
+#1289					(* END_IF *)
+#1290		
+#1291		$label56:
+#1292		
+#1293				(* END_CASE *)
+#1294		
+#1295		
+#1296				(* IF Fault_A or NOT Avto_A *)
+#1297				LD		Avto_A	{LNXT:319|-1|-1}
+(*) UNDEF
+0888569D  33 C0                         xor eax, eax
+0888569F  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#1298				NOT	{LNXT:319|-1|-1}
+(*) BOOL
+088856A5  84 C0                         test al, al
+088856A7  0F 94 C0                      sete al
+
+#1299				OR		Fault_A	{LNXT:319|-1|-1}
+(*) BOOL
+088856AA  33 C9                         xor ecx, ecx
+088856AC  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+37
+088856B2  0B C1                         or eax, ecx
+
+#1300				JMPCN	$label87	{LNXT:319|320|322}
+(-) BOOL
+088856B4  84 C0                         test al, al
+088856B6  90 74 11 90 90 90             je 088856CAH
+
+#1301		
+#1302				(* THEN *)
+#1303		
+#1304					(* Motor_A := False; *)
+#1305					MOVE		False,Motor_A	{LNXT:320|322|-1}
+(*) BOOL
+088856BC  B8 00 00 00 00                mov eax, 00H
+088856C1  84 C0                         test al, al
+088856C3  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1306		
+#1307		$label87:
+#1308				(* END_IF *)
+#1309		
+#1310		
+#1311				(* IF Fault_B or NOT Avto_B *)
+#1312				LD		Avto_B	{LNXT:322|-1|-1}
+(*) UNDEF
+088856CA  33 C0                         xor eax, eax
+088856CC  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#1313				NOT	{LNXT:322|-1|-1}
+(*) BOOL
+088856D2  84 C0                         test al, al
+088856D4  0F 94 C0                      sete al
+
+#1314				OR		Fault_B	{LNXT:322|-1|-1}
+(*) BOOL
+088856D7  33 C9                         xor ecx, ecx
+088856D9  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+42
+088856DF  0B C1                         or eax, ecx
+
+#1315				JMPCN	$label88	{LNXT:322|323|325}
+(-) BOOL
+088856E1  84 C0                         test al, al
+088856E3  90 74 11 90 90 90             je 088856F7H
+
+#1316		
+#1317				(* THEN *)
+#1318		
+#1319					(* Motor_B := False; *)
+#1320					MOVE		False,Motor_B	{LNXT:323|325|-1}
+(*) BOOL
+088856E9  B8 00 00 00 00                mov eax, 00H
+088856EE  84 C0                         test al, al
+088856F0  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1321		
+#1322		$label88:
+#1323				(* END_IF *)
+#1324		
+#1325		
+#1326				(* IF Fault_C or NOT Avto_C *)
+#1327				LD		Avto_C	{LNXT:325|-1|-1}
+(*) UNDEF
+088856F7  33 C0                         xor eax, eax
+088856F9  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#1328				NOT	{LNXT:325|-1|-1}
+(*) BOOL
+088856FF  84 C0                         test al, al
+08885701  0F 94 C0                      sete al
+
+#1329				OR		Fault_C	{LNXT:325|-1|-1}
+(*) BOOL
+08885704  33 C9                         xor ecx, ecx
+08885706  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+43
+0888570C  0B C1                         or eax, ecx
+
+#1330				JMPCN	$label89	{LNXT:325|326|336}
+(-) BOOL
+0888570E  84 C0                         test al, al
+08885710  90 74 11 90 90 90             je 08885724H
+
+#1331		
+#1332				(* THEN *)
+#1333		
+#1334					(* Motor_C := False; *)
+#1335					MOVE		False,Motor_C	{LNXT:326|336|-1}
+(*) BOOL
+08885716  B8 00 00 00 00                mov eax, 00H
+0888571B  84 C0                         test al, al
+0888571D  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1336		
+#1337		$label89:
+#1338				(* END_IF *)
+#1339		
+#1340		$label55:
+#1341			(* END_IF *)
+#1342		
+#1343		
+#1344			(* IF Tank_Level >= Max_Level_2 AND Tank_Level < Max_Level_3 *)
+#1345			LD		Tank_Level	{LNXT:336|-1|-1}
+(*) UNDEF
+08885724  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1346			LT		Max_Level_3	{LNXT:336|-1|-1}
+(*) INT
+0888572B  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+26
+08885732  3B C1                         cmp eax, ecx
+08885734  0F 9C C0                      setl al
+08885737  25 FF 00 00 00                and eax, 0FFh
+
+#1347			AND(		Tank_Level	{LNXT:336|-1|-1}
+(*) BOOL
+0888573C  50                            push eax
+0888573D  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1348			GE		Max_Level_2	{LNXT:336|-1|-1}
+(*) INT
+08885744  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+24
+0888574B  3B C1                         cmp eax, ecx
+0888574D  0F 9D C0                      setge al
+08885750  25 FF 00 00 00                and eax, 0FFh
+
+#1349			)	{LNXT:336|-1|-1}
+(*) BOOL
+08885755  8B C8                         mov ecx, eax
+08885757  58                            pop eax
+08885758  23 C1                         and eax, ecx
+
+#1350			JMPCN	$label90	{LNXT:336|339|374}
+(-) BOOL
+0888575A  84 C0                         test al, al
+0888575C  0F 84 CF 01 00 00             je 08885931H
+
+#1351		
+#1352			(* THEN *)
+#1353		
+#1354		
+#1355				(* IF MOTOR_A AND NOT MOTOR_B AND NOT MOTOR_C *)
+#1356				LD		MOTOR_C	{LNXT:339|-1|-1}
+(*) UNDEF
+08885762  33 C0                         xor eax, eax
+08885764  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#1357				NOT	{LNXT:339|-1|-1}
+(*) BOOL
+0888576A  84 C0                         test al, al
+0888576C  0F 94 C0                      sete al
+
+#1358				AND(		MOTOR_B	{LNXT:339|-1|-1}
+(*) BOOL
+0888576F  50                            push eax
+08885770  33 C0                         xor eax, eax
+08885772  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#1359				NOT	{LNXT:339|-1|-1}
+(*) BOOL
+08885778  84 C0                         test al, al
+0888577A  0F 94 C0                      sete al
+
+#1360				AND		MOTOR_A	{LNXT:339|-1|-1}
+(*) BOOL
+0888577D  33 C9                         xor ecx, ecx
+0888577F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %Q1+0
+08885785  23 C1                         and eax, ecx
+
+#1361				)	{LNXT:339|-1|-1}
+(*) BOOL
+08885787  8B C8                         mov ecx, eax
+08885789  58                            pop eax
+0888578A  23 C1                         and eax, ecx
+
+#1362				JMPCN	$label91	{LNXT:339|342|352}
+(-) BOOL
+0888578C  84 C0                         test al, al
+0888578E  90 74 62 90 90 90             je 088857F3H
+
+#1363		
+#1364				(* THEN *)
+#1365		
+#1366		
+#1367					(* IF Fault_B AND Avto_B *)
+#1368					LD		Fault_B	{LNXT:342|-1|-1}
+(*) UNDEF
+08885794  33 C0                         xor eax, eax
+08885796  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#1369					NOT	{LNXT:342|-1|-1}
+(*) BOOL
+0888579C  84 C0                         test al, al
+0888579E  0F 94 C0                      sete al
+
+#1370					AND		Avto_B	{LNXT:342|-1|-1}
+(*) BOOL
+088857A1  33 C9                         xor ecx, ecx
+088857A3  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+088857A9  23 C1                         and eax, ecx
+
+#1371					JMPCN	$label92	{LNXT:342|343|345}
+(-) BOOL
+088857AB  84 C0                         test al, al
+088857AD  90 74 16 90 90 90             je 088857C6H
+
+#1372		
+#1373					(* THEN *)
+#1374		
+#1375						(* Motor_B:= TRUE; *)
+#1376						MOVE		TRUE,Motor_B	{LNXT:343|352|-1}
+(*) BOOL
+088857B3  B8 01 00 00 00                mov eax, 01H
+088857B8  84 C0                         test al, al
+088857BA  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1377						JMP		$label93	{LNXT:342|343|345}
+(-) BOOL
+088857C1  EB 30 90 90 90                jmp 088857F3H
+
+#1378		$label92:
+#1379		
+#1380					(* ELSIF Fault_C AND Avto_C *)
+#1381					LD		Fault_C	{LNXT:345|-1|-1}
+(*) UNDEF
+088857C6  33 C0                         xor eax, eax
+088857C8  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#1382					NOT	{LNXT:345|-1|-1}
+(*) BOOL
+088857CE  84 C0                         test al, al
+088857D0  0F 94 C0                      sete al
+
+#1383					AND		Avto_C	{LNXT:345|-1|-1}
+(*) BOOL
+088857D3  33 C9                         xor ecx, ecx
+088857D5  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+088857DB  23 C1                         and eax, ecx
+
+#1384					JMPCN	$label93	{LNXT:345|346|352}
+(-) BOOL
+088857DD  84 C0                         test al, al
+088857DF  90 74 11 90 90 90             je 088857F3H
+
+#1385		
+#1386					(* THEN *)
+#1387		
+#1388						(* Motor_C:= TRUE; *)
+#1389						MOVE		TRUE,Motor_C	{LNXT:346|352|-1}
+(*) BOOL
+088857E5  B8 01 00 00 00                mov eax, 01H
+088857EA  84 C0                         test al, al
+088857EC  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1390		
+#1391		$label93:
+#1392					(* END_IF *)
+#1393		
+#1394		$label91:
+#1395				(* END_IF *)
+#1396		
+#1397		
+#1398				(* IF MOTOR_B AND NOT MOTOR_A AND NOT MOTOR_C *)
+#1399				LD		MOTOR_C	{LNXT:352|-1|-1}
+(*) UNDEF
+088857F3  33 C0                         xor eax, eax
+088857F5  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#1400				NOT	{LNXT:352|-1|-1}
+(*) BOOL
+088857FB  84 C0                         test al, al
+088857FD  0F 94 C0                      sete al
+
+#1401				AND(		MOTOR_A	{LNXT:352|-1|-1}
+(*) BOOL
+08885800  50                            push eax
+08885801  33 C0                         xor eax, eax
+08885803  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#1402				NOT	{LNXT:352|-1|-1}
+(*) BOOL
+08885809  84 C0                         test al, al
+0888580B  0F 94 C0                      sete al
+
+#1403				AND		MOTOR_B	{LNXT:352|-1|-1}
+(*) BOOL
+0888580E  33 C9                         xor ecx, ecx
+08885810  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %Q1+1
+08885816  23 C1                         and eax, ecx
+
+#1404				)	{LNXT:352|-1|-1}
+(*) BOOL
+08885818  8B C8                         mov ecx, eax
+0888581A  58                            pop eax
+0888581B  23 C1                         and eax, ecx
+
+#1405				JMPCN	$label94	{LNXT:352|353|361}
+(-) BOOL
+0888581D  84 C0                         test al, al
+0888581F  90 74 70 90 90 90             je 08885892H
+
+#1406		
+#1407				(* THEN *)
+#1408		
+#1409		
+#1410					(* IF Fault_C AND Avto_B *)
+#1411					LD		Fault_C	{LNXT:353|-1|-1}
+(*) UNDEF
+08885825  33 C0                         xor eax, eax
+08885827  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#1412					NOT	{LNXT:353|-1|-1}
+(*) BOOL
+0888582D  84 C0                         test al, al
+0888582F  0F 94 C0                      sete al
+
+#1413					AND		Avto_B	{LNXT:353|-1|-1}
+(*) BOOL
+08885832  33 C9                         xor ecx, ecx
+08885834  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+0888583A  23 C1                         and eax, ecx
+
+#1414					JMPCN	$label95	{LNXT:353|354|356}
+(-) BOOL
+0888583C  84 C0                         test al, al
+0888583E  90 74 11 90 90 90             je 08885852H
+
+#1415		
+#1416					(* THEN *)
+#1417		
+#1418						(* Motor_C:= TRUE; *)
+#1419						MOVE		TRUE,Motor_C	{LNXT:354|356|-1}
+(*) BOOL
+08885844  B8 01 00 00 00                mov eax, 01H
+08885849  84 C0                         test al, al
+0888584B  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1420		
+#1421		$label95:
+#1422					(* END_IF *)
+#1423		
+#1424		
+#1425					(* IF Fault_A AND Avto_A AND NOT MOTOR_C *)
+#1426					LD		MOTOR_C	{LNXT:356|-1|-1}
+(*) UNDEF
+08885852  33 C0                         xor eax, eax
+08885854  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#1427					NOT	{LNXT:356|-1|-1}
+(*) BOOL
+0888585A  84 C0                         test al, al
+0888585C  0F 94 C0                      sete al
+
+#1428					AND(		Fault_A	{LNXT:356|-1|-1}
+(*) BOOL
+0888585F  50                            push eax
+08885860  33 C0                         xor eax, eax
+08885862  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#1429					NOT	{LNXT:356|-1|-1}
+(*) BOOL
+08885868  84 C0                         test al, al
+0888586A  0F 94 C0                      sete al
+
+#1430					AND		Avto_A	{LNXT:356|-1|-1}
+(*) BOOL
+0888586D  33 C9                         xor ecx, ecx
+0888586F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+08885875  23 C1                         and eax, ecx
+
+#1431					)	{LNXT:356|-1|-1}
+(*) BOOL
+08885877  8B C8                         mov ecx, eax
+08885879  58                            pop eax
+0888587A  23 C1                         and eax, ecx
+
+#1432					JMPCN	$label96	{LNXT:356|357|361}
+(-) BOOL
+0888587C  84 C0                         test al, al
+0888587E  90 74 11 90 90 90             je 08885892H
+
+#1433		
+#1434					(* THEN *)
+#1435		
+#1436						(* Motor_A:= TRUE; *)
+#1437						MOVE		TRUE,Motor_A	{LNXT:357|361|-1}
+(*) BOOL
+08885884  B8 01 00 00 00                mov eax, 01H
+08885889  84 C0                         test al, al
+0888588B  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1438		
+#1439		$label96:
+#1440					(* END_IF *)
+#1441		
+#1442		$label94:
+#1443				(* END_IF *)
+#1444		
+#1445		
+#1446				(* IF MOTOR_C AND NOT MOTOR_A AND NOT MOTOR_B *)
+#1447				LD		MOTOR_B	{LNXT:361|-1|-1}
+(*) UNDEF
+08885892  33 C0                         xor eax, eax
+08885894  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#1448				NOT	{LNXT:361|-1|-1}
+(*) BOOL
+0888589A  84 C0                         test al, al
+0888589C  0F 94 C0                      sete al
+
+#1449				AND(		MOTOR_A	{LNXT:361|-1|-1}
+(*) BOOL
+0888589F  50                            push eax
+088858A0  33 C0                         xor eax, eax
+088858A2  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#1450				NOT	{LNXT:361|-1|-1}
+(*) BOOL
+088858A8  84 C0                         test al, al
+088858AA  0F 94 C0                      sete al
+
+#1451				AND		MOTOR_C	{LNXT:361|-1|-1}
+(*) BOOL
+088858AD  33 C9                         xor ecx, ecx
+088858AF  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %Q1+2
+088858B5  23 C1                         and eax, ecx
+
+#1452				)	{LNXT:361|-1|-1}
+(*) BOOL
+088858B7  8B C8                         mov ecx, eax
+088858B9  58                            pop eax
+088858BA  23 C1                         and eax, ecx
+
+#1453				JMPCN	$label97	{LNXT:361|362|374}
+(-) BOOL
+088858BC  84 C0                         test al, al
+088858BE  90 74 70 90 90 90             je 08885931H
+
+#1454		
+#1455				(* THEN *)
+#1456		
+#1457		
+#1458					(* IF Fault_A AND Avto_C *)
+#1459					LD		Fault_A	{LNXT:362|-1|-1}
+(*) UNDEF
+088858C4  33 C0                         xor eax, eax
+088858C6  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#1460					NOT	{LNXT:362|-1|-1}
+(*) BOOL
+088858CC  84 C0                         test al, al
+088858CE  0F 94 C0                      sete al
+
+#1461					AND		Avto_C	{LNXT:362|-1|-1}
+(*) BOOL
+088858D1  33 C9                         xor ecx, ecx
+088858D3  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+088858D9  23 C1                         and eax, ecx
+
+#1462					JMPCN	$label98	{LNXT:362|363|365}
+(-) BOOL
+088858DB  84 C0                         test al, al
+088858DD  90 74 11 90 90 90             je 088858F1H
+
+#1463		
+#1464					(* THEN *)
+#1465		
+#1466						(* Motor_A:= TRUE; *)
+#1467						MOVE		TRUE,Motor_A	{LNXT:363|365|-1}
+(*) BOOL
+088858E3  B8 01 00 00 00                mov eax, 01H
+088858E8  84 C0                         test al, al
+088858EA  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1468		
+#1469		$label98:
+#1470					(* END_IF *)
+#1471		
+#1472		
+#1473					(* IF Fault_B AND Avto_B AND NOT MOTOR_A *)
+#1474					LD		MOTOR_A	{LNXT:365|-1|-1}
+(*) UNDEF
+088858F1  33 C0                         xor eax, eax
+088858F3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#1475					NOT	{LNXT:365|-1|-1}
+(*) BOOL
+088858F9  84 C0                         test al, al
+088858FB  0F 94 C0                      sete al
+
+#1476					AND(		Fault_B	{LNXT:365|-1|-1}
+(*) BOOL
+088858FE  50                            push eax
+088858FF  33 C0                         xor eax, eax
+08885901  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#1477					NOT	{LNXT:365|-1|-1}
+(*) BOOL
+08885907  84 C0                         test al, al
+08885909  0F 94 C0                      sete al
+
+#1478					AND		Avto_B	{LNXT:365|-1|-1}
+(*) BOOL
+0888590C  33 C9                         xor ecx, ecx
+0888590E  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+08885914  23 C1                         and eax, ecx
+
+#1479					)	{LNXT:365|-1|-1}
+(*) BOOL
+08885916  8B C8                         mov ecx, eax
+08885918  58                            pop eax
+08885919  23 C1                         and eax, ecx
+
+#1480					JMPCN	$label99	{LNXT:365|366|374}
+(-) BOOL
+0888591B  84 C0                         test al, al
+0888591D  90 74 11 90 90 90             je 08885931H
+
+#1481		
+#1482					(* THEN *)
+#1483		
+#1484						(* Motor_B:= TRUE; *)
+#1485						MOVE		TRUE,Motor_B	{LNXT:366|374|-1}
+(*) BOOL
+08885923  B8 01 00 00 00                mov eax, 01H
+08885928  84 C0                         test al, al
+0888592A  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1486		
+#1487		$label99:
+#1488					(* END_IF *)
+#1489		
+#1490		$label97:
+#1491				(* END_IF *)
+#1492		
+#1493		$label90:
+#1494			(* END_IF *)
+#1495		
+#1496		
+#1497			(* IF Tank_Level <= Max_Level_1 and Motor_A and Motor_B and Motor_C *)
+#1498			LD		Tank_Level	{LNXT:374|-1|-1}
+(*) UNDEF
+08885931  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1499			LE		Max_Level_1	{LNXT:374|-1|-1}
+(*) INT
+08885938  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+22
+0888593F  3B C1                         cmp eax, ecx
+08885941  0F 9E C0                      setle al
+08885944  25 FF 00 00 00                and eax, 0FFh
+
+#1500			AND		Motor_A	{LNXT:374|-1|-1}
+(*) BOOL
+08885949  33 C9                         xor ecx, ecx
+0888594B  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %Q1+0
+08885951  23 C1                         and eax, ecx
+
+#1501			AND		Motor_B	{LNXT:374|-1|-1}
+(*) BOOL
+08885953  33 C9                         xor ecx, ecx
+08885955  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %Q1+1
+0888595B  23 C1                         and eax, ecx
+
+#1502			AND		Motor_C	{LNXT:374|-1|-1}
+(*) BOOL
+0888595D  33 C9                         xor ecx, ecx
+0888595F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %Q1+2
+08885965  23 C1                         and eax, ecx
+
+#1503			JMPCN	$label100	{LNXT:374|375|381}
+(-) BOOL
+08885967  84 C0                         test al, al
+08885969  90 74 11 90 90 90             je 0888597DH
+
+#1504		
+#1505			(* THEN *)
+#1506		
+#1507				(* Motor_A := False; *)
+#1508				MOVE		False,Motor_A	{LNXT:375|381|-1}
+(*) BOOL
+0888596F  B8 00 00 00 00                mov eax, 00H
+08885974  84 C0                         test al, al
+08885976  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1509		
+#1510		$label100:
+#1511			(* END_IF *)
+#1512		
+#1513		
+#1514			(* IF Tank_Level > Max_Level_3 *)
+#1515			LD		Tank_Level	{LNXT:381|-1|-1}
+(*) UNDEF
+0888597D  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1516			GT		Max_Level_3	{LNXT:381|-1|-1}
+(*) INT
+08885984  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+26
+0888598B  3B C1                         cmp eax, ecx
+0888598D  0F 9F C0                      setg al
+08885990  25 FF 00 00 00                and eax, 0FFh
+
+#1517			JMPCN	$label101	{LNXT:381|382|409}
+(-) BOOL
+08885995  84 C0                         test al, al
+08885997  0F 84 0E 01 00 00             je 08885AABH
+
+#1518		
+#1519			(* THEN *)
+#1520		
+#1521		
+#1522				(* IF Fault_A AND Avto_A *)
+#1523				LD		Fault_A	{LNXT:382|-1|-1}
+(*) UNDEF
+0888599D  33 C0                         xor eax, eax
+0888599F  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+37
+
+#1524				NOT	{LNXT:382|-1|-1}
+(*) BOOL
+088859A5  84 C0                         test al, al
+088859A7  0F 94 C0                      sete al
+
+#1525				AND		Avto_A	{LNXT:382|-1|-1}
+(*) BOOL
+088859AA  33 C9                         xor ecx, ecx
+088859AC  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+17
+088859B2  23 C1                         and eax, ecx
+
+#1526				JMPCN	$label102	{LNXT:382|383|386}
+(-) BOOL
+088859B4  84 C0                         test al, al
+088859B6  90 74 11 90 90 90             je 088859CAH
+
+#1527		
+#1528				(* THEN *)
+#1529		
+#1530					(* Motor_A := TRUE; *)
+#1531					MOVE		TRUE,Motor_A	{LNXT:383|386|-1}
+(*) BOOL
+088859BC  B8 01 00 00 00                mov eax, 01H
+088859C1  84 C0                         test al, al
+088859C3  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1532		
+#1533		$label102:
+#1534				(* END_IF *)
+#1535		
+#1536		
+#1537				(* IF Fault_B AND Avto_B *)
+#1538				LD		Fault_B	{LNXT:386|-1|-1}
+(*) UNDEF
+088859CA  33 C0                         xor eax, eax
+088859CC  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+42
+
+#1539				NOT	{LNXT:386|-1|-1}
+(*) BOOL
+088859D2  84 C0                         test al, al
+088859D4  0F 94 C0                      sete al
+
+#1540				AND		Avto_B	{LNXT:386|-1|-1}
+(*) BOOL
+088859D7  33 C9                         xor ecx, ecx
+088859D9  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+28
+088859DF  23 C1                         and eax, ecx
+
+#1541				JMPCN	$label103	{LNXT:386|387|390}
+(-) BOOL
+088859E1  84 C0                         test al, al
+088859E3  90 74 11 90 90 90             je 088859F7H
+
+#1542		
+#1543				(* THEN *)
+#1544		
+#1545					(* Motor_B := TRUE; *)
+#1546					MOVE		TRUE,Motor_B	{LNXT:387|390|-1}
+(*) BOOL
+088859E9  B8 01 00 00 00                mov eax, 01H
+088859EE  84 C0                         test al, al
+088859F0  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1547		
+#1548		$label103:
+#1549				(* END_IF *)
+#1550		
+#1551		
+#1552				(* IF Fault_C AND Avto_C *)
+#1553				LD		Fault_C	{LNXT:390|-1|-1}
+(*) UNDEF
+088859F7  33 C0                         xor eax, eax
+088859F9  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+43
+
+#1554				NOT	{LNXT:390|-1|-1}
+(*) BOOL
+088859FF  84 C0                         test al, al
+08885A01  0F 94 C0                      sete al
+
+#1555				AND		Avto_C	{LNXT:390|-1|-1}
+(*) BOOL
+08885A04  33 C9                         xor ecx, ecx
+08885A06  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+29
+08885A0C  23 C1                         and eax, ecx
+
+#1556				JMPCN	$label104	{LNXT:390|391|394}
+(-) BOOL
+08885A0E  84 C0                         test al, al
+08885A10  90 74 11 90 90 90             je 08885A24H
+
+#1557		
+#1558				(* THEN *)
+#1559		
+#1560					(* Motor_C := TRUE; *)
+#1561					MOVE		TRUE,Motor_C	{LNXT:391|394|-1}
+(*) BOOL
+08885A16  B8 01 00 00 00                mov eax, 01H
+08885A1B  84 C0                         test al, al
+08885A1D  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1562		
+#1563		$label104:
+#1564				(* END_IF *)
+#1565		
+#1566		
+#1567				(* IF Fault_A or  NOT Avto_A *)
+#1568				LD		Avto_A	{LNXT:394|-1|-1}
+(*) UNDEF
+08885A24  33 C0                         xor eax, eax
+08885A26  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#1569				NOT	{LNXT:394|-1|-1}
+(*) BOOL
+08885A2C  84 C0                         test al, al
+08885A2E  0F 94 C0                      sete al
+
+#1570				OR		Fault_A	{LNXT:394|-1|-1}
+(*) BOOL
+08885A31  33 C9                         xor ecx, ecx
+08885A33  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+37
+08885A39  0B C1                         or eax, ecx
+
+#1571				JMPCN	$label105	{LNXT:394|395|397}
+(-) BOOL
+08885A3B  84 C0                         test al, al
+08885A3D  90 74 11 90 90 90             je 08885A51H
+
+#1572		
+#1573				(* THEN *)
+#1574		
+#1575					(* Motor_A := False; *)
+#1576					MOVE		False,Motor_A	{LNXT:395|397|-1}
+(*) BOOL
+08885A43  B8 00 00 00 00                mov eax, 00H
+08885A48  84 C0                         test al, al
+08885A4A  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1577		
+#1578		$label105:
+#1579				(* END_IF *)
+#1580		
+#1581		
+#1582				(* IF Fault_B or  NOT Avto_B *)
+#1583				LD		Avto_B	{LNXT:397|-1|-1}
+(*) UNDEF
+08885A51  33 C0                         xor eax, eax
+08885A53  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#1584				NOT	{LNXT:397|-1|-1}
+(*) BOOL
+08885A59  84 C0                         test al, al
+08885A5B  0F 94 C0                      sete al
+
+#1585				OR		Fault_B	{LNXT:397|-1|-1}
+(*) BOOL
+08885A5E  33 C9                         xor ecx, ecx
+08885A60  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+42
+08885A66  0B C1                         or eax, ecx
+
+#1586				JMPCN	$label106	{LNXT:397|398|400}
+(-) BOOL
+08885A68  84 C0                         test al, al
+08885A6A  90 74 11 90 90 90             je 08885A7EH
+
+#1587		
+#1588				(* THEN *)
+#1589		
+#1590					(* Motor_B := False; *)
+#1591					MOVE		False,Motor_B	{LNXT:398|400|-1}
+(*) BOOL
+08885A70  B8 00 00 00 00                mov eax, 00H
+08885A75  84 C0                         test al, al
+08885A77  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1592		
+#1593		$label106:
+#1594				(* END_IF *)
+#1595		
+#1596		
+#1597				(* IF Fault_C or  NOT Avto_C *)
+#1598				LD		Avto_C	{LNXT:400|-1|-1}
+(*) UNDEF
+08885A7E  33 C0                         xor eax, eax
+08885A80  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#1599				NOT	{LNXT:400|-1|-1}
+(*) BOOL
+08885A86  84 C0                         test al, al
+08885A88  0F 94 C0                      sete al
+
+#1600				OR		Fault_C	{LNXT:400|-1|-1}
+(*) BOOL
+08885A8B  33 C9                         xor ecx, ecx
+08885A8D  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; $$DATA$$+43
+08885A93  0B C1                         or eax, ecx
+
+#1601				JMPCN	$label107	{LNXT:400|401|409}
+(-) BOOL
+08885A95  84 C0                         test al, al
+08885A97  90 74 11 90 90 90             je 08885AABH
+
+#1602		
+#1603				(* THEN *)
+#1604		
+#1605					(* Motor_C := False; *)
+#1606					MOVE		False,Motor_C	{LNXT:401|409|-1}
+(*) BOOL
+08885A9D  B8 00 00 00 00                mov eax, 00H
+08885AA2  84 C0                         test al, al
+08885AA4  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1607		
+#1608		$label107:
+#1609				(* END_IF *)
+#1610		
+#1611		$label101:
+#1612			(* END_IF *)
+#1613		
+#1614		
+#1615			(* IF Tank_Level <= Min_Level *)
+#1616			LD		Tank_Level	{LNXT:409|-1|-1}
+(*) UNDEF
+08885AAB  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#1617			LE		Min_Level	{LNXT:409|-1|-1}
+(*) INT
+08885AB2  0F BF 0D CC CC CC CC          movsx ecx, word ptr [CCCCCCCCH] ; $$DATA$$+20
+08885AB9  3B C1                         cmp eax, ecx
+08885ABB  0F 9E C0                      setle al
+08885ABE  25 FF 00 00 00                and eax, 0FFh
+
+#1618			JMPCN	$label108	{LNXT:409|410|418}
+(-) BOOL
+08885AC3  84 C0                         test al, al
+08885AC5  90 74 2D 90 90 90             je 08885AF5H
+
+#1619		
+#1620			(* THEN *)
+#1621		
+#1622				(* Motor_A := False; *)
+#1623				MOVE		False,Motor_A	{LNXT:410|411|-1}
+(*) BOOL
+08885ACB  B8 00 00 00 00                mov eax, 00H
+08885AD0  84 C0                         test al, al
+08885AD2  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1624		
+#1625				(* Motor_B := False; *)
+#1626				MOVE		False,Motor_B	{LNXT:411|412|-1}
+(*) BOOL
+08885AD9  B8 00 00 00 00                mov eax, 00H
+08885ADE  84 C0                         test al, al
+08885AE0  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1627		
+#1628				(* Motor_C := False; *)
+#1629				MOVE		False,Motor_C	{LNXT:412|418|-1}
+(*) BOOL
+08885AE7  B8 00 00 00 00                mov eax, 00H
+08885AEC  84 C0                         test al, al
+08885AEE  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1630		
+#1631		$label108:
+#1632			(* END_IF *)
+#1633		
+#1634		
+#1635			(* IF Avto_A *)
+#1636			LD		Avto_A	{LNXT:418|-1|-1}
+(*) UNDEF
+08885AF5  33 C0                         xor eax, eax
+08885AF7  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+17
+
+#1637			NOT	{LNXT:418|-1|-1}
+(*) BOOL
+08885AFD  84 C0                         test al, al
+08885AFF  0F 94 C0                      sete al
+
+#1638			JMPCN	$label109	{LNXT:418|419|422}
+(-) BOOL
+08885B02  84 C0                         test al, al
+08885B04  90 74 11 90 90 90             je 08885B18H
+
+#1639		
+#1640			(* THEN *)
+#1641		
+#1642				(* Motor_A := False; *)
+#1643				MOVE		False,Motor_A	{LNXT:419|422|-1}
+(*) BOOL
+08885B0A  B8 00 00 00 00                mov eax, 00H
+08885B0F  84 C0                         test al, al
+08885B11  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1644		
+#1645		$label109:
+#1646			(* END_IF *)
+#1647		
+#1648		
+#1649			(* IF Avto_B *)
+#1650			LD		Avto_B	{LNXT:422|-1|-1}
+(*) UNDEF
+08885B18  33 C0                         xor eax, eax
+08885B1A  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+28
+
+#1651			NOT	{LNXT:422|-1|-1}
+(*) BOOL
+08885B20  84 C0                         test al, al
+08885B22  0F 94 C0                      sete al
+
+#1652			JMPCN	$label110	{LNXT:422|423|426}
+(-) BOOL
+08885B25  84 C0                         test al, al
+08885B27  90 74 11 90 90 90             je 08885B3BH
+
+#1653		
+#1654			(* THEN *)
+#1655		
+#1656				(* Motor_B := False; *)
+#1657				MOVE		False,Motor_B	{LNXT:423|426|-1}
+(*) BOOL
+08885B2D  B8 00 00 00 00                mov eax, 00H
+08885B32  84 C0                         test al, al
+08885B34  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1658		
+#1659		$label110:
+#1660			(* END_IF *)
+#1661		
+#1662		
+#1663			(* IF Avto_C *)
+#1664			LD		Avto_C	{LNXT:426|-1|-1}
+(*) UNDEF
+08885B3B  33 C0                         xor eax, eax
+08885B3D  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+29
+
+#1665			NOT	{LNXT:426|-1|-1}
+(*) BOOL
+08885B43  84 C0                         test al, al
+08885B45  0F 94 C0                      sete al
+
+#1666			JMPCN	$label111	{LNXT:426|427|438}
+(-) BOOL
+08885B48  84 C0                         test al, al
+08885B4A  90 74 11 90 90 90             je 08885B5EH
+
+#1667		
+#1668			(* THEN *)
+#1669		
+#1670				(* Motor_C := False; *)
+#1671				MOVE		False,Motor_C	{LNXT:427|438|-1}
+(*) BOOL
+08885B50  B8 00 00 00 00                mov eax, 00H
+08885B55  84 C0                         test al, al
+08885B57  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1672		
+#1673		$label111:
+#1674			(* END_IF *)
+#1675		
+#1676		
+#1677			(* IF Motor_A *)
+#1678			LD		Motor_A	{LNXT:438|-1|-1}
+(*) UNDEF
+08885B5E  33 C0                         xor eax, eax
+08885B60  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#1679			JMPCN	$label112	{LNXT:438|439|448}
+(-) BOOL
+08885B66  84 C0                         test al, al
+08885B68  90 74 6B 90 90 90             je 08885BD6H
+
+#1680		
+#1681			(* THEN *)
+#1682		
+#1683				(* ErrorTimer_A *)
+#1684				MOVE		TRUE,ErrorTimer_A.IN	{LNXT:439|-1|-1}
+(*) BOOL
+08885B6E  B8 01 00 00 00                mov eax, 01H
+08885B73  84 C0                         test al, al
+08885B75  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+188
+
+#1685				MOVE		TM_WAIT,ErrorTimer_A.PT	{LNXT:439|-1|-1}
+(*) BOOL
+08885B7C  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+18
+08885B83  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+189
+
+#1686				CAL		ErrorTimer_A	{LNXT:439|440|-1}
+(*) INT
+08885B89  50                            push eax
+08885B8A  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+184
+08885B8F  E8 5C E7 FF FF                call 088842F0H ; $$CODE$$+17136
+08885B94  58                            pop eax
+
+#1687		
+#1688		
+#1689				(* IF ErrorTimer_A.Q *)
+#1690				LD		ErrorTimer_A.Q	{LNXT:440|-1|-1}
+(*) UNDEF
+08885B95  33 C0                         xor eax, eax
+08885B97  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+193
+
+#1691				JMPCN	$label114	{LNXT:440|441|451}
+(-) BOOL
+08885B9D  84 C0                         test al, al
+08885B9F  90 74 2F 90 90 90             je 08885BD1H
+
+#1692		
+#1693				(* THEN *)
+#1694		
+#1695		
+#1696					(* IF ALM_A *)
+#1697					LD		ALM_A	{LNXT:441|-1|-1}
+(*) UNDEF
+08885BA5  33 C0                         xor eax, eax
+08885BA7  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+30
+
+#1698					JMPCN	$label115	{LNXT:441|442|451}
+(-) BOOL
+08885BAD  84 C0                         test al, al
+08885BAF  90 74 1F 90 90 90             je 08885BD1H
+
+#1699		
+#1700					(* THEN *)
+#1701		
+#1702						(* Fault_A := TRUE; *)
+#1703						MOVE		TRUE,Fault_A	{LNXT:442|444|-1}
+(*) BOOL
+08885BB5  B8 01 00 00 00                mov eax, 01H
+08885BBA  84 C0                         test al, al
+08885BBC  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+37
+
+#1704		
+#1705						(* Motor_A := FALSE; *)
+#1706						MOVE		FALSE,Motor_A	{LNXT:444|451|-1}
+(*) BOOL
+08885BC3  B8 00 00 00 00                mov eax, 00H
+08885BC8  84 C0                         test al, al
+08885BCA  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+0
+
+#1707		
+#1708		$label115:
+#1709					(* END_IF *)
+#1710		
+#1711		$label114:
+#1712				(* END_IF *)
+#1713				JMP		$label113	{LNXT:438|439|448}
+(-) BOOL
+08885BD1  EB 1D 90 90 90                jmp 08885BF0H
+
+#1714		$label112:
+#1715		
+#1716			(* ELSE *)
+#1717		
+#1718				(* ErrorTimer_A *)
+#1719				MOVE		FALSE,ErrorTimer_A.IN	{LNXT:448|-1|-1}
+(*) BOOL
+08885BD6  B8 00 00 00 00                mov eax, 00H
+08885BDB  84 C0                         test al, al
+08885BDD  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+188
+
+#1720				CAL		ErrorTimer_A	{LNXT:448|451|-1}
+(*) BOOL
+08885BE4  50                            push eax
+08885BE5  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+184
+08885BEA  E8 01 E7 FF FF                call 088842F0H ; $$CODE$$+17136
+08885BEF  58                            pop eax
+
+#1721		
+#1722		$label113:
+#1723			(* END_IF *)
+#1724		
+#1725		
+#1726			(* IF Motor_B *)
+#1727			LD		Motor_B	{LNXT:451|-1|-1}
+(*) UNDEF
+08885BF0  33 C0                         xor eax, eax
+08885BF2  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#1728			JMPCN	$label116	{LNXT:451|452|461}
+(-) BOOL
+08885BF8  84 C0                         test al, al
+08885BFA  90 74 6B 90 90 90             je 08885C68H
+
+#1729		
+#1730			(* THEN *)
+#1731		
+#1732				(* ErrorTimer_B *)
+#1733				MOVE		TRUE,ErrorTimer_B.IN	{LNXT:452|-1|-1}
+(*) BOOL
+08885C00  B8 01 00 00 00                mov eax, 01H
+08885C05  84 C0                         test al, al
+08885C07  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+210
+
+#1734				MOVE		TM_WAIT,ErrorTimer_B.PT	{LNXT:452|-1|-1}
+(*) BOOL
+08885C0E  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+18
+08885C15  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+211
+
+#1735				CAL		ErrorTimer_B	{LNXT:452|453|-1}
+(*) INT
+08885C1B  50                            push eax
+08885C1C  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+206
+08885C21  E8 CA E6 FF FF                call 088842F0H ; $$CODE$$+17136
+08885C26  58                            pop eax
+
+#1736		
+#1737		
+#1738				(* IF ErrorTimer_B.Q *)
+#1739				LD		ErrorTimer_B.Q	{LNXT:453|-1|-1}
+(*) UNDEF
+08885C27  33 C0                         xor eax, eax
+08885C29  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+215
+
+#1740				JMPCN	$label118	{LNXT:453|454|465}
+(-) BOOL
+08885C2F  84 C0                         test al, al
+08885C31  90 74 2F 90 90 90             je 08885C63H
+
+#1741		
+#1742				(* THEN *)
+#1743		
+#1744		
+#1745					(* IF ALM_B *)
+#1746					LD		ALM_B	{LNXT:454|-1|-1}
+(*) UNDEF
+08885C37  33 C0                         xor eax, eax
+08885C39  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+31
+
+#1747					JMPCN	$label119	{LNXT:454|455|465}
+(-) BOOL
+08885C3F  84 C0                         test al, al
+08885C41  90 74 1F 90 90 90             je 08885C63H
+
+#1748		
+#1749					(* THEN *)
+#1750		
+#1751						(* Fault_B := TRUE; *)
+#1752						MOVE		TRUE,Fault_B	{LNXT:455|457|-1}
+(*) BOOL
+08885C47  B8 01 00 00 00                mov eax, 01H
+08885C4C  84 C0                         test al, al
+08885C4E  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+42
+
+#1753		
+#1754						(* Motor_B := FALSE; *)
+#1755						MOVE		FALSE,Motor_B	{LNXT:457|465|-1}
+(*) BOOL
+08885C55  B8 00 00 00 00                mov eax, 00H
+08885C5A  84 C0                         test al, al
+08885C5C  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+1
+
+#1756		
+#1757		$label119:
+#1758					(* END_IF *)
+#1759		
+#1760		$label118:
+#1761				(* END_IF *)
+#1762				JMP		$label117	{LNXT:451|452|461}
+(-) BOOL
+08885C63  EB 1D 90 90 90                jmp 08885C82H
+
+#1763		$label116:
+#1764		
+#1765			(* ELSE *)
+#1766		
+#1767				(* ErrorTimer_B *)
+#1768				MOVE		FALSE,ErrorTimer_B.IN	{LNXT:461|-1|-1}
+(*) BOOL
+08885C68  B8 00 00 00 00                mov eax, 00H
+08885C6D  84 C0                         test al, al
+08885C6F  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+210
+
+#1769				CAL		ErrorTimer_B	{LNXT:461|465|-1}
+(*) BOOL
+08885C76  50                            push eax
+08885C77  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+206
+08885C7C  E8 6F E6 FF FF                call 088842F0H ; $$CODE$$+17136
+08885C81  58                            pop eax
+
+#1770		
+#1771		$label117:
+#1772			(* END_IF *)
+#1773		
+#1774		
+#1775			(* IF Motor_C *)
+#1776			LD		Motor_C	{LNXT:465|-1|-1}
+(*) UNDEF
+08885C82  33 C0                         xor eax, eax
+08885C84  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#1777			JMPCN	$label120	{LNXT:465|466|475}
+(-) BOOL
+08885C8A  84 C0                         test al, al
+08885C8C  90 74 6B 90 90 90             je 08885CFAH
+
+#1778		
+#1779			(* THEN *)
+#1780		
+#1781				(* ErrorTimer_C *)
+#1782				MOVE		TRUE,ErrorTimer_C.IN	{LNXT:466|-1|-1}
+(*) BOOL
+08885C92  B8 01 00 00 00                mov eax, 01H
+08885C97  84 C0                         test al, al
+08885C99  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+232
+
+#1783				MOVE		TM_WAIT,ErrorTimer_C.PT	{LNXT:466|-1|-1}
+(*) BOOL
+08885CA0  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+18
+08885CA7  89 05 CC CC CC CC             mov [CCCCCCCCH], eax ; $$DATA$$+233
+
+#1784				CAL		ErrorTimer_C	{LNXT:466|467|-1}
+(*) INT
+08885CAD  50                            push eax
+08885CAE  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+228
+08885CB3  E8 38 E6 FF FF                call 088842F0H ; $$CODE$$+17136
+08885CB8  58                            pop eax
+
+#1785		
+#1786		
+#1787				(* IF ErrorTimer_C.Q *)
+#1788				LD		ErrorTimer_C.Q	{LNXT:467|-1|-1}
+(*) UNDEF
+08885CB9  33 C0                         xor eax, eax
+08885CBB  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+237
+
+#1789				JMPCN	$label122	{LNXT:467|468|4}
+(-) BOOL
+08885CC1  84 C0                         test al, al
+08885CC3  90 74 2F 90 90 90             je 08885CF5H
+
+#1790		
+#1791				(* THEN *)
+#1792		
+#1793		
+#1794					(* IF ALM_C *)
+#1795					LD		ALM_C	{LNXT:468|-1|-1}
+(*) UNDEF
+08885CC9  33 C0                         xor eax, eax
+08885CCB  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+32
+
+#1796					JMPCN	$label123	{LNXT:468|469|4}
+(-) BOOL
+08885CD1  84 C0                         test al, al
+08885CD3  90 74 1F 90 90 90             je 08885CF5H
+
+#1797		
+#1798					(* THEN *)
+#1799		
+#1800						(* Fault_C := TRUE; *)
+#1801						MOVE		TRUE,Fault_C	{LNXT:469|471|-1}
+(*) BOOL
+08885CD9  B8 01 00 00 00                mov eax, 01H
+08885CDE  84 C0                         test al, al
+08885CE0  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+43
+
+#1802		
+#1803						(* Motor_C := FALSE; *)
+#1804						MOVE		FALSE,Motor_C	{LNXT:471|4|-1}
+(*) BOOL
+08885CE7  B8 00 00 00 00                mov eax, 00H
+08885CEC  84 C0                         test al, al
+08885CEE  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; %Q1+2
+
+#1805		
+#1806		$label123:
+#1807					(* END_IF *)
+#1808		
+#1809		$label122:
+#1810				(* END_IF *)
+#1811				JMP		$label121	{LNXT:465|466|475}
+(-) BOOL
+08885CF5  EB 1D 90 90 90                jmp 08885D14H
+
+#1812		$label120:
+#1813		
+#1814			(* ELSE *)
+#1815		
+#1816				(* ErrorTimer_C *)
+#1817				MOVE		FALSE,ErrorTimer_C.IN	{LNXT:475|-1|-1}
+(*) BOOL
+08885CFA  B8 00 00 00 00                mov eax, 00H
+08885CFF  84 C0                         test al, al
+08885D01  0F 95 05 CC CC CC CC          setne [CCCCCCCCH] ; $$DATA$$+232
+
+#1818				CAL		ErrorTimer_C	{LNXT:475|4|-1}
+(*) BOOL
+08885D08  50                            push eax
+08885D09  BB CC CC CC CC                mov ebx, CCCCCCCCH ; $$DATA$$+228
+08885D0E  E8 DD E5 FF FF                call 088842F0H ; $$CODE$$+17136
+08885D13  58                            pop eax
+
+END_PROGRAM
+**************************************************
+	List program: Register
+**************************************************
+
+PROGRAM Register
+
+END_PROGRAM
+
+#0		{SRC:Register}
+#1		(*$WAITSWITCH$*)
+#2		
+#3			(* level_tank := to_int(to_real(Tank_Level) / 10); *)
+#4			LDP0		Tank_Level	{LNXT:3|6|-1}
+(*) UDINT
+#5			to_real	{LNXT:3|6|-1}
+(*) UDINT
+08885D14  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+08885D1B  50                            push eax
+08885D1C  DB 04 24                      fild dword ptr [esp]
+08885D1F  58                            pop eax
+
+#6			DIV		10	{LNXT:3|6|-1}
+(*) REAL
+08885D20  68 0A 00 00 00                push 10
+08885D25  DA 34 24                      fidiv [esp]
+08885D28  81 C4 04 00 00 00             add esp, 4
+
+#7			to_int	{LNXT:3|6|-1}
+(*) REAL
+08885D2E  81 EC 08 00 00 00             sub esp, 8
+08885D34  DF 3C 24                      fistp qword ptr [esp]
+08885D37  58                            pop eax
+08885D38  81 C4 04 00 00 00             add esp, 4
+
+#8			ST		level_tank	{LNXT:3|6|-1}
+(*) INT
+08885D3E  66 89 05 CC CC CC CC          mov [CCCCCCCCH], ax ; %M110+2
+
+#9		
+#10			(* Alarms.0 := di_sensor_Min; *)
+#11			MOVE		di_sensor_Min,Alarms.0	{LNXT:6|7|-1}
+(*) INT
+08885D45  33 C0                         xor eax, eax
+08885D47  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+260
+08885D4D  84 C0                         test al, al
+08885D4F  90 75 11 90 90 90             jne 00000014H@
+08885D55  66 0F BA 35 CC CC CC CC 00    btr word ptr [CCCCCCCCH], 0 ; %M110+14
+08885D5E  EB 0C 90 90 90                jmp 0000000EH@
+08885D63  66 0F BA 2D CC CC CC CC 00    bts word ptr [CCCCCCCCH], 0 ; %M110+14
+
+#12		
+#13			(* Alarms.1 := di_sensor_Max; *)
+#14			MOVE		di_sensor_Max,Alarms.1	{LNXT:7|8|-1}
+(*) BOOL
+08885D6C  33 C0                         xor eax, eax
+08885D6E  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+261
+08885D74  84 C0                         test al, al
+08885D76  90 75 11 90 90 90             jne 00000014H@
+08885D7C  66 0F BA 35 CC CC CC CC 01    btr word ptr [CCCCCCCCH], 1 ; %M110+14
+08885D85  EB 0C 90 90 90                jmp 0000000EH@
+08885D8A  66 0F BA 2D CC CC CC CC 01    bts word ptr [CCCCCCCCH], 1 ; %M110+14
+
+#15		
+#16			(* Alarms.2 := di_flooding; *)
+#17			MOVE		di_flooding,Alarms.2	{LNXT:8|9|-1}
+(*) BOOL
+08885D93  33 C0                         xor eax, eax
+08885D95  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+262
+08885D9B  84 C0                         test al, al
+08885D9D  90 75 11 90 90 90             jne 00000014H@
+08885DA3  66 0F BA 35 CC CC CC CC 02    btr word ptr [CCCCCCCCH], 2 ; %M110+14
+08885DAC  EB 0C 90 90 90                jmp 0000000EH@
+08885DB1  66 0F BA 2D CC CC CC CC 02    bts word ptr [CCCCCCCCH], 2 ; %M110+14
+
+#18		
+#19			(* Alarms.3 := di_door; *)
+#20			MOVE		di_door,Alarms.3	{LNXT:9|10|-1}
+(*) BOOL
+08885DBA  33 C0                         xor eax, eax
+08885DBC  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+263
+08885DC2  84 C0                         test al, al
+08885DC4  90 75 11 90 90 90             jne 00000014H@
+08885DCA  66 0F BA 35 CC CC CC CC 03    btr word ptr [CCCCCCCCH], 3 ; %M110+14
+08885DD3  EB 0C 90 90 90                jmp 0000000EH@
+08885DD8  66 0F BA 2D CC CC CC CC 03    bts word ptr [CCCCCCCCH], 3 ; %M110+14
+
+#21		
+#22			(* Alarms.4 := di_rnpp; *)
+#23			MOVE		di_rnpp,Alarms.4	{LNXT:10|12|-1}
+(*) BOOL
+08885DE1  33 C0                         xor eax, eax
+08885DE3  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; $$DATA$$+264
+08885DE9  84 C0                         test al, al
+08885DEB  90 75 11 90 90 90             jne 00000014H@
+08885DF1  66 0F BA 35 CC CC CC CC 04    btr word ptr [CCCCCCCCH], 4 ; %M110+14
+08885DFA  EB 0C 90 90 90                jmp 0000000EH@
+08885DFF  66 0F BA 2D CC CC CC CC 04    bts word ptr [CCCCCCCCH], 4 ; %M110+14
+
+#24		
+#25		
+#26			(* IF Tank_Level < -32000 *)
+#27			LD		Tank_Level	{LNXT:12|-1|-1}
+(*) UNDEF
+08885E08  0F BF 05 CC CC CC CC          movsx eax, word ptr [CCCCCCCCH] ; $$DATA$$+38
+
+#28			LT		-32000	{LNXT:12|-1|-1}
+(*) INT
+08885E0F  3D 00 83 FF FF                cmp eax, -32000
+08885E14  0F 9C C0                      setl al
+08885E17  25 FF 00 00 00                and eax, 0FFh
+
+#29			JMPCN	$label0	{LNXT:12|13|3}
+(-) BOOL
+08885E1C  84 C0                         test al, al
+08885E1E  90 74 27 90 90 90             je 08885E48H
+
+#30		
+#31			(* THEN *)
+#32		
+#33				(* Alarms.11 := True; *)
+#34				MOVE		True,Alarms.11	{LNXT:13|3|-1}
+(*) BOOL
+08885E24  B8 01 00 00 00                mov eax, 01H
+08885E29  84 C0                         test al, al
+08885E2B  90 75 11 90 90 90             jne 00000014H@
+08885E31  66 0F BA 35 CC CC CC CC 0B    btr word ptr [CCCCCCCCH], 11 ; %M110+14
+08885E3A  EB 0C 90 90 90                jmp 0000000EH@
+08885E3F  66 0F BA 2D CC CC CC CC 0B    bts word ptr [CCCCCCCCH], 11 ; %M110+14
+
+END_PROGRAM
+**************************************************
+	List program: MotoHour
+**************************************************
+
+PROGRAM MotoHour
+
+        VAR
+MotoHour_Mode_1 : REAL := 0.0;	{ DE:"Час, напрацювання мс насос А" }
+MotoHour_Mode_2 : REAL := 0.0;	{ DE:"Час, напрацювання мс насос В" }
+MotoHour_Mode_3 : REAL := 0.0;	{ DE:"Час, напрацювання мс насос С" }
+	END_VAR
+
+END_PROGRAM
+
+#0		{SRC:MotoHour}
+#1		(*$WAITSWITCH$*)
+#2		
+#3		
+#4			(* IF Motor_A *)
+#5			LD		Motor_A	{LNXT:3|-1|-1}
+(*) UNDEF
+08885E48  33 C0                         xor eax, eax
+08885E4A  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#6			JMPCN	$label0	{LNXT:3|4|6}
+(-) BOOL
+08885E50  84 C0                         test al, al
+08885E52  90 74 1D 90 90 90             je 08885E72H
+
+#7		
+#8			(* THEN *)
+#9		
+#10				(* MotoHour_Mode_1 := MotoHour_Mode_1 + 1; *)
+#11				LD		MotoHour_Mode_1	{LNXT:4|6|-1}
+(*) UNDEF
+08885E58  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+252
+
+#12				ADD		1	{LNXT:4|6|-1}
+(*) REAL
+08885E5E  68 01 00 00 00                push 1
+08885E63  DA 04 24                      fiadd dword ptr [esp]
+08885E66  81 C4 04 00 00 00             add esp, 4
+
+#13				ST		MotoHour_Mode_1	{LNXT:4|6|-1}
+(*) REAL
+08885E6C  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; $$DATA$$+252
+
+#14		
+#15		$label0:
+#16			(* END_IF *)
+#17		
+#18		
+#19			(* IF Motor_A *)
+#20			LD		Motor_A	{LNXT:6|-1|-1}
+(*) UNDEF
+08885E72  DD C0                         ffree
+08885E74  D9 F7                         fincstp
+08885E76  33 C0                         xor eax, eax
+08885E78  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+0
+
+#21			NOT	{LNXT:6|-1|-1}
+(*) BOOL
+08885E7E  84 C0                         test al, al
+08885E80  0F 94 C0                      sete al
+
+#22			JMPCN	$label1	{LNXT:6|7|11}
+(-) BOOL
+08885E83  84 C0                         test al, al
+08885E85  90 74 2D 90 90 90             je 08885EB5H
+
+#23		
+#24			(* THEN *)
+#25		
+#26				(* MotoHour_Mode_1 := MotoHour_Mode_1; *)
+#27				MOVE		MotoHour_Mode_1,MotoHour_Mode_1	{LNXT:7|8|-1}
+(*) BOOL
+08885E8B  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+252
+08885E91  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; $$DATA$$+252
+
+#28		
+#29				(* MotoHour_1 := MotoHour_Mode_1 / 3600; *)
+#30				LD		MotoHour_Mode_1	{LNXT:8|11|-1}
+(*) UNDEF
+08885E97  DD C0                         ffree
+08885E99  D9 F7                         fincstp
+08885E9B  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+252
+
+#31				DIV		3600	{LNXT:8|11|-1}
+(*) REAL
+08885EA1  68 10 0E 00 00                push 3600
+08885EA6  DA 34 24                      fidiv [esp]
+08885EA9  81 C4 04 00 00 00             add esp, 4
+
+#32				ST		MotoHour_1	{LNXT:8|11|-1}
+(*) REAL
+08885EAF  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; %M110+20
+
+#33		
+#34		$label1:
+#35			(* END_IF *)
+#36		
+#37		
+#38			(* IF Motor_B *)
+#39			LD		Motor_B	{LNXT:11|-1|-1}
+(*) UNDEF
+08885EB5  DD C0                         ffree
+08885EB7  D9 F7                         fincstp
+08885EB9  33 C0                         xor eax, eax
+08885EBB  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#40			JMPCN	$label2	{LNXT:11|12|14}
+(-) BOOL
+08885EC1  84 C0                         test al, al
+08885EC3  90 74 1D 90 90 90             je 08885EE3H
+
+#41		
+#42			(* THEN *)
+#43		
+#44				(* MotoHour_Mode_2 := MotoHour_Mode_2 + 1; *)
+#45				LD		MotoHour_Mode_2	{LNXT:12|14|-1}
+(*) UNDEF
+08885EC9  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#46				ADD		1	{LNXT:12|14|-1}
+(*) REAL
+08885ECF  68 01 00 00 00                push 1
+08885ED4  DA 04 24                      fiadd dword ptr [esp]
+08885ED7  81 C4 04 00 00 00             add esp, 4
+
+#47				ST		MotoHour_Mode_2	{LNXT:12|14|-1}
+(*) REAL
+08885EDD  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#48		
+#49		$label2:
+#50			(* END_IF *)
+#51		
+#52		
+#53			(* IF Motor_B *)
+#54			LD		Motor_B	{LNXT:14|-1|-1}
+(*) UNDEF
+08885EE3  DD C0                         ffree
+08885EE5  D9 F7                         fincstp
+08885EE7  33 C0                         xor eax, eax
+08885EE9  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+1
+
+#55			NOT	{LNXT:14|-1|-1}
+(*) BOOL
+08885EEF  84 C0                         test al, al
+08885EF1  0F 94 C0                      sete al
+
+#56			JMPCN	$label3	{LNXT:14|15|19}
+(-) BOOL
+08885EF4  84 C0                         test al, al
+08885EF6  90 74 2D 90 90 90             je 08885F26H
+
+#57		
+#58			(* THEN *)
+#59		
+#60				(* MotoHour_Mode_2 := MotoHour_Mode_2; *)
+#61				MOVE		MotoHour_Mode_2,MotoHour_Mode_2	{LNXT:15|16|-1}
+(*) BOOL
+08885EFC  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+256
+08885F02  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#62		
+#63				(* MotoHour_2 := MotoHour_Mode_2 / 3600; *)
+#64				LD		MotoHour_Mode_2	{LNXT:16|19|-1}
+(*) UNDEF
+08885F08  DD C0                         ffree
+08885F0A  D9 F7                         fincstp
+08885F0C  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#65				DIV		3600	{LNXT:16|19|-1}
+(*) REAL
+08885F12  68 10 0E 00 00                push 3600
+08885F17  DA 34 24                      fidiv [esp]
+08885F1A  81 C4 04 00 00 00             add esp, 4
+
+#66				ST		MotoHour_2	{LNXT:16|19|-1}
+(*) REAL
+08885F20  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; %M110+24
+
+#67		
+#68		$label3:
+#69			(* END_IF *)
+#70		
+#71		
+#72			(* IF Motor_C *)
+#73			LD		Motor_C	{LNXT:19|-1|-1}
+(*) UNDEF
+08885F26  DD C0                         ffree
+08885F28  D9 F7                         fincstp
+08885F2A  33 C0                         xor eax, eax
+08885F2C  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#74			JMPCN	$label4	{LNXT:19|20|22}
+(-) BOOL
+08885F32  84 C0                         test al, al
+08885F34  90 74 1D 90 90 90             je 08885F54H
+
+#75		
+#76			(* THEN *)
+#77		
+#78				(* MotoHour_Mode_2 := MotoHour_Mode_2 + 1; *)
+#79				LD		MotoHour_Mode_2	{LNXT:20|22|-1}
+(*) UNDEF
+08885F3A  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#80				ADD		1	{LNXT:20|22|-1}
+(*) REAL
+08885F40  68 01 00 00 00                push 1
+08885F45  DA 04 24                      fiadd dword ptr [esp]
+08885F48  81 C4 04 00 00 00             add esp, 4
+
+#81				ST		MotoHour_Mode_2	{LNXT:20|22|-1}
+(*) REAL
+08885F4E  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#82		
+#83		$label4:
+#84			(* END_IF *)
+#85		
+#86		
+#87			(* IF Motor_C *)
+#88			LD		Motor_C	{LNXT:22|-1|-1}
+(*) UNDEF
+08885F54  DD C0                         ffree
+08885F56  D9 F7                         fincstp
+08885F58  33 C0                         xor eax, eax
+08885F5A  8A 05 CC CC CC CC             mov al, [CCCCCCCCH] ; %Q1+2
+
+#89			NOT	{LNXT:22|-1|-1}
+(*) BOOL
+08885F60  84 C0                         test al, al
+08885F62  0F 94 C0                      sete al
+
+#90			JMPCN	$label5	{LNXT:22|23|3}
+(-) BOOL
+08885F65  84 C0                         test al, al
+08885F67  90 74 31 90 90 90             je 08885F9BH
+
+#91		
+#92			(* THEN *)
+#93		
+#94				(* MotoHour_Mode_2 := MotoHour_Mode_2; *)
+#95				MOVE		MotoHour_Mode_2,MotoHour_Mode_2	{LNXT:23|24|-1}
+(*) BOOL
+08885F6D  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+256
+08885F73  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#96		
+#97				(* MotoHour_2 := MotoHour_Mode_2 / 3600; *)
+#98				LD		MotoHour_Mode_2	{LNXT:24|3|-1}
+(*) UNDEF
+08885F79  DD C0                         ffree
+08885F7B  D9 F7                         fincstp
+08885F7D  D9 05 CC CC CC CC             fld dword ptr [CCCCCCCCH] ; $$DATA$$+256
+
+#99				DIV		3600	{LNXT:24|3|-1}
+(*) REAL
+08885F83  68 10 0E 00 00                push 3600
+08885F88  DA 34 24                      fidiv [esp]
+08885F8B  81 C4 04 00 00 00             add esp, 4
+
+#100				ST		MotoHour_2	{LNXT:24|3|-1}
+(*) REAL
+08885F91  D9 15 CC CC CC CC             fst dword ptr [CCCCCCCCH] ; %M110+24
+08885F97  DD C0                         ffree
+08885F99  D9 F7                         fincstp
+
+08885F9B  61                            popad
+08885F9C  5D                            pop ebp
+
+08885F9D  C3                            ret
+
+END_PROGRAM
+
+
+**************************************************
+	Target variable image generation
+**************************************************
+
+
+*** INPUT:
+08885F9E  55                            push ebp
+08885F9F  8B EC                         mov ebp, esp
+
+08885FA1  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+0
+08885FA7  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+17
+
+08885FAD  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+1
+08885FB3  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+28
+
+08885FB9  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+2
+08885FBF  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+29
+
+08885FC5  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+3
+08885FCB  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+30
+
+08885FD1  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+4
+08885FD7  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+31
+
+08885FDD  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+5
+08885FE3  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+32
+
+08885FE9  66 8B 0D CC CC CC CC          mov cx, [CCCCCCCCH] ; %I1+0
+08885FF0  66 89 0D CC CC CC CC          mov [CCCCCCCCH], cx ; $$DATA$$+38
+
+08885FF7  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+6
+08885FFD  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+260
+
+08886003  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+7
+08886009  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+261
+
+0888600F  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+8
+08886015  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+262
+
+0888601B  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+9
+08886021  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+263
+
+08886027  8A 0D CC CC CC CC             mov cl, [CCCCCCCCH] ; %I0+10
+0888602D  88 0D CC CC CC CC             mov [CCCCCCCCH], cl ; $$DATA$$+264
+
+08886033  8B E5                         mov esp, ebp
+08886035  5D                            pop ebp
+
+08886036  C3                            ret
+
+
+*** OUTPUT:
+08886037  55                            push ebp
+08886038  8B EC                         mov ebp, esp
+
+0888603A  8B E5                         mov esp, ebp
+0888603C  5D                            pop ebp
+
+0888603D  C3                            ret
+
+
+
+**************************************************
+	Task Timed init code
+**************************************************
+
+0888603E  55                            push ebp
+0888603F  8B EC                         mov ebp, esp
+
+Var init: V::LVL.MIN_LEVEL = 100
+08886041  66 C7 05 CC CC CC CC 64 00    mov word ptr [CCCCCCCCH], 0064H ; $$DATA$$+20
+
+Var init: V::LVL.MAX_LEVEL_1 = 200
+0888604A  66 C7 05 CC CC CC CC C8 00    mov word ptr [CCCCCCCCH], 00C8H ; $$DATA$$+22
+
+Var init: V::LVL.MAX_LEVEL_2 = 300
+08886053  66 C7 05 CC CC CC CC 2C 01    mov word ptr [CCCCCCCCH], 012CH ; $$DATA$$+24
+
+Var init: V::LVL.MAX_LEVEL_3 = 500
+0888605C  66 C7 05 CC CC CC CC F4 01    mov word ptr [CCCCCCCCH], 01F4H ; $$DATA$$+26
+
+Var init: V::LVL.ROTATIONNUMBER = 1
+08886065  66 C7 05 CC CC CC CC 01 00    mov word ptr [CCCCCCCCH], 0001H ; $$DATA$$+40
+
+Var init: V::LVL.CURRENTPUMP = 1
+0888606E  66 C7 05 CC CC CC CC 01 00    mov word ptr [CCCCCCCCH], 0001H ; $$DATA$$+44
+
+08886077  8B E5                         mov esp, ebp
+08886079  5D                            pop ebp
+
+0888607A  C3                            ret
+
+
+
+**************************************************
+	Global init code
+**************************************************
+
+08886080  55                            push ebp
+08886081  8B EC                         mov ebp, esp
+
+Var init: V:EMBEDDEDELEMENTS:$$POUCBARRAY$$BACKGROUND = [?main.$$POUCB$$, 0]
+08886083  B9 CC CC CC CC                mov ecx, CCCCCCCCH ; $$DATA$$+300
+08886088  89 0D CC CC CC CC             mov [CCCCCCCCH], ecx ; $$DATA$$+268
+
+Var init: V:EMBEDDEDELEMENTS:$$POUCBARRAY$$SERV = [?InitParDB.$$POUCB$$, 0]
+0888608E  B9 CC CC CC CC                mov ecx, CCCCCCCCH ; $$DATA$$+306
+08886093  89 0D CC CC CC CC             mov [CCCCCCCCH], ecx ; $$DATA$$+276
+
+Var init: V:EMBEDDEDELEMENTS:$$POUCBARRAY$$TIMED = [?LVL.$$POUCB$$, ?Register.$$POUCB$$, ?MotoHour.$$POUCB$$, 0]
+08886099  B9 CC CC CC CC                mov ecx, CCCCCCCCH ; $$DATA$$+312
+0888609E  89 0D CC CC CC CC             mov [CCCCCCCCH], ecx ; $$DATA$$+284
+088860A4  B9 CC CC CC CC                mov ecx, CCCCCCCCH ; $$DATA$$+318
+088860A9  89 0D CC CC CC CC             mov [CCCCCCCCH], ecx ; $$DATA$$+288
+088860AF  B9 CC CC CC CC                mov ecx, CCCCCCCCH ; $$DATA$$+324
+088860B4  89 0D CC CC CC CC             mov [CCCCCCCCH], ecx ; $$DATA$$+292
+
+088860BA  8B E5                         mov esp, ebp
+088860BC  5D                            pop ebp
+
+088860BD  C3                            ret
+
+
+
+**************************************************
+	Global RETAIN init code
+**************************************************
+
+088860BE  55                            push ebp
+088860BF  8B EC                         mov ebp, esp
+
+088860C1  8B E5                         mov esp, ebp
+088860C3  5D                            pop ebp
+
+088860C4  C3                            ret
+
+
+
+**************************************************
+	Task $$VirtualTables init code
+**************************************************
+
+088860C5  55                            push ebp
+088860C6  8B EC                         mov ebp, esp
+
+088860C8  8B E5                         mov esp, ebp
+088860CA  5D                            pop ebp
+
+088860CB  C3                            ret
+
+
+
+********************************************
+MEMORY MAP
+********************************************
+
+Code area type:          		       main code
+Start code area:          		0000000008880000h
+End code area:            		0000000008886D24h
+Code size:                		00006D24h
+
+Start local data area:    		0000000008700000h
+End local data area:      		000000000870014Ah
+Local data size:          		0000014Ah
+
+Start retentive data area:		0000000000000000h
+End retentive data area:  		0000000000000000h
+Retentive data size:      		00000000h
+
+Start bit data area:      		0000000000000000h
+End bit data area:        		0000000000000000h
+Bit data size:            		00000000h
+
+
+
+********************************************
+CODE ID:                                6FF7C263
+DEBUG MEMO ID:                          000034F7
+FULL MEMO ID:                           00006BC2
+RELOCATION ADDR:                        0000000008880000
+********************************************

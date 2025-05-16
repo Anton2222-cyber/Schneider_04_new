@@ -1,0 +1,55 @@
+﻿	(******************************)
+	(*                            *)
+	(*     EXPORTED VARIABLES     *)
+	(*                            *)
+	(******************************)
+
+        VAR_GLOBAL
+	{G:"EEPROM_Parameters"}
+ep_level_1 AT %MW101.0 : INT;
+ep_level_2 AT %MW101.1 : INT;
+ep_level_3 AT %MW101.2 : INT;
+ep_level_min AT %MW101.3 : INT;
+ep_rotation AT %MW101.4 : BOOL;
+	{G:"Status_variables"}
+TIME_OF_WAIT AT %MW110.0 : INT := 0;
+level_tank AT %MW110.1 : INT;	{ DE:"Рівень резервуара" }
+level_min AT %MW110.2 : INT := 0;	{ DE:"Рівень стоп" }
+Level_1 AT %MW110.3 : INT := 0;	{ DE:"Рівень роботи 1" }
+Level_2 AT %MW110.4 : INT := 0;	{ DE:"Рівень роботи 2" }
+Level_3 AT %MW110.5 : INT := 0;	{ DE:"Рівень роботи 3" }
+Priority AT %MW110.6 : INT := 0;	{ DE:"Пріорітет  0 = Motor_A, 1 = Motor_B, 2 = Motor_C" }
+Alarms AT %MW110.7 : WORD;	{ DE:"Аварії" }
+Rotation AT %MW110.8 : BOOL := 0;	{ DE:"Ротація 0 - вимкнена" }
+FastRun AT %MW110.9 : BOOL := 0;	{ DE:"Прогонка 0 - вимкнена" }
+MotoHour_1 AT %MW110.10 : REAL;	{ DE:"Мотогодини  насос А" }
+MotoHour_2 AT %MW110.12 : REAL;	{ DE:"Мотогодини  насос В" }
+MotoHour_3 AT %MW110.14 : REAL;	{ DE:"Мотогодини  насос С" }
+state_motor_1 AT %MW110.16 : STRING[ 31 ] := '0';
+state_motor_2 AT %MW110.32 : STRING[ 31 ] := '0';
+state_motor_3 AT %MW110.48 : STRING[ 31 ] := '0';
+auto_state_1 AT %MW110.64 : STRING[ 10 ] := '0';
+auto_state_2 AT %MW110.70 : STRING[ 10 ] := '0';
+auto_state_3 AT %MW110.76 : STRING[ 10 ] := '0';
+flooding_state AT %MW110.82 : STRING[ 20 ] := '0';
+rotation_state AT %MW110.93 : STRING[ 5 ] := '0';
+	{G:"IO_Mapping"}
+Tank_Level AT %IW1.0 : INT;	{ DE:"AIL1 analogue input" }
+Avto_A AT %IX0.0 : BOOL;	{ DE:"DIL1 digital input" }
+Avto_B AT %IX0.1 : BOOL;	{ DE:"DIL2 digital input" }
+Avto_C AT %IX0.2 : BOOL;	{ DE:"DIL3 digital input" }
+ALM_A AT %IX0.3 : BOOL;	{ DE:"DIL4 digital input" }
+ALM_B AT %IX0.4 : BOOL;	{ DE:"DIL5 digital input" }
+ALM_C AT %IX0.5 : BOOL;	{ DE:"DIL6 digital input" }
+di_flooding AT %IX0.6 : BOOL;	{ DE:"DIL7 digital input" }
+di_sensor_Max AT %IX0.7 : BOOL;	{ DE:"DIL8 digital input" }
+di_sensor_Min AT %IX0.8 : BOOL;	{ DE:"DIL9 digital input" }
+di_door AT %IX0.9 : BOOL;	{ DE:"DIL10 digital input" }
+di_rnpp AT %IX0.10 : BOOL;	{ DE:"DIL11 digital input" }
+Motor_A AT %QX1.0 : BOOL;	{ DE:"DOL1 digital output" }
+Motor_B AT %QX1.1 : BOOL;	{ DE:"DOL2 digital output" }
+Motor_C AT %QX1.2 : BOOL;	{ DE:"DOL3 digital output" }
+general_alarm AT %QX1.3 : BOOL;	{ DE:"DOL4 digital output" }
+o_tank_lvl AT %QW0.2 : INT;	{ DE:"AOL3 analogue output" }
+	END_VAR
+
