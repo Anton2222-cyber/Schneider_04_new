@@ -2059,7 +2059,7 @@
 						<ACCESS>RO</ACCESS>
 						<DESC/>
 						<ZORDER>24</ZORDER>
-						<VAR type="STRING">@LocalParameters.state_motor_2</VAR>
+						<VAR type="STRING">@LocalParameters.flooding_state</VAR>
 						<TYPE>STRING</TYPE>
 						<REFRESH>TRUE</REFRESH>
 						<VISIBLE>TRUE</VISIBLE>
@@ -2097,7 +2097,7 @@
 						<ACCESS>RO</ACCESS>
 						<DESC/>
 						<ZORDER>26</ZORDER>
-						<VAR type="STRING">@LocalParameters.state_motor_2</VAR>
+						<VAR type="STRING">@LocalParameters.rotation_state</VAR>
 						<TYPE>STRING</TYPE>
 						<REFRESH>TRUE</REFRESH>
 						<VISIBLE>TRUE</VISIBLE>
