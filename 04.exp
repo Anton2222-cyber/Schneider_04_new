@@ -33,14 +33,15 @@ auto_state_2 AT %MW110.70 : STRING[ 10 ] := '0';
 auto_state_3 AT %MW110.76 : STRING[ 10 ] := '0';
 flooding_state AT %MW110.82 : STRING[ 20 ] := '0';
 rotation_state AT %MW110.93 : STRING[ 5 ] := '0';
+alarm_pumps AT %MW110.96 : WORD := 0;
 	{G:"IO_Mapping"}
 Tank_Level AT %IW1.0 : INT;	{ DE:"AIL1 analogue input" }
 Avto_A AT %IX0.0 : BOOL;	{ DE:"DIL1 digital input" }
 Avto_B AT %IX0.1 : BOOL;	{ DE:"DIL2 digital input" }
 Avto_C AT %IX0.2 : BOOL;	{ DE:"DIL3 digital input" }
-ALM_A AT %IX0.3 : BOOL;	{ DE:"DIL4 digital input" }
-ALM_B AT %IX0.4 : BOOL;	{ DE:"DIL5 digital input" }
-ALM_C AT %IX0.5 : BOOL;	{ DE:"DIL6 digital input" }
+is_working_A AT %IX0.3 : BOOL;	{ DE:"DIL4 digital input" }
+is_working_B AT %IX0.4 : BOOL;	{ DE:"DIL5 digital input" }
+is_working_C AT %IX0.5 : BOOL;	{ DE:"DIL6 digital input" }
 di_flooding AT %IX0.6 : BOOL;	{ DE:"DIL7 digital input" }
 di_sensor_Max AT %IX0.7 : BOOL;	{ DE:"DIL8 digital input" }
 di_sensor_Min AT %IX0.8 : BOOL;	{ DE:"DIL9 digital input" }

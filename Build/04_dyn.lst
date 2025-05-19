@@ -81,464 +81,504 @@
 0000	00 00 64 00 82 01 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00004760
-000C	60 47 00 00 
+*		Code offset: 0x00004780
+000C	80 47 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #0 OF DATA BLOCK %M0
 0010	00 00 00 00 00 00 00 00 00 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000045EC
-001C	EC 45 00 00 
+*		Code offset: 0x0000460C
+001C	0C 46 00 00 
 
 *
 *	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #6 OF DATA BLOCK %M101
 0020	00 00 65 00 06 00 00 00 00 02 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000046D8
-002C	D8 46 00 00 
+*		Code offset: 0x000046F8
+002C	F8 46 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00005020
-0030	20 50 00 00 
+*		Code offset: 0x0000504C
+0030	4C 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006518
-0034	18 65 00 00 
+*		Code offset: 0x00006960
+0034	60 69 00 00 
 
 *
 *	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #0 OF DATA BLOCK %M101
 0038	00 00 65 00 00 00 00 00 00 02 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000046CC
-0044	CC 46 00 00 
+*		Code offset: 0x000046EC
+0044	EC 46 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00005014
-0048	14 50 00 00 
+*		Code offset: 0x00005040
+0048	40 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000650C
-004C	0C 65 00 00 
+*		Code offset: 0x00006954
+004C	54 69 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %I0
 0050	00 00 00 00 00 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006644
-005C	44 66 00 00 
+*		Code offset: 0x00006A8C
+005C	8C 6A 00 00 
 
 *
 *	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #2 OF DATA BLOCK %M101
 0060	00 00 65 00 02 00 00 00 00 02 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000046D0
-006C	D0 46 00 00 
+*		Code offset: 0x000046F0
+006C	F0 46 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00005018
-0070	18 50 00 00 
+*		Code offset: 0x00005044
+0070	44 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006510
-0074	10 65 00 00 
+*		Code offset: 0x00006958
+0074	58 69 00 00 
 
 *
 *	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #4 OF DATA BLOCK %M101
 0078	00 00 65 00 04 00 00 00 00 02 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000046D4
-0084	D4 46 00 00 
+*		Code offset: 0x000046F4
+0084	F4 46 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000501C
-0088	1C 50 00 00 
+*		Code offset: 0x00005048
+0088	48 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006514
-008C	14 65 00 00 
+*		Code offset: 0x0000695C
+008C	5C 69 00 00 
 
 *
 *	3 REFERENCE(S) TO 8-BIT VAR AT BYTE #8 OF DATA BLOCK %M101
 0090	00 00 65 00 08 00 00 00 00 01 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000046DC
-009C	DC 46 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005024
-00A0	24 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000651C
-00A4	1C 65 00 00 
-
-*
-*	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #4 OF DATA BLOCK %M110
-00A8	00 00 6E 00 04 00 00 00 00 02 03 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x000046E0
-00B4	E0 46 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005028
-00B8	28 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006520
-00BC	20 65 00 00 
-
-*
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #128 OF DATA BLOCK %M110
-00C0	00 00 6E 00 80 00 00 00 00 01 02 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005054
-00CC	54 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006788
-00D0	88 67 00 00 
-
-*
-*	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #6 OF DATA BLOCK %M110
-00D4	00 00 6E 00 06 00 00 00 00 02 03 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x000046E4
-00E0	E4 46 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000502C
-00E4	2C 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006524
-00E8	24 65 00 00 
-
-*
-*	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #8 OF DATA BLOCK %M110
-00EC	00 00 6E 00 08 00 00 00 00 02 03 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x000046E8
-00F8	E8 46 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005030
-00FC	30 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006528
-0100	28 65 00 00 
-
-*
-*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #18 OF DATA BLOCK %M110
-0104	00 00 6E 00 12 00 00 00 00 01 01 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005044
-0110	44 50 00 00 
-
-*
-*	2 REFERENCE(S) TO 16-BIT VAR AT BYTE #14 OF DATA BLOCK %M110
-0114	00 00 6E 00 0E 00 00 00 00 02 02 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000503C
-0120	3C 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006108
-0124	08 61 00 00 
-
-*
-*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #12 OF DATA BLOCK %M110
-0128	00 00 6E 00 0C 00 00 00 00 02 01 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005038
-0134	38 50 00 00 
-
-*
-*	3 REFERENCE(S) TO 8-BIT VAR AT BYTE #16 OF DATA BLOCK %M110
-0138	00 00 6E 00 10 00 00 00 00 01 03 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x000046F0
-0144	F0 46 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005040
-0148	40 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006530
-014C	30 65 00 00 
-
-*
-*	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #10 OF DATA BLOCK %M110
-0150	00 00 6E 00 0A 00 00 00 00 02 03 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x000046EC
-015C	EC 46 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005034
-0160	34 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000652C
-0164	2C 65 00 00 
-
-*
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #32 OF DATA BLOCK %M110
-0168	00 00 6E 00 20 00 00 00 00 01 02 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005048
-0174	48 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000677C
-0178	7C 67 00 00 
-
-*
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #64 OF DATA BLOCK %M110
-017C	00 00 6E 00 40 00 00 00 00 01 02 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000504C
-0188	4C 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006780
-018C	80 67 00 00 
-
-*
-*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #0 OF DATA BLOCK %I1
-0190	00 00 01 00 00 00 00 00 01 02 01 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x0000666C
-019C	6C 66 00 00 
-
-*
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #96 OF DATA BLOCK %M110
-01A0	00 00 6E 00 60 00 00 00 00 01 02 00 
+*		Code offset: 0x000046FC
+009C	FC 46 00 00 
 
 *		Instruction type: 0x00
 *		Code offset: 0x00005050
-01AC	50 50 00 00 
+00A0	50 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006784
-01B0	84 67 00 00 
+*		Code offset: 0x00006964
+00A4	64 69 00 00 
 
 *
-*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #5 OF DATA BLOCK %I0
-01B4	00 00 00 00 05 00 00 00 01 01 01 00 
+*	4 REFERENCE(S) TO 16-BIT VAR AT BYTE #4 OF DATA BLOCK %M110
+00A8	00 00 6E 00 04 00 00 00 00 02 04 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006658
-01C0	58 66 00 00 
+*		Code offset: 0x00004700
+00B4	00 47 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005054
+00B8	54 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006434
+00BC	34 64 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006968
+00C0	68 69 00 00 
 
 *
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #140 OF DATA BLOCK %M110
-01C4	00 00 6E 00 8C 00 00 00 00 01 02 00 
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #128 OF DATA BLOCK %M110
+00C4	00 00 6E 00 80 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x0000507C
+00D0	7C 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BC8
+00D4	C8 6B 00 00 
+
+*
+*	4 REFERENCE(S) TO 16-BIT VAR AT BYTE #6 OF DATA BLOCK %M110
+00D8	00 00 6E 00 06 00 00 00 00 02 04 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00004704
+00E4	04 47 00 00 
 
 *		Instruction type: 0x00
 *		Code offset: 0x00005058
-01D0	58 50 00 00 
+00E8	58 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000678C
-01D4	8C 67 00 00 
-
-*
-*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #7 OF DATA BLOCK %I0
-01D8	00 00 00 00 07 00 00 00 01 01 01 00 
+*		Code offset: 0x00006438
+00EC	38 64 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006660
-01E4	60 66 00 00 
+*		Code offset: 0x0000696C
+00F0	6C 69 00 00 
 
 *
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #152 OF DATA BLOCK %M110
-01E8	00 00 6E 00 98 00 00 00 00 01 02 00 
+*	4 REFERENCE(S) TO 16-BIT VAR AT BYTE #8 OF DATA BLOCK %M110
+00F4	00 00 6E 00 08 00 00 00 00 02 04 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00004708
+0100	08 47 00 00 
 
 *		Instruction type: 0x00
 *		Code offset: 0x0000505C
-01F4	5C 50 00 00 
+0104	5C 50 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006790
-01F8	90 67 00 00 
+*		Code offset: 0x0000612C
+0108	2C 61 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006970
+010C	70 69 00 00 
 
 *
-*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %I0
-01FC	00 00 00 00 01 00 00 00 01 01 01 00 
+*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #14 OF DATA BLOCK %M110
+0110	00 00 6E 00 0E 00 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006648
-0208	48 66 00 00 
+*		Code offset: 0x0000654C
+011C	4C 65 00 00 
 
 *
-*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #2 OF DATA BLOCK %M110
-020C	00 00 6E 00 02 00 00 00 00 02 01 00 
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #18 OF DATA BLOCK %M110
+0120	00 00 6E 00 12 00 00 00 00 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006104
-0218	04 61 00 00 
+*		Code offset: 0x0000506C
+012C	6C 50 00 00 
 
 *
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #164 OF DATA BLOCK %M110
-021C	00 00 6E 00 A4 00 00 00 00 01 02 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00005060
-0228	60 50 00 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006794
-022C	94 67 00 00 
-
-*
-*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #3 OF DATA BLOCK %I0
-0230	00 00 00 00 03 00 00 00 01 01 01 00 
-
-*		Instruction type: 0x00
-*		Code offset: 0x00006650
-023C	50 66 00 00 
-
-*
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #186 OF DATA BLOCK %M110
-0240	00 00 6E 00 BA 00 00 00 00 01 02 00 
+*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #12 OF DATA BLOCK %M110
+0130	00 00 6E 00 0C 00 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
 *		Code offset: 0x00005064
-024C	64 50 00 00 
+013C	64 50 00 00 
+
+*
+*	3 REFERENCE(S) TO 8-BIT VAR AT BYTE #16 OF DATA BLOCK %M110
+0140	00 00 6E 00 10 00 00 00 00 01 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006798
-0250	98 67 00 00 
+*		Code offset: 0x00004710
+014C	10 47 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005068
+0150	68 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006978
+0154	78 69 00 00 
+
+*
+*	4 REFERENCE(S) TO 16-BIT VAR AT BYTE #10 OF DATA BLOCK %M110
+0158	00 00 6E 00 0A 00 00 00 00 02 04 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x0000470C
+0164	0C 47 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005060
+0168	60 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x0000643C
+016C	3C 64 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006974
+0170	74 69 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #32 OF DATA BLOCK %M110
+0174	00 00 6E 00 20 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005070
+0180	70 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BBC
+0184	BC 6B 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #64 OF DATA BLOCK %M110
+0188	00 00 6E 00 40 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005074
+0194	74 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BC0
+0198	C0 6B 00 00 
+
+*
+*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #0 OF DATA BLOCK %I1
+019C	00 00 01 00 00 00 00 00 01 02 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006AB4
+01A8	B4 6A 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #96 OF DATA BLOCK %M110
+01AC	00 00 6E 00 60 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005078
+01B8	78 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BC4
+01BC	C4 6B 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #5 OF DATA BLOCK %I0
+01C0	00 00 00 00 05 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006AA0
+01CC	A0 6A 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #140 OF DATA BLOCK %M110
+01D0	00 00 6E 00 8C 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005080
+01DC	80 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BCC
+01E0	CC 6B 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #7 OF DATA BLOCK %I0
+01E4	00 00 00 00 07 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006AA8
+01F0	A8 6A 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #152 OF DATA BLOCK %M110
+01F4	00 00 6E 00 98 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005084
+0200	84 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BD0
+0204	D0 6B 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %I0
+0208	00 00 00 00 01 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006A90
+0214	90 6A 00 00 
+
+*
+*	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #2 OF DATA BLOCK %M110
+0218	00 00 6E 00 02 00 00 00 00 02 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006548
+0224	48 65 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #164 OF DATA BLOCK %M110
+0228	00 00 6E 00 A4 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005088
+0234	88 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BD4
+0238	D4 6B 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #3 OF DATA BLOCK %I0
+023C	00 00 00 00 03 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006A98
+0248	98 6A 00 00 
+
+*
+*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #186 OF DATA BLOCK %M110
+024C	00 00 6E 00 BA 00 00 00 00 01 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x0000508C
+0258	8C 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006BD8
+025C	D8 6B 00 00 
+
+*
+*	3 REFERENCE(S) TO 16-BIT VAR AT BYTE #192 OF DATA BLOCK %M110
+0260	00 00 6E 00 C0 00 00 00 00 02 03 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00005090
+026C	90 50 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006130
+0270	30 61 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00006550
+0274	50 65 00 00 
 
 *
 *	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #4 OF DATA BLOCK %Q0
-0254	00 00 00 00 04 00 00 00 02 02 01 00 
+0278	00 00 00 00 04 00 00 00 02 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000050E8
-0260	E8 50 00 00 
+*		Code offset: 0x00005110
+0284	10 51 00 00 
 
 *
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %Q1
-0264	00 00 01 00 00 00 00 00 02 01 02 00 
+*	3 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %Q1
+0288	00 00 01 00 00 00 00 00 02 01 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000050EC
-0270	EC 50 00 00 
+*		Code offset: 0x00005114
+0294	14 51 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006358
-0274	58 63 00 00 
+*		Code offset: 0x00006448
+0298	48 64 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x000067A0
+029C	A0 67 00 00 
 
 *
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %Q1
-0278	00 00 01 00 01 00 00 00 02 01 02 00 
+*	3 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %Q1
+02A0	00 00 01 00 01 00 00 00 02 01 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000050F0
-0284	F0 50 00 00 
+*		Code offset: 0x00005118
+02AC	18 51 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000635C
-0288	5C 63 00 00 
+*		Code offset: 0x0000644C
+02B0	4C 64 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x000067A4
+02B4	A4 67 00 00 
 
 *
-*	2 REFERENCE(S) TO 8-BIT VAR AT BYTE #2 OF DATA BLOCK %Q1
-028C	00 00 01 00 02 00 00 00 02 01 02 00 
+*	3 REFERENCE(S) TO 8-BIT VAR AT BYTE #2 OF DATA BLOCK %Q1
+02B8	00 00 01 00 02 00 00 00 02 01 03 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x000050F4
-0298	F4 50 00 00 
+*		Code offset: 0x0000511C
+02C4	1C 51 00 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006360
-029C	60 63 00 00 
+*		Code offset: 0x000061C4
+02C8	C4 61 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x000067A8
+02CC	A8 67 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #3 OF DATA BLOCK %Q1
-02A0	00 00 01 00 03 00 00 00 02 01 01 00 
+02D0	00 00 01 00 03 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006124
-02AC	24 61 00 00 
+*		Code offset: 0x0000656C
+02DC	6C 65 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #24 OF DATA BLOCK %M110
-02B0	00 00 6E 00 18 00 00 00 00 04 01 00 
+02E0	00 00 6E 00 18 00 00 00 00 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006340
-02BC	40 63 00 00 
+*		Code offset: 0x00006788
+02EC	88 67 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #20 OF DATA BLOCK %M110
-02C0	00 00 6E 00 14 00 00 00 00 04 01 00 
+02F0	00 00 6E 00 14 00 00 00 00 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000633C
-02CC	3C 63 00 00 
+*		Code offset: 0x00006784
+02FC	84 67 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #2 OF DATA BLOCK %I0
-02D0	00 00 00 00 02 00 00 00 01 01 01 00 
+0300	00 00 00 00 02 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000664C
-02DC	4C 66 00 00 
+*		Code offset: 0x00006A94
+030C	94 6A 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #4 OF DATA BLOCK %I0
-02E0	00 00 00 00 04 00 00 00 01 01 01 00 
+0310	00 00 00 00 04 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006654
-02EC	54 66 00 00 
+*		Code offset: 0x00006A9C
+031C	9C 6A 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #6 OF DATA BLOCK %I0
-02F0	00 00 00 00 06 00 00 00 01 01 01 00 
+0320	00 00 00 00 06 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000665C
-02FC	5C 66 00 00 
+*		Code offset: 0x00006AA4
+032C	A4 6A 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #8 OF DATA BLOCK %I0
-0300	00 00 00 00 08 00 00 00 01 01 01 00 
+0330	00 00 00 00 08 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006664
-030C	64 66 00 00 
+*		Code offset: 0x00006AAC
+033C	AC 6A 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #10 OF DATA BLOCK %I0
-0310	00 00 00 00 0A 00 00 00 01 01 01 00 
+0340	00 00 00 00 0A 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00006668
-031C	68 66 00 00 
+*		Code offset: 0x00006AB0
+034C	B0 6A 00 00 
 
 
 ***************************************************
@@ -546,22 +586,22 @@
 ***************************************************
 
 NAME: sysDBase_SetExtTable  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000047E0
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00004800
 
 NAME: ST_STRING  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000050E4
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000510C
 
 NAME: UDINT_TO_REAL  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000634C
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00006794
 
 NAME: DIV_REAL  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00006354
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000679C
 
 NAME: ADD_REAL  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00006350
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00006798
 
 NAME: sysWriteParINT  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00006574
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000069BC
 
 NAME: sysWriteParBOOL  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00006578
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000069C0
