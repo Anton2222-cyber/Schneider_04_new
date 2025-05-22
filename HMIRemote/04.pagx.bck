@@ -109,13 +109,13 @@
 						<TRANSP>FALSE</TRANSP>
 						<SELECT>FALSE</SELECT>
 						<PRESS>*</PRESS>
-						<TEXT>Save</TEXT>
+						<TEXT>Back</TEXT>
 						<ALIGN>Center</ALIGN>
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>5</ZORDER>
 						<ORDER>3</ORDER>
-						<SELTEXT>Save</SELTEXT>
+						<SELTEXT>Back</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
 							<EVENT name="OnPress"/>
@@ -1402,7 +1402,7 @@
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>4</XPOS>
-						<YPOS>6</YPOS>
+						<YPOS>1</YPOS>
 						<XDIM>120</XDIM>
 						<YDIM>11</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
@@ -1444,7 +1444,7 @@
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>2</ZORDER>
-						<ORDER>4</ORDER>
+						<ORDER>5</ORDER>
 						<SELTEXT>Налаштування RS</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
@@ -1462,7 +1462,7 @@
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>4</XPOS>
-						<YPOS>36</YPOS>
+						<YPOS>38</YPOS>
 						<XDIM>120</XDIM>
 						<YDIM>12</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
@@ -1474,7 +1474,7 @@
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>3</ZORDER>
-						<ORDER>3</ORDER>
+						<ORDER>4</ORDER>
 						<SELTEXT>Налаштування IP</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
@@ -1492,7 +1492,37 @@
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>4</XPOS>
-						<YPOS>21</YPOS>
+						<YPOS>26</YPOS>
+						<XDIM>120</XDIM>
+						<YDIM>12</YDIM>
+						<VISIBLE>TRUE</VISIBLE>
+						<TRANSP>FALSE</TRANSP>
+						<SELECT>FALSE</SELECT>
+						<PRESS>*</PRESS>
+						<TEXT>Скинути авар. насос.</TEXT>
+						<ALIGN>Center</ALIGN>
+						<TYPE>Normal</TYPE>
+						<DESC/>
+						<ZORDER>4</ZORDER>
+						<ORDER>3</ORDER>
+						<SELTEXT>Скинути авар. насос.</SELTEXT>
+						<EVENTS>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnPress"/>
+							<EVENT name="OnRelease"/>
+						</EVENTS>
+						<ACTION id="1" key="0">resetAlarmPumps</ACTION>
+					</BUTTON>
+					<BUTTON version="2" name="Button_5">
+						<FONT>EWP2_6x8</FONT>
+						<BORDPTS>1</BORDPTS>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<STYLE>Flat</STYLE>
+						<COLOR type="RGBColor">16777215</COLOR>
+						<SELCOL type="RGBColor">0</SELCOL>
+						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
+						<XPOS>4</XPOS>
+						<YPOS>14</YPOS>
 						<XDIM>120</XDIM>
 						<YDIM>12</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
@@ -1503,7 +1533,7 @@
 						<ALIGN>Center</ALIGN>
 						<TYPE>Normal</TYPE>
 						<DESC/>
-						<ZORDER>4</ZORDER>
+						<ZORDER>5</ZORDER>
 						<ORDER>2</ORDER>
 						<SELTEXT>Оновити рiвнi</SELTEXT>
 						<EVENTS>
@@ -2159,7 +2189,7 @@
 				<EVENT name="OnAfterDraw"/>
 			</EVENTS>
 			<ACTIONS>
-				<ACTION id="1" key="12">menu</ACTION>
+				<ACTION id="1" key="12">login</ACTION>
 			</ACTIONS>
 			<SCRIPT>
 				<![CDATA[]]>
@@ -2421,7 +2451,7 @@
 						<BORDCOL type="RGBColor">16777215</BORDCOL>
 						<BORDPTS>1</BORDPTS>
 						<XPOS>74</XPOS>
-						<YPOS>18</YPOS>
+						<YPOS>17</YPOS>
 						<XDIM>36</XDIM>
 						<YDIM>8</YDIM>
 						<NUMCHAR>6</NUMCHAR>
@@ -2586,6 +2616,391 @@
 			</ACTIONS>
 			<SCRIPT>
 				<![CDATA[]]>
+			</SCRIPT>
+		</PAGE>
+		<PAGE name="resetAlarmPumps">
+			<ATTRIBUTES>
+				<MSGID>0</MSGID>
+				<WNDMODE>0</WNDMODE>
+				<MODAL>No</MODAL>
+				<FONT>EWP2_6x8</FONT>
+				<COLOR type="RGBColor">0</COLOR>
+				<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+				<STYLE>Flat</STYLE>
+				<XDIM>128</XDIM>
+				<YDIM>64</YDIM>
+				<XPOS>0</XPOS>
+				<YPOS>0</YPOS>
+				<CHARGRIDDIMX>1</CHARGRIDDIMX>
+				<CHARGRIDDIMY>1</CHARGRIDDIMY>
+				<CAPTION/>
+				<TITLEBAR>No</TITLEBAR>
+				<SYSMENU>No</SYSMENU>
+				<BORDER>No</BORDER>
+				<DESC/>
+				<HIDDEN>0</HIDDEN>
+			</ATTRIBUTES>
+			<OBJECTS>
+				<STRINGS/>
+				<IMGS/>
+				<LINES/>
+				<RECTS/>
+				<ANIMS/>
+				<EDITS>
+					<EDIT name="Edit_1">
+						<FONT>EWP2_8x16</FONT>
+						<COLOR type="RGBColor">0</COLOR>
+						<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+						<SELBCK type="RGBColor">0</SELBCK>
+						<SELCOL type="RGBColor">16777215</SELCOL>
+						<STYLE>Flat</STYLE>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<BORDPTS>1</BORDPTS>
+						<XPOS>32</XPOS>
+						<YPOS>15</YPOS>
+						<XDIM>64</XDIM>
+						<YDIM>16</YDIM>
+						<NUMCHAR>8</NUMCHAR>
+						<ORDER>1</ORDER>
+						<FORMAT>%d</FORMAT>
+						<ALIGN>Center</ALIGN>
+						<ACCESS>RW</ACCESS>
+						<DESC/>
+						<ZORDER>1</ZORDER>
+						<VAR type="UINT">@LocalParameters.alarm_pumps</VAR>
+						<TYPE>UINT</TYPE>
+						<REFRESH>TRUE</REFRESH>
+						<VISIBLE>TRUE</VISIBLE>
+						<SELECT>TRUE</SELECT>
+						<LABEL/>
+						<VARMIN>*</VARMIN>
+						<VARMAX>*</VARMAX>
+						<EVENTS>
+							<EVENT name="BeforeUpdate"/>
+							<EVENT name="AfterUpdate"/>
+							<EVENT name="OnGotFocus"/>
+							<EVENT name="OnLostFocus"/>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnEnter"/>
+							<EVENT name="OnChange"/>
+						</EVENTS>
+					</EDIT>
+				</EDITS>
+				<TEXTBOXES/>
+				<COMBOBOXES/>
+				<BUTTONS>
+					<BUTTON version="2" name="Button_2">
+						<FONT>EWP2_6x8</FONT>
+						<BORDPTS>1</BORDPTS>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<STYLE>Flat</STYLE>
+						<COLOR type="RGBColor">16777215</COLOR>
+						<SELCOL type="RGBColor">0</SELCOL>
+						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
+						<XPOS>44</XPOS>
+						<YPOS>41</YPOS>
+						<XDIM>39</XDIM>
+						<YDIM>14</YDIM>
+						<VISIBLE>TRUE</VISIBLE>
+						<TRANSP>FALSE</TRANSP>
+						<SELECT>FALSE</SELECT>
+						<PRESS>*</PRESS>
+						<TEXT>Back</TEXT>
+						<ALIGN>Center</ALIGN>
+						<TYPE>Normal</TYPE>
+						<DESC/>
+						<ZORDER>2</ZORDER>
+						<ORDER>2</ORDER>
+						<SELTEXT>Back</SELTEXT>
+						<EVENTS>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnPress"/>
+							<EVENT name="OnRelease"/>
+						</EVENTS>
+						<ACTION id="1" key="0">menu</ACTION>
+					</BUTTON>
+				</BUTTONS>
+				<CHECKBOXES/>
+				<PROGRESSES/>
+				<CHARTS/>
+				<CUSTOMS/>
+			</OBJECTS>
+			<EVENTS>
+				<EVENT name="OnLoad"/>
+				<EVENT name="OnUnload"/>
+				<EVENT name="OnActivate"/>
+				<EVENT name="OnDeactivate"/>
+				<EVENT name="OnDraw"/>
+				<EVENT name="OnTimer"/>
+				<EVENT name="OnAfterDraw"/>
+			</EVENTS>
+			<ACTIONS/>
+			<SCRIPT>
+				<![CDATA[]]>
+			</SCRIPT>
+		</PAGE>
+		<PAGE name="login">
+			<ATTRIBUTES>
+				<MSGID>0</MSGID>
+				<WNDMODE>0</WNDMODE>
+				<MODAL>No</MODAL>
+				<FONT>EWP2_6x8</FONT>
+				<COLOR type="RGBColor">0</COLOR>
+				<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+				<STYLE>Flat</STYLE>
+				<XDIM>128</XDIM>
+				<YDIM>64</YDIM>
+				<XPOS>0</XPOS>
+				<YPOS>0</YPOS>
+				<CHARGRIDDIMX>1</CHARGRIDDIMX>
+				<CHARGRIDDIMY>1</CHARGRIDDIMY>
+				<CAPTION/>
+				<TITLEBAR>No</TITLEBAR>
+				<SYSMENU>No</SYSMENU>
+				<BORDER>No</BORDER>
+				<DESC/>
+				<HIDDEN>0</HIDDEN>
+			</ATTRIBUTES>
+			<OBJECTS>
+				<STRINGS/>
+				<IMGS/>
+				<LINES/>
+				<RECTS/>
+				<ANIMS/>
+				<EDITS>
+					<EDIT name="Edit_1">
+						<FONT>EWP2_6x8</FONT>
+						<COLOR type="RGBColor">0</COLOR>
+						<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+						<SELBCK type="RGBColor">0</SELBCK>
+						<SELCOL type="RGBColor">16777215</SELCOL>
+						<STYLE>Flat</STYLE>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<BORDPTS>1</BORDPTS>
+						<XPOS>14</XPOS>
+						<YPOS>16</YPOS>
+						<XDIM>18</XDIM>
+						<YDIM>8</YDIM>
+						<NUMCHAR>3</NUMCHAR>
+						<ORDER>1</ORDER>
+						<FORMAT>%d</FORMAT>
+						<ALIGN>Right</ALIGN>
+						<ACCESS>RW</ACCESS>
+						<DESC/>
+						<ZORDER>1</ZORDER>
+						<VAR type="INT">password_1</VAR>
+						<TYPE>INT</TYPE>
+						<REFRESH>TRUE</REFRESH>
+						<VISIBLE>TRUE</VISIBLE>
+						<SELECT>TRUE</SELECT>
+						<LABEL/>
+						<VARMIN>*</VARMIN>
+						<VARMAX>*</VARMAX>
+						<EVENTS>
+							<EVENT name="BeforeUpdate"/>
+							<EVENT name="AfterUpdate">check_password</EVENT>
+							<EVENT name="OnGotFocus"/>
+							<EVENT name="OnLostFocus"/>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnEnter"/>
+							<EVENT name="OnChange"/>
+						</EVENTS>
+					</EDIT>
+					<EDIT name="Edit_2">
+						<FONT>EWP2_6x8</FONT>
+						<COLOR type="RGBColor">0</COLOR>
+						<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+						<SELBCK type="RGBColor">0</SELBCK>
+						<SELCOL type="RGBColor">16777215</SELCOL>
+						<STYLE>Flat</STYLE>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<BORDPTS>1</BORDPTS>
+						<XPOS>42</XPOS>
+						<YPOS>16</YPOS>
+						<XDIM>18</XDIM>
+						<YDIM>8</YDIM>
+						<NUMCHAR>3</NUMCHAR>
+						<ORDER>2</ORDER>
+						<FORMAT>%d</FORMAT>
+						<ALIGN>Right</ALIGN>
+						<ACCESS>RW</ACCESS>
+						<DESC/>
+						<ZORDER>2</ZORDER>
+						<VAR type="INT">password_2</VAR>
+						<TYPE>INT</TYPE>
+						<REFRESH>TRUE</REFRESH>
+						<VISIBLE>TRUE</VISIBLE>
+						<SELECT>TRUE</SELECT>
+						<LABEL/>
+						<VARMIN>*</VARMIN>
+						<VARMAX>*</VARMAX>
+						<EVENTS>
+							<EVENT name="BeforeUpdate"/>
+							<EVENT name="AfterUpdate">check_password</EVENT>
+							<EVENT name="OnGotFocus"/>
+							<EVENT name="OnLostFocus"/>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnEnter"/>
+							<EVENT name="OnChange"/>
+						</EVENTS>
+					</EDIT>
+					<EDIT name="Edit_3">
+						<FONT>EWP2_6x8</FONT>
+						<COLOR type="RGBColor">0</COLOR>
+						<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+						<SELBCK type="RGBColor">0</SELBCK>
+						<SELCOL type="RGBColor">16777215</SELCOL>
+						<STYLE>Flat</STYLE>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<BORDPTS>1</BORDPTS>
+						<XPOS>70</XPOS>
+						<YPOS>16</YPOS>
+						<XDIM>18</XDIM>
+						<YDIM>8</YDIM>
+						<NUMCHAR>3</NUMCHAR>
+						<ORDER>3</ORDER>
+						<FORMAT>%d</FORMAT>
+						<ALIGN>Right</ALIGN>
+						<ACCESS>RW</ACCESS>
+						<DESC/>
+						<ZORDER>3</ZORDER>
+						<VAR type="INT">password_3</VAR>
+						<TYPE>INT</TYPE>
+						<REFRESH>TRUE</REFRESH>
+						<VISIBLE>TRUE</VISIBLE>
+						<SELECT>TRUE</SELECT>
+						<LABEL/>
+						<VARMIN>*</VARMIN>
+						<VARMAX>*</VARMAX>
+						<EVENTS>
+							<EVENT name="BeforeUpdate"/>
+							<EVENT name="AfterUpdate">check_password</EVENT>
+							<EVENT name="OnGotFocus"/>
+							<EVENT name="OnLostFocus"/>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnEnter"/>
+							<EVENT name="OnChange"/>
+						</EVENTS>
+					</EDIT>
+					<EDIT name="Edit_4">
+						<FONT>EWP2_6x8</FONT>
+						<COLOR type="RGBColor">0</COLOR>
+						<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+						<SELBCK type="RGBColor">0</SELBCK>
+						<SELCOL type="RGBColor">16777215</SELCOL>
+						<STYLE>Flat</STYLE>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<BORDPTS>1</BORDPTS>
+						<XPOS>97</XPOS>
+						<YPOS>16</YPOS>
+						<XDIM>18</XDIM>
+						<YDIM>8</YDIM>
+						<NUMCHAR>3</NUMCHAR>
+						<ORDER>4</ORDER>
+						<FORMAT>%d</FORMAT>
+						<ALIGN>Right</ALIGN>
+						<ACCESS>RW</ACCESS>
+						<DESC/>
+						<ZORDER>4</ZORDER>
+						<VAR type="INT">password_4</VAR>
+						<TYPE>INT</TYPE>
+						<REFRESH>TRUE</REFRESH>
+						<VISIBLE>TRUE</VISIBLE>
+						<SELECT>TRUE</SELECT>
+						<LABEL/>
+						<VARMIN>*</VARMIN>
+						<VARMAX>*</VARMAX>
+						<EVENTS>
+							<EVENT name="BeforeUpdate"/>
+							<EVENT name="AfterUpdate">check_password</EVENT>
+							<EVENT name="OnGotFocus"/>
+							<EVENT name="OnLostFocus"/>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnEnter"/>
+							<EVENT name="OnChange"/>
+						</EVENTS>
+					</EDIT>
+				</EDITS>
+				<TEXTBOXES/>
+				<COMBOBOXES/>
+				<BUTTONS>
+					<BUTTON version="2" name="Button_5">
+						<FONT>EWP2_6x8</FONT>
+						<BORDPTS>1</BORDPTS>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<STYLE>Flat</STYLE>
+						<COLOR type="RGBColor">16777215</COLOR>
+						<SELCOL type="RGBColor">0</SELCOL>
+						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
+						<XPOS>33</XPOS>
+						<YPOS>44</YPOS>
+						<XDIM>64</XDIM>
+						<YDIM>12</YDIM>
+						<VISIBLE>visible_login</VISIBLE>
+						<TRANSP>FALSE</TRANSP>
+						<SELECT>FALSE</SELECT>
+						<PRESS>*</PRESS>
+						<TEXT>OK</TEXT>
+						<ALIGN>Center</ALIGN>
+						<TYPE>Normal</TYPE>
+						<DESC/>
+						<ZORDER>5</ZORDER>
+						<ORDER>5</ORDER>
+						<SELTEXT/>
+						<EVENTS>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnPress">reset_login</EVENT>
+							<EVENT name="OnRelease"/>
+						</EVENTS>
+						<ACTION id="1" key="0">menu</ACTION>
+					</BUTTON>
+				</BUTTONS>
+				<CHECKBOXES/>
+				<PROGRESSES/>
+				<CHARTS/>
+				<CUSTOMS/>
+			</OBJECTS>
+			<EVENTS>
+				<EVENT name="OnLoad"/>
+				<EVENT name="OnUnload"/>
+				<EVENT name="OnActivate"/>
+				<EVENT name="OnDeactivate"/>
+				<EVENT name="OnDraw"/>
+				<EVENT name="OnTimer"/>
+				<EVENT name="OnAfterDraw"/>
+			</EVENTS>
+			<ACTIONS>
+				<ACTION id="1" key="8">main</ACTION>
+			</ACTIONS>
+			<SCRIPT>
+				<![CDATA[        VAR_GLOBAL
+	{G:"Ungrouped_vars"}
+password_1 : INT := 0;
+password_2 : INT := 0;
+password_3 : INT := 0;
+password_4 : INT := 0;
+visible_login : BOOL := false;
+	END_VAR
+
+PROGRAM check_password
+
+	{ CODE:ST }if password_1 = 1 and password_2 = 7 and password_3 = 0 and password_4 = 4 then
+visible_login :=true;
+end_if;
+
+END_PROGRAM
+
+PROGRAM reset_login
+
+	{ CODE:ST }visible_login :=false;
+password_1 = 0;
+password_2 = 0;
+password_3 = 0;
+password_4 = 0;
+
+END_PROGRAM
+
+]]>
 			</SCRIPT>
 		</PAGE>
 	</PAGES>

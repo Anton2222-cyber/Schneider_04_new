@@ -35,7 +35,7 @@ flooding_state AT %MW110.82 : STRING[ 20 ] := '0';
 rotation_state AT %MW110.93 : STRING[ 5 ] := '0';
 alarm_pumps AT %MW110.96 : WORD := 0;
 	{G:"IO_Mapping"}
-Tank_Level AT %IW1.0 : INT;	{ DE:"AIL1 analogue input" }
+Tank_Level AT %IW1.1 : INT;	{ DE:"AIL2 analogue input" }
 Avto_A AT %IX0.0 : BOOL;	{ DE:"DIL1 digital input" }
 Avto_B AT %IX0.1 : BOOL;	{ DE:"DIL2 digital input" }
 Avto_C AT %IX0.2 : BOOL;	{ DE:"DIL3 digital input" }

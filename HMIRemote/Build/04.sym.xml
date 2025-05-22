@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type ="text/xsl" href="file://C:/Users/Anton/AppData/Local/Temp/LLSymTab.xsl" version="1.0"?>
-<LLSymbolTable Version="1.4" Name="04" TargetID="M172P_596p15" CodeId="0x29FF9C9C" DebugMemoId="0x0000EDCB" MemoId="0x00004A3C" DataRelocation="none" DbRelocation="patch" FunctRelocation="patch" dataAddrMode="byte" codeAddrMode="byte" NoIncrAlloc="false" is64bit="false" isBigEndian="false" dataSignature="0x6D1A0B9F">
+<LLSymbolTable Version="1.4" Name="04" TargetID="M172P_596p15" CodeId="0x29FF9C9C" DebugMemoId="0x0000EDCB" MemoId="0x00004A3C" DataRelocation="none" DbRelocation="patch" FunctRelocation="patch" dataAddrMode="byte" codeAddrMode="byte" NoIncrAlloc="false" is64bit="false" isBigEndian="false" dataSignature="0x71D341A3">
 	<Resource Name="EWAD_HMI" Proc="ARMv7M"/>
 	<CaseSensitive>false</CaseSensitive>
 	<CompilerOptions FBExtCheck="true"/>
@@ -98,26 +98,43 @@
 		<Var Name="FBMENUBUTTON_2" OrigName="fbmenuButton_2" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81048" Group="menu_vars"/>
 		<Var Name="FBMENUBUTTON_3" OrigName="fbmenuButton_3" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81090" Group="menu_vars"/>
 		<Var Name="FBMENUBUTTON_4" OrigName="fbmenuButton_4" Type="BUTTON02" OrigType="Button02" Addr="0xA1C810D8" Group="menu_vars"/>
+		<Var Name="FBMENUBUTTON_5" OrigName="fbmenuButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81120" Group="menu_vars"/>
 		<Var Name="FBMENU" OrigName="fbmenu" Type="DRAWMENU" OrigType="Drawmenu" Addr="0xA1C80FC4" Group="menu_vars"/>
-		<Var Name="FBUPDATELVLSTRING_1" OrigName="fbupdateLVLString_1" Type="STATIC01" OrigType="Static01" Addr="0xA1C8115C" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_2" OrigName="fbupdateLVLString_2" Type="STATIC01" OrigType="Static01" Addr="0xA1C81198" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLEDIT_3" OrigName="fbupdateLVLEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C811D4" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_4" OrigName="fbupdateLVLString_4" Type="STATIC01" OrigType="Static01" Addr="0xA1C81228" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLEDIT_5" OrigName="fbupdateLVLEdit_5" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81264" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_7" OrigName="fbupdateLVLString_7" Type="STATIC01" OrigType="Static01" Addr="0xA1C812B8" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLEDIT_8" OrigName="fbupdateLVLEdit_8" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C812F4" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_10" OrigName="fbupdateLVLString_10" Type="STATIC01" OrigType="Static01" Addr="0xA1C81348" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLEDIT_11" OrigName="fbupdateLVLEdit_11" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81384" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_12" OrigName="fbupdateLVLString_12" Type="STATIC01" OrigType="Static01" Addr="0xA1C813D8" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_13" OrigName="fbupdateLVLString_13" Type="STATIC01" OrigType="Static01" Addr="0xA1C81414" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVLSTRING_14" OrigName="fbupdateLVLString_14" Type="STATIC01" OrigType="Static01" Addr="0xA1C81450" Group="updateLVL_vars"/>
-		<Var Name="FBUPDATELVL" OrigName="fbupdateLVL" Type="DRAWUPDATELVL" OrigType="DrawupdateLVL" Addr="0xA1C81120" Group="updateLVL_vars"/>
-		<Var Name="FBREFRMAIN" OrigName="fbRefrmain" Type="REFRMAIN" OrigType="Refrmain" Addr="0xA1C8148C" Group="main_vars"/>
-		<Var Name="FBREFRUPDATEROTATION" OrigName="fbRefrupdateRotation" Type="REFRUPDATEROTATION" OrigType="RefrupdateRotation" Addr="0xA1C814A0" Group="updateRotation_vars"/>
-		<Var Name="FBREFRSETUPRS2" OrigName="fbRefrSetupRS2" Type="REFRSETUPRS2" OrigType="RefrSetupRS2" Addr="0xA1C814B4" Group="SetupRS2_vars"/>
-		<Var Name="FBREFRSETUPIP" OrigName="fbRefrSetupIP" Type="REFRSETUPIP" OrigType="RefrSetupIP" Addr="0xA1C814C8" Group="SetupIP_vars"/>
-		<Var Name="FBREFRMENU" OrigName="fbRefrmenu" Type="REFRMENU" OrigType="Refrmenu" Addr="0xA1C814DC" Group="menu_vars"/>
-		<Var Name="FBREFRUPDATELVL" OrigName="fbRefrupdateLVL" Type="REFRUPDATELVL" OrigType="RefrupdateLVL" Addr="0xA1C814F0" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_1" OrigName="fbupdateLVLString_1" Type="STATIC01" OrigType="Static01" Addr="0xA1C811A4" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_2" OrigName="fbupdateLVLString_2" Type="STATIC01" OrigType="Static01" Addr="0xA1C811E0" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLEDIT_3" OrigName="fbupdateLVLEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C8121C" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_4" OrigName="fbupdateLVLString_4" Type="STATIC01" OrigType="Static01" Addr="0xA1C81270" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLEDIT_5" OrigName="fbupdateLVLEdit_5" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C812AC" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_7" OrigName="fbupdateLVLString_7" Type="STATIC01" OrigType="Static01" Addr="0xA1C81300" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLEDIT_8" OrigName="fbupdateLVLEdit_8" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C8133C" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_10" OrigName="fbupdateLVLString_10" Type="STATIC01" OrigType="Static01" Addr="0xA1C81390" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLEDIT_11" OrigName="fbupdateLVLEdit_11" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C813CC" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_12" OrigName="fbupdateLVLString_12" Type="STATIC01" OrigType="Static01" Addr="0xA1C81420" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_13" OrigName="fbupdateLVLString_13" Type="STATIC01" OrigType="Static01" Addr="0xA1C8145C" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVLSTRING_14" OrigName="fbupdateLVLString_14" Type="STATIC01" OrigType="Static01" Addr="0xA1C81498" Group="updateLVL_vars"/>
+		<Var Name="FBUPDATELVL" OrigName="fbupdateLVL" Type="DRAWUPDATELVL" OrigType="DrawupdateLVL" Addr="0xA1C81168" Group="updateLVL_vars"/>
+		<Var Name="FBRESETALARMPUMPSEDIT_1" OrigName="fbresetAlarmPumpsEdit_1" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81510" Group="resetAlarmPumps_vars"/>
+		<Var Name="FBRESETALARMPUMPSBUTTON_2" OrigName="fbresetAlarmPumpsButton_2" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81564" Group="resetAlarmPumps_vars"/>
+		<Var Name="FBRESETALARMPUMPS" OrigName="fbresetAlarmPumps" Type="DRAWRESETALARMPUMPS" OrigType="DrawresetAlarmPumps" Addr="0xA1C814D4" Group="resetAlarmPumps_vars"/>
+		<Var Name="FBLOGINEDIT_1" OrigName="fbloginEdit_1" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C815E8" Group="login_vars"/>
+		<Var Name="LOGIN_PASSWORD_4" OrigName="login_password_4" Type="INT" OrigType="INT" Addr="0xA1C80016" Group="login_vars"/>
+		<Var Name="LOGIN_PASSWORD_3" OrigName="login_password_3" Type="INT" OrigType="INT" Addr="0xA1C8163C" Group="login_vars"/>
+		<Var Name="LOGIN_PASSWORD_2" OrigName="login_password_2" Type="INT" OrigType="INT" Addr="0xA1C8163E" Group="login_vars"/>
+		<Var Name="LOGIN_PASSWORD_1" OrigName="login_password_1" Type="INT" OrigType="INT" Addr="0xA1C81640" Group="login_vars"/>
+		<Var Name="LOGIN_VISIBLE_LOGIN" OrigName="login_visible_login" Type="BOOL" OrigType="BOOL" Addr="0xA1C81642" Group="login_vars"/>
+		<Var Name="FBLOGINEDIT_2" OrigName="fbloginEdit_2" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81644" Group="login_vars"/>
+		<Var Name="FBLOGINEDIT_3" OrigName="fbloginEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81698" Group="login_vars"/>
+		<Var Name="FBLOGINEDIT_4" OrigName="fbloginEdit_4" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C816EC" Group="login_vars"/>
+		<Var Name="FBLOGINBUTTON_5" OrigName="fbloginButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81740" Group="login_vars"/>
+		<Var Name="FBLOGIN" OrigName="fblogin" Type="DRAWLOGIN" OrigType="Drawlogin" Addr="0xA1C815AC" Group="login_vars"/>
+		<Var Name="FBREFRMAIN" OrigName="fbRefrmain" Type="REFRMAIN" OrigType="Refrmain" Addr="0xA1C81788" Group="main_vars"/>
+		<Var Name="FBREFRUPDATEROTATION" OrigName="fbRefrupdateRotation" Type="REFRUPDATEROTATION" OrigType="RefrupdateRotation" Addr="0xA1C8179C" Group="updateRotation_vars"/>
+		<Var Name="FBREFRSETUPRS2" OrigName="fbRefrSetupRS2" Type="REFRSETUPRS2" OrigType="RefrSetupRS2" Addr="0xA1C817B0" Group="SetupRS2_vars"/>
+		<Var Name="FBREFRSETUPIP" OrigName="fbRefrSetupIP" Type="REFRSETUPIP" OrigType="RefrSetupIP" Addr="0xA1C817C4" Group="SetupIP_vars"/>
+		<Var Name="FBREFRMENU" OrigName="fbRefrmenu" Type="REFRMENU" OrigType="Refrmenu" Addr="0xA1C817D8" Group="menu_vars"/>
+		<Var Name="FBREFRUPDATELVL" OrigName="fbRefrupdateLVL" Type="REFRUPDATELVL" OrigType="RefrupdateLVL" Addr="0xA1C817EC" Group="updateLVL_vars"/>
+		<Var Name="FBREFRRESETALARMPUMPS" OrigName="fbRefrresetAlarmPumps" Type="REFRRESETALARMPUMPS" OrigType="RefrresetAlarmPumps" Addr="0xA1C81800" Group="resetAlarmPumps_vars"/>
+		<Var Name="FBREFRLOGIN" OrigName="fbRefrlogin" Type="REFRLOGIN" OrigType="Refrlogin" Addr="0xA1C81814" Group="login_vars"/>
 		<Var Name="SYSLANGID" OrigName="sysLangID" Type="WORD" OrigType="WORD" Addr="0x10000262" Descr="HMI active Language ID" Group="Ungrouped_vars" RelocationRecord="%M99+0" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="99" DataBlockIndex="0" Access="3"/>
 		<Var Name="SYSLOCALLEDS" OrigName="sysLocalLeds" Type="USINT" OrigType="USINT" Addr="0x10000406" Descr="Local Leds Status. ..." Group="Led_and_Backlight_Status" RelocationRecord="%Q2+0" OnDataBlock="true" DataBlockType="Q" DBDataType="B" DataBlockNumber="2" DataBlockIndex="0" Access="3" Dims="3"/>
 		<Var Name="SYSBACKLIGHT" OrigName="sysBacklight" Type="USINT" OrigType="USINT" Addr="0x10000409" Descr="Backlight Status. ..." Group="Led_and_Backlight_Status" RelocationRecord="%Q3+0" OnDataBlock="true" DataBlockType="Q" DBDataType="B" DataBlockNumber="3" DataBlockIndex="0" Access="3"/>
@@ -127,20 +144,20 @@
 		<Var Name="SYSKEYPRESSED" OrigName="sysKeyPressed" Type="DWORD" OrigType="DWORD" Addr="0xA000000C" Descr="Last key pressed code. ..." Group="Keyboard" RelocationRecord="%M3104+0" OnDataBlock="true" DataBlockType="M" DBDataType="B" DataBlockNumber="3104" DataBlockIndex="0" Access="3"/>
 		<Var Name="SYSCURRENTSELECTEDPOSITION" OrigName="sysCurrentSelectedPosition" Type="UINT" OrigType="UINT" Addr="0xA00006AC" Descr="Current selected position into current page order." Group="Keyboard" RelocationRecord="%M3105+0" OnDataBlock="true" DataBlockType="M" DBDataType="B" DataBlockNumber="3105" DataBlockIndex="0" Access="1"/>
 		<Var Name="$$CODEBASE$$" OrigName="$$CODEBASE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1B00000"/>
-		<Var Name="$$CODESTART$$" OrigName="$$CODESTART$$" Type="UDINT" OrigType="UDINT" Addr="0xA1B0282C"/>
-		<Var Name="$$CODESIZE$$" OrigName="$$CODESIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1B0E710"/>
+		<Var Name="$$CODESTART$$" OrigName="$$CODESTART$$" Type="UDINT" OrigType="UDINT" Addr="0xA1B02898"/>
+		<Var Name="$$CODESIZE$$" OrigName="$$CODESIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1B10454"/>
 		<Var Name="$$CODEEND$$" OrigName="$$CODEEND$$" Type="UDINT" OrigType="UDINT" Addr="0xA1C80000"/>
-		<Var Name="$$DATASIZE$$" OrigName="$$DATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1C81504"/>
+		<Var Name="$$DATASIZE$$" OrigName="$$DATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1C81828"/>
 		<Var Name="$$AUXDATASIZE$$" OrigName="$$AUXDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
 		<Var Name="$$BITDATASIZE$$" OrigName="$$BITDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
 		<Var Name="$$RITDATASIZE$$" OrigName="$$RITDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
 	</GlobalVars>
 	<Programs>
-		<Prog Name="PAGEDRAW" OrigName="PageDraw" SrcType="3" CodeAddr="0xA1B0A590" HashCode="75DF48F5">
+		<Prog Name="PAGEDRAW" OrigName="PageDraw" SrcType="3" CodeAddr="0xA1B0B9C0" HashCode="30EFCD8A">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0xA1C8000C"/>
 		</Prog>
-		<Prog Name="PAGEREFRESH" OrigName="PageRefresh" SrcType="3" CodeAddr="0xA1B0A940" HashCode="B16BB4C7">
-			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0xA1C80017"/>
+		<Prog Name="PAGEREFRESH" OrigName="PageRefresh" SrcType="3" CodeAddr="0xA1B0BDF0" HashCode="EAECAB94">
+			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0xA1C81643"/>
 		</Prog>
 	</Programs>
 	<FunctionBlocks>
@@ -171,7 +188,7 @@
 			<Var Name="MEMTRANSP" OrigName="memTransp" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative" Descr="Transparency status"/>
 			<Var Name="MEMSEL" OrigName="memSel" Type="BOOL" OrigType="BOOL" Addr="0x6[2]" Attribs="relative" Descr="Transparency status"/>
 		</FBlock>
-		<FBlock Name="DRAWBACKPAGE" OrigName="DrawBackPage" SrcType="3" FrameSize="8" CodeAddr="0xA1B068A8" HashCode="C2147C5A">
+		<FBlock Name="DRAWBACKPAGE" OrigName="DrawBackPage" SrcType="3" FrameSize="8" CodeAddr="0xA1B06928" HashCode="C2147C5A">
 			<VarI Name="ISOPENING" OrigName="IsOpening" Type="BOOL" OrigType="BOOL" Addr="0x6[0]" Attribs="relative"/>
 			<VarI Name="CURRPAGEID" OrigName="CurrPageId" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<VarO Name="BACKPAGEID" OrigName="BackPageId" Type="UINT" OrigType="UINT" Addr="0x6[4]" Attribs="relative"/>
@@ -252,7 +269,7 @@
 			<VarI Name="NUMCHARS" OrigName="numChars" Type="UINT" OrigType="UINT" Addr="0x6[56]" Attribs="relative" Descr="Number of printable chars"/>
 			<Var Name="MEMVIS" OrigName="memVis" Type="BOOL" OrigType="BOOL" Addr="0x6[0]" Attribs="relative" Descr="Visibility status"/>
 		</FBlock>
-		<FBlock Name="REFRMENU" OrigName="Refrmenu" SrcType="3" FrameSize="20" CodeAddr="0xA1B06CF0" HashCode="EB85E6C9">
+		<FBlock Name="REFRMENU" OrigName="Refrmenu" SrcType="3" FrameSize="20" CodeAddr="0xA1B0714C" HashCode="EB85E6C9">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
@@ -268,9 +285,10 @@
 			<VarExt Name="FBMENUBUTTON_2" OrigName="fbmenuButton_2" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81048" Group="menu_vars"/>
 			<VarExt Name="FBMENUBUTTON_3" OrigName="fbmenuButton_3" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81090" Group="menu_vars"/>
 			<VarExt Name="FBMENUBUTTON_4" OrigName="fbmenuButton_4" Type="BUTTON02" OrigType="Button02" Addr="0xA1C810D8" Group="menu_vars"/>
+			<VarExt Name="FBMENUBUTTON_5" OrigName="fbmenuButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81120" Group="menu_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="DRAWMENU" OrigName="Drawmenu" SrcType="3" FrameSize="60" CodeAddr="0xA1B08038" HashCode="A3AFC08A">
+		<FBlock Name="DRAWMENU" OrigName="Drawmenu" SrcType="3" FrameSize="60" CodeAddr="0xA1B08E80" HashCode="B7BB1D54">
 			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
@@ -304,9 +322,50 @@
 			<VarExt Name="FBMENUBUTTON_2" OrigName="fbmenuButton_2" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81048" Group="menu_vars"/>
 			<VarExt Name="FBMENUBUTTON_3" OrigName="fbmenuButton_3" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81090" Group="menu_vars"/>
 			<VarExt Name="FBMENUBUTTON_4" OrigName="fbmenuButton_4" Type="BUTTON02" OrigType="Button02" Addr="0xA1C810D8" Group="menu_vars"/>
+			<VarExt Name="FBMENUBUTTON_5" OrigName="fbmenuButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81120" Group="menu_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="REFRSETUPIP" OrigName="RefrSetupIP" SrcType="3" FrameSize="20" CodeAddr="0xA1B06DA0" HashCode="51D5FC2D">
+		<FBlock Name="REFRLOGIN" OrigName="Refrlogin" SrcType="3" FrameSize="20" CodeAddr="0xA1B06B9C" HashCode="60D5AC0D">
+			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
+			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
+			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
+			<Var Name="ISP" OrigName="iSP" Type="INT" OrigType="INT" Addr="0x6[6]" Attribs="relative"/>
+			<Var Name="PDC" OrigName="pDC" Type="UDINT" OrigType="UDINT" Addr="0x6[8]" Attribs="relative"/>
+			<Var Name="RX1" OrigName="rx1" Type="UINT" OrigType="UINT" Addr="0x6[12]" Attribs="relative"/>
+			<Var Name="RY1" OrigName="ry1" Type="UINT" OrigType="UINT" Addr="0x6[14]" Attribs="relative"/>
+			<Var Name="RX2" OrigName="rx2" Type="UINT" OrigType="UINT" Addr="0x6[16]" Attribs="relative"/>
+			<Var Name="RY2" OrigName="ry2" Type="UINT" OrigType="UINT" Addr="0x6[18]" Attribs="relative"/>
+			<VarExt Name="GUICALLSTACK" OrigName="guiCallStack" Type="UINT" OrigType="UINT" Addr="0xA1C80018" Group="Call_stack" Dims="10"/>
+			<VarExt Name="GISTACKPTR" OrigName="giStackPtr" Type="INT" OrigType="INT" Addr="0xA1C8000E" Group="Call_stack"/>
+			<VarExt Name="LOGIN_VISIBLE_LOGIN" OrigName="login_visible_login" Type="BOOL" OrigType="BOOL" Addr="0xA1C81642" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_1" OrigName="login_password_1" Type="INT" OrigType="INT" Addr="0xA1C81640" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_2" OrigName="login_password_2" Type="INT" OrigType="INT" Addr="0xA1C8163E" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_3" OrigName="login_password_3" Type="INT" OrigType="INT" Addr="0xA1C8163C" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_4" OrigName="login_password_4" Type="INT" OrigType="INT" Addr="0xA1C80016" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_1" OrigName="fbloginEdit_1" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C815E8" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_2" OrigName="fbloginEdit_2" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81644" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_3" OrigName="fbloginEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81698" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_4" OrigName="fbloginEdit_4" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C816EC" Group="login_vars"/>
+			<VarExt Name="FBLOGINBUTTON_5" OrigName="fbloginButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81740" Group="login_vars"/>
+			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
+		</FBlock>
+		<FBlock Name="REFRRESETALARMPUMPS" OrigName="RefrresetAlarmPumps" SrcType="3" FrameSize="20" CodeAddr="0xA1B071FC" HashCode="736EE9FF">
+			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
+			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
+			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
+			<Var Name="ISP" OrigName="iSP" Type="INT" OrigType="INT" Addr="0x6[6]" Attribs="relative"/>
+			<Var Name="PDC" OrigName="pDC" Type="UDINT" OrigType="UDINT" Addr="0x6[8]" Attribs="relative"/>
+			<Var Name="RX1" OrigName="rx1" Type="UINT" OrigType="UINT" Addr="0x6[12]" Attribs="relative"/>
+			<Var Name="RY1" OrigName="ry1" Type="UINT" OrigType="UINT" Addr="0x6[14]" Attribs="relative"/>
+			<Var Name="RX2" OrigName="rx2" Type="UINT" OrigType="UINT" Addr="0x6[16]" Attribs="relative"/>
+			<Var Name="RY2" OrigName="ry2" Type="UINT" OrigType="UINT" Addr="0x6[18]" Attribs="relative"/>
+			<VarExt Name="GUICALLSTACK" OrigName="guiCallStack" Type="UINT" OrigType="UINT" Addr="0xA1C80018" Group="Call_stack" Dims="10"/>
+			<VarExt Name="GISTACKPTR" OrigName="giStackPtr" Type="INT" OrigType="INT" Addr="0xA1C8000E" Group="Call_stack"/>
+			<VarExt Name="FBRESETALARMPUMPSEDIT_1" OrigName="fbresetAlarmPumpsEdit_1" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81510" Group="resetAlarmPumps_vars"/>
+			<VarExt Name="FBRESETALARMPUMPSBUTTON_2" OrigName="fbresetAlarmPumpsButton_2" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81564" Group="resetAlarmPumps_vars"/>
+			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
+		</FBlock>
+		<FBlock Name="REFRSETUPIP" OrigName="RefrSetupIP" SrcType="3" FrameSize="20" CodeAddr="0xA1B072E8" HashCode="51D5FC2D">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
@@ -340,7 +399,7 @@
 			<VarExt Name="FBSETUPIPEDIT_20" OrigName="fbSetupIPEdit_20" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C80F70" Group="SetupIP_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="REFRSETUPRS2" OrigName="RefrSetupRS2" SrcType="3" FrameSize="20" CodeAddr="0xA1B071B8" HashCode="59D175E3">
+		<FBlock Name="REFRSETUPRS2" OrigName="RefrSetupRS2" SrcType="3" FrameSize="20" CodeAddr="0xA1B07700" HashCode="59D175E3">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
@@ -366,7 +425,7 @@
 			<VarExt Name="FBSETUPRS2EDIT_12" OrigName="fbSetupRS2Edit_12" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C80904" Group="SetupRS2_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="REFRUPDATELVL" OrigName="RefrupdateLVL" SrcType="3" FrameSize="20" CodeAddr="0xA1B073B4" HashCode="1631917B">
+		<FBlock Name="REFRUPDATELVL" OrigName="RefrupdateLVL" SrcType="3" FrameSize="20" CodeAddr="0xA1B078FC" HashCode="1631917B">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
@@ -378,21 +437,21 @@
 			<Var Name="RY2" OrigName="ry2" Type="UINT" OrigType="UINT" Addr="0x6[18]" Attribs="relative"/>
 			<VarExt Name="GUICALLSTACK" OrigName="guiCallStack" Type="UINT" OrigType="UINT" Addr="0xA1C80018" Group="Call_stack" Dims="10"/>
 			<VarExt Name="GISTACKPTR" OrigName="giStackPtr" Type="INT" OrigType="INT" Addr="0xA1C8000E" Group="Call_stack"/>
-			<VarExt Name="FBUPDATELVLSTRING_1" OrigName="fbupdateLVLString_1" Type="STATIC01" OrigType="Static01" Addr="0xA1C8115C" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_2" OrigName="fbupdateLVLString_2" Type="STATIC01" OrigType="Static01" Addr="0xA1C81198" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_4" OrigName="fbupdateLVLString_4" Type="STATIC01" OrigType="Static01" Addr="0xA1C81228" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_7" OrigName="fbupdateLVLString_7" Type="STATIC01" OrigType="Static01" Addr="0xA1C812B8" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_10" OrigName="fbupdateLVLString_10" Type="STATIC01" OrigType="Static01" Addr="0xA1C81348" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_12" OrigName="fbupdateLVLString_12" Type="STATIC01" OrigType="Static01" Addr="0xA1C813D8" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_13" OrigName="fbupdateLVLString_13" Type="STATIC01" OrigType="Static01" Addr="0xA1C81414" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_14" OrigName="fbupdateLVLString_14" Type="STATIC01" OrigType="Static01" Addr="0xA1C81450" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_3" OrigName="fbupdateLVLEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C811D4" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_5" OrigName="fbupdateLVLEdit_5" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81264" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_8" OrigName="fbupdateLVLEdit_8" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C812F4" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_11" OrigName="fbupdateLVLEdit_11" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81384" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_1" OrigName="fbupdateLVLString_1" Type="STATIC01" OrigType="Static01" Addr="0xA1C811A4" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_2" OrigName="fbupdateLVLString_2" Type="STATIC01" OrigType="Static01" Addr="0xA1C811E0" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_4" OrigName="fbupdateLVLString_4" Type="STATIC01" OrigType="Static01" Addr="0xA1C81270" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_7" OrigName="fbupdateLVLString_7" Type="STATIC01" OrigType="Static01" Addr="0xA1C81300" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_10" OrigName="fbupdateLVLString_10" Type="STATIC01" OrigType="Static01" Addr="0xA1C81390" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_12" OrigName="fbupdateLVLString_12" Type="STATIC01" OrigType="Static01" Addr="0xA1C81420" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_13" OrigName="fbupdateLVLString_13" Type="STATIC01" OrigType="Static01" Addr="0xA1C8145C" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_14" OrigName="fbupdateLVLString_14" Type="STATIC01" OrigType="Static01" Addr="0xA1C81498" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_3" OrigName="fbupdateLVLEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C8121C" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_5" OrigName="fbupdateLVLEdit_5" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C812AC" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_8" OrigName="fbupdateLVLEdit_8" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C8133C" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_11" OrigName="fbupdateLVLEdit_11" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C813CC" Group="updateLVL_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="REFRUPDATEROTATION" OrigName="RefrupdateRotation" SrcType="3" FrameSize="20" CodeAddr="0xA1B07544" HashCode="D628AB93">
+		<FBlock Name="REFRUPDATEROTATION" OrigName="RefrupdateRotation" SrcType="3" FrameSize="20" CodeAddr="0xA1B07A8C" HashCode="D628AB93">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
@@ -408,7 +467,83 @@
 			<VarExt Name="FBUPDATEROTATIONBUTTON_5" OrigName="fbupdateRotationButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C80574" Group="updateRotation_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="DRAWSETUPIP" OrigName="DrawSetupIP" SrcType="3" FrameSize="60" CodeAddr="0xA1B08618" HashCode="F2F3028B">
+		<FBlock Name="DRAWLOGIN" OrigName="Drawlogin" SrcType="3" FrameSize="60" CodeAddr="0xA1B07B78" HashCode="8FC6F937">
+			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
+			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
+			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
+			<Var Name="BMAPSRESET" OrigName="bMapsReset" Type="BOOL" OrigType="BOOL" Addr="0x6[2]" Attribs="relative"/>
+			<Var Name="INEXTSEL" OrigName="iNextSel" Type="INT" OrigType="INT" Addr="0x6[4]" Attribs="relative"/>
+			<Var Name="$SET_INDEXVISEL" OrigName="$Set_IndexVisEl" Type="UINT" OrigType="UINT" Addr="0x6[6]" Attribs="relative"/>
+			<Var Name="$SET_CYCLEREFRESH" OrigName="$Set_CycleRefresh" Type="UINT" OrigType="UINT" Addr="0x6[8]" Attribs="relative"/>
+			<Var Name="$SET_PTRBOOLVIS" OrigName="$Set_PtrBoolVis" Type="@BOOL" OrigType="@BOOL" Addr="0x6[12]" Attribs="relative"/>
+			<Var Name="$SET_VISEL" OrigName="$Set_VisEl" Type="BOOL" OrigType="BOOL" Addr="0x6[16]" Attribs="relative"/>
+			<Var Name="$SET_INDEXPAGEINSET" OrigName="$Set_IndexPageInSet" Type="UINT" OrigType="UINT" Addr="0x6[18]" Attribs="relative"/>
+			<Var Name="$SET_FORCEPAGERELOAD" OrigName="$Set_ForcePageReload" Type="BOOL" OrigType="BOOL" Addr="0x6[20]" Attribs="relative"/>
+			<Var Name="$SET_NEXTPAGE" OrigName="$Set_NextPage" Type="BOOL" OrigType="BOOL" Addr="0x6[21]" Attribs="relative"/>
+			<Var Name="$SET_PREVPAGE" OrigName="$Set_PrevPage" Type="BOOL" OrigType="BOOL" Addr="0x6[22]" Attribs="relative"/>
+			<Var Name="$SET_LOCALSETPAGNUMBER" OrigName="$Set_LocalSetPagNumber" Type="UINT" OrigType="UINT" Addr="0x6[24]" Attribs="relative"/>
+			<Var Name="$SET_NUMVISEL" OrigName="$Set_NumVisEl" Type="UINT" OrigType="UINT" Addr="0x6[26]" Attribs="relative"/>
+			<Var Name="$SET_LASTFIRSTEL" OrigName="$Set_LastFirstEl" Type="INT" OrigType="INT" Addr="0x6[28]" Attribs="relative"/>
+			<Var Name="UDIEV" OrigName="udiev" Type="UDINT" OrigType="UDINT" Addr="0x6[32]" Attribs="relative"/>
+			<Var Name="EV" OrigName="ev" Type="UINT" OrigType="UINT" Addr="0x6[36]" Attribs="relative"/>
+			<Var Name="KEY" OrigName="key" Type="USINT" OrigType="USINT" Addr="0x6[38]" Attribs="relative"/>
+			<Var Name="X1" OrigName="x1" Type="UINT" OrigType="UINT" Addr="0x6[40]" Attribs="relative"/>
+			<Var Name="Y1" OrigName="y1" Type="UINT" OrigType="UINT" Addr="0x6[42]" Attribs="relative"/>
+			<Var Name="X2" OrigName="x2" Type="UINT" OrigType="UINT" Addr="0x6[44]" Attribs="relative"/>
+			<Var Name="Y2" OrigName="y2" Type="UINT" OrigType="UINT" Addr="0x6[46]" Attribs="relative"/>
+			<Var Name="WPARAM" OrigName="wParam" Type="UINT" OrigType="UINT" Addr="0x6[48]" Attribs="relative"/>
+			<TmpVar Name="$$TMP0" OrigName="$$TMP0" Type="@STRING" OrigType="@STRING" Addr="0x6[52]" Attribs="relative"/>
+			<TmpVar Name="$$TMP13" OrigName="$$TMP13" Type="UINT" OrigType="UINT" Addr="0x6[56]" Attribs="relative"/>
+			<VarExt Name="GUICALLSTACK" OrigName="guiCallStack" Type="UINT" OrigType="UINT" Addr="0xA1C80018" Group="Call_stack" Dims="10"/>
+			<VarExt Name="GISTACKPTR" OrigName="giStackPtr" Type="INT" OrigType="INT" Addr="0xA1C8000E" Group="Call_stack"/>
+			<VarExt Name="FBBACKPAGE" OrigName="fbBackPage" Type="DRAWBACKPAGE" OrigType="DrawBackPage" Addr="0xA1C80068" Group="Back_page_manager"/>
+			<VarExt Name="LOGIN_PASSWORD_1" OrigName="login_password_1" Type="INT" OrigType="INT" Addr="0xA1C81640" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_2" OrigName="login_password_2" Type="INT" OrigType="INT" Addr="0xA1C8163E" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_3" OrigName="login_password_3" Type="INT" OrigType="INT" Addr="0xA1C8163C" Group="login_vars"/>
+			<VarExt Name="LOGIN_PASSWORD_4" OrigName="login_password_4" Type="INT" OrigType="INT" Addr="0xA1C80016" Group="login_vars"/>
+			<VarExt Name="LOGIN_VISIBLE_LOGIN" OrigName="login_visible_login" Type="BOOL" OrigType="BOOL" Addr="0xA1C81642" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_1" OrigName="fbloginEdit_1" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C815E8" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_2" OrigName="fbloginEdit_2" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81644" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_3" OrigName="fbloginEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81698" Group="login_vars"/>
+			<VarExt Name="FBLOGINEDIT_4" OrigName="fbloginEdit_4" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C816EC" Group="login_vars"/>
+			<VarExt Name="FBLOGINBUTTON_5" OrigName="fbloginButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81740" Group="login_vars"/>
+			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
+		</FBlock>
+		<FBlock Name="DRAWRESETALARMPUMPS" OrigName="DrawresetAlarmPumps" SrcType="3" FrameSize="60" CodeAddr="0xA1B094D0" HashCode="3B28B866">
+			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
+			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
+			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
+			<Var Name="BMAPSRESET" OrigName="bMapsReset" Type="BOOL" OrigType="BOOL" Addr="0x6[2]" Attribs="relative"/>
+			<Var Name="INEXTSEL" OrigName="iNextSel" Type="INT" OrigType="INT" Addr="0x6[4]" Attribs="relative"/>
+			<Var Name="$SET_INDEXVISEL" OrigName="$Set_IndexVisEl" Type="UINT" OrigType="UINT" Addr="0x6[6]" Attribs="relative"/>
+			<Var Name="$SET_CYCLEREFRESH" OrigName="$Set_CycleRefresh" Type="UINT" OrigType="UINT" Addr="0x6[8]" Attribs="relative"/>
+			<Var Name="$SET_PTRBOOLVIS" OrigName="$Set_PtrBoolVis" Type="@BOOL" OrigType="@BOOL" Addr="0x6[12]" Attribs="relative"/>
+			<Var Name="$SET_VISEL" OrigName="$Set_VisEl" Type="BOOL" OrigType="BOOL" Addr="0x6[16]" Attribs="relative"/>
+			<Var Name="$SET_INDEXPAGEINSET" OrigName="$Set_IndexPageInSet" Type="UINT" OrigType="UINT" Addr="0x6[18]" Attribs="relative"/>
+			<Var Name="$SET_FORCEPAGERELOAD" OrigName="$Set_ForcePageReload" Type="BOOL" OrigType="BOOL" Addr="0x6[20]" Attribs="relative"/>
+			<Var Name="$SET_NEXTPAGE" OrigName="$Set_NextPage" Type="BOOL" OrigType="BOOL" Addr="0x6[21]" Attribs="relative"/>
+			<Var Name="$SET_PREVPAGE" OrigName="$Set_PrevPage" Type="BOOL" OrigType="BOOL" Addr="0x6[22]" Attribs="relative"/>
+			<Var Name="$SET_LOCALSETPAGNUMBER" OrigName="$Set_LocalSetPagNumber" Type="UINT" OrigType="UINT" Addr="0x6[24]" Attribs="relative"/>
+			<Var Name="$SET_NUMVISEL" OrigName="$Set_NumVisEl" Type="UINT" OrigType="UINT" Addr="0x6[26]" Attribs="relative"/>
+			<Var Name="$SET_LASTFIRSTEL" OrigName="$Set_LastFirstEl" Type="INT" OrigType="INT" Addr="0x6[28]" Attribs="relative"/>
+			<Var Name="UDIEV" OrigName="udiev" Type="UDINT" OrigType="UDINT" Addr="0x6[32]" Attribs="relative"/>
+			<Var Name="EV" OrigName="ev" Type="UINT" OrigType="UINT" Addr="0x6[36]" Attribs="relative"/>
+			<Var Name="KEY" OrigName="key" Type="USINT" OrigType="USINT" Addr="0x6[38]" Attribs="relative"/>
+			<Var Name="X1" OrigName="x1" Type="UINT" OrigType="UINT" Addr="0x6[40]" Attribs="relative"/>
+			<Var Name="Y1" OrigName="y1" Type="UINT" OrigType="UINT" Addr="0x6[42]" Attribs="relative"/>
+			<Var Name="X2" OrigName="x2" Type="UINT" OrigType="UINT" Addr="0x6[44]" Attribs="relative"/>
+			<Var Name="Y2" OrigName="y2" Type="UINT" OrigType="UINT" Addr="0x6[46]" Attribs="relative"/>
+			<Var Name="WPARAM" OrigName="wParam" Type="UINT" OrigType="UINT" Addr="0x6[48]" Attribs="relative"/>
+			<TmpVar Name="$$TMP0" OrigName="$$TMP0" Type="@STRING" OrigType="@STRING" Addr="0x6[52]" Attribs="relative"/>
+			<TmpVar Name="$$TMP1" OrigName="$$TMP1" Type="UINT" OrigType="UINT" Addr="0x6[56]" Attribs="relative"/>
+			<VarExt Name="GUICALLSTACK" OrigName="guiCallStack" Type="UINT" OrigType="UINT" Addr="0xA1C80018" Group="Call_stack" Dims="10"/>
+			<VarExt Name="GISTACKPTR" OrigName="giStackPtr" Type="INT" OrigType="INT" Addr="0xA1C8000E" Group="Call_stack"/>
+			<VarExt Name="FBBACKPAGE" OrigName="fbBackPage" Type="DRAWBACKPAGE" OrigType="DrawBackPage" Addr="0xA1C80068" Group="Back_page_manager"/>
+			<VarExt Name="FBRESETALARMPUMPSEDIT_1" OrigName="fbresetAlarmPumpsEdit_1" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81510" Group="resetAlarmPumps_vars"/>
+			<VarExt Name="FBRESETALARMPUMPSBUTTON_2" OrigName="fbresetAlarmPumpsButton_2" Type="BUTTON02" OrigType="Button02" Addr="0xA1C81564" Group="resetAlarmPumps_vars"/>
+			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
+		</FBlock>
+		<FBlock Name="DRAWSETUPIP" OrigName="DrawSetupIP" SrcType="3" FrameSize="60" CodeAddr="0xA1B09A4C" HashCode="F2F3028B">
 			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
@@ -460,7 +595,7 @@
 			<VarExt Name="FBSETUPIPEDIT_20" OrigName="fbSetupIPEdit_20" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C80F70" Group="SetupIP_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="DRAWSETUPRS2" OrigName="DrawSetupRS2" SrcType="3" FrameSize="60" CodeAddr="0xA1B0904C" HashCode="2075AF29">
+		<FBlock Name="DRAWSETUPRS2" OrigName="DrawSetupRS2" SrcType="3" FrameSize="60" CodeAddr="0xA1B0A480" HashCode="2075AF29">
 			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
@@ -504,7 +639,7 @@
 			<VarExt Name="FBSETUPRS2EDIT_12" OrigName="fbSetupRS2Edit_12" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C80904" Group="SetupRS2_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="DRAWUPDATELVL" OrigName="DrawupdateLVL" SrcType="3" FrameSize="60" CodeAddr="0xA1B09820" HashCode="714C1A6C">
+		<FBlock Name="DRAWUPDATELVL" OrigName="DrawupdateLVL" SrcType="3" FrameSize="60" CodeAddr="0xA1B0AC54" HashCode="B6B07FB0">
 			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
@@ -534,21 +669,21 @@
 			<VarExt Name="GUICALLSTACK" OrigName="guiCallStack" Type="UINT" OrigType="UINT" Addr="0xA1C80018" Group="Call_stack" Dims="10"/>
 			<VarExt Name="GISTACKPTR" OrigName="giStackPtr" Type="INT" OrigType="INT" Addr="0xA1C8000E" Group="Call_stack"/>
 			<VarExt Name="FBBACKPAGE" OrigName="fbBackPage" Type="DRAWBACKPAGE" OrigType="DrawBackPage" Addr="0xA1C80068" Group="Back_page_manager"/>
-			<VarExt Name="FBUPDATELVLSTRING_1" OrigName="fbupdateLVLString_1" Type="STATIC01" OrigType="Static01" Addr="0xA1C8115C" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_2" OrigName="fbupdateLVLString_2" Type="STATIC01" OrigType="Static01" Addr="0xA1C81198" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_4" OrigName="fbupdateLVLString_4" Type="STATIC01" OrigType="Static01" Addr="0xA1C81228" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_7" OrigName="fbupdateLVLString_7" Type="STATIC01" OrigType="Static01" Addr="0xA1C812B8" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_10" OrigName="fbupdateLVLString_10" Type="STATIC01" OrigType="Static01" Addr="0xA1C81348" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_12" OrigName="fbupdateLVLString_12" Type="STATIC01" OrigType="Static01" Addr="0xA1C813D8" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_13" OrigName="fbupdateLVLString_13" Type="STATIC01" OrigType="Static01" Addr="0xA1C81414" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLSTRING_14" OrigName="fbupdateLVLString_14" Type="STATIC01" OrigType="Static01" Addr="0xA1C81450" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_3" OrigName="fbupdateLVLEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C811D4" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_5" OrigName="fbupdateLVLEdit_5" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81264" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_8" OrigName="fbupdateLVLEdit_8" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C812F4" Group="updateLVL_vars"/>
-			<VarExt Name="FBUPDATELVLEDIT_11" OrigName="fbupdateLVLEdit_11" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C81384" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_1" OrigName="fbupdateLVLString_1" Type="STATIC01" OrigType="Static01" Addr="0xA1C811A4" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_2" OrigName="fbupdateLVLString_2" Type="STATIC01" OrigType="Static01" Addr="0xA1C811E0" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_4" OrigName="fbupdateLVLString_4" Type="STATIC01" OrigType="Static01" Addr="0xA1C81270" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_7" OrigName="fbupdateLVLString_7" Type="STATIC01" OrigType="Static01" Addr="0xA1C81300" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_10" OrigName="fbupdateLVLString_10" Type="STATIC01" OrigType="Static01" Addr="0xA1C81390" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_12" OrigName="fbupdateLVLString_12" Type="STATIC01" OrigType="Static01" Addr="0xA1C81420" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_13" OrigName="fbupdateLVLString_13" Type="STATIC01" OrigType="Static01" Addr="0xA1C8145C" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLSTRING_14" OrigName="fbupdateLVLString_14" Type="STATIC01" OrigType="Static01" Addr="0xA1C81498" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_3" OrigName="fbupdateLVLEdit_3" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C8121C" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_5" OrigName="fbupdateLVLEdit_5" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C812AC" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_8" OrigName="fbupdateLVLEdit_8" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C8133C" Group="updateLVL_vars"/>
+			<VarExt Name="FBUPDATELVLEDIT_11" OrigName="fbupdateLVLEdit_11" Type="EDITBOX01" OrigType="EditBox01" Addr="0xA1C813CC" Group="updateLVL_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="DRAWUPDATEROTATION" OrigName="DrawupdateRotation" SrcType="3" FrameSize="60" CodeAddr="0xA1B09FC8" HashCode="6C2C1D8D">
+		<FBlock Name="DRAWUPDATEROTATION" OrigName="DrawupdateRotation" SrcType="3" FrameSize="60" CodeAddr="0xA1B0B3FC" HashCode="6C2C1D8D">
 			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
@@ -582,7 +717,7 @@
 			<VarExt Name="FBUPDATEROTATIONBUTTON_5" OrigName="fbupdateRotationButton_5" Type="BUTTON02" OrigType="Button02" Addr="0xA1C80574" Group="updateRotation_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="REFRMAIN" OrigName="Refrmain" SrcType="3" FrameSize="20" CodeAddr="0xA1B06B1C" HashCode="16B7CD53">
+		<FBlock Name="REFRMAIN" OrigName="Refrmain" SrcType="3" FrameSize="20" CodeAddr="0xA1B06F78" HashCode="16B7CD53">
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="PAGID" OrigName="pagID" Type="UINT" OrigType="UINT" Addr="0x6[2]" Attribs="relative"/>
 			<Var Name="N" OrigName="n" Type="USINT" OrigType="USINT" Addr="0x6[4]" Attribs="relative"/>
@@ -611,7 +746,7 @@
 			<VarExt Name="FBMAINPROGRESS_1" OrigName="fbmainProgress_1" Type="PROGRESS" OrigType="Progress" Addr="0xA1C80084" Group="main_vars"/>
 			<VarExt Name="$WAITREFRESH" OrigName="$waitRefresh" Type="BOOL" OrigType="BOOL" Addr="0xA1C8000D" Group="Sets"/>
 		</FBlock>
-		<FBlock Name="DRAWMAIN" OrigName="Drawmain" SrcType="3" FrameSize="60" CodeAddr="0xA1B07630" HashCode="5C687C4A">
+		<FBlock Name="DRAWMAIN" OrigName="Drawmain" SrcType="3" FrameSize="60" CodeAddr="0xA1B08478" HashCode="F3EF810D">
 			<VarO Name="UIOUTVAR" OrigName="uiOutVar" Type="UINT" OrigType="UINT" Addr="0x6[50]" Attribs="relative"/>
 			<Var Name="RES" OrigName="res" Type="USINT" OrigType="USINT" Addr="0x6[0]" Attribs="relative"/>
 			<Var Name="BSTATREDRW" OrigName="bStatRedrw" Type="BOOL" OrigType="BOOL" Addr="0x6[1]" Attribs="relative"/>
