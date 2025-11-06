@@ -34,23 +34,28 @@ auto_state_3 AT %MW110.76 : STRING[ 10 ] := '0';
 flooding_state AT %MW110.82 : STRING[ 20 ] := '0';
 rotation_state AT %MW110.93 : STRING[ 5 ] := '0';
 alarm_pumps AT %MW110.96 : WORD := 0;
+is_three_pumps_here AT %MW110.97 : BOOL := 0;
 	{G:"IO_Mapping"}
 Tank_Level AT %IW1.1 : INT;	{ DE:"AIL2 analogue input" }
 Avto_A AT %IX0.0 : BOOL;	{ DE:"DIL1 digital input" }
 Avto_B AT %IX0.1 : BOOL;	{ DE:"DIL2 digital input" }
-Avto_C AT %IX0.2 : BOOL;	{ DE:"DIL3 digital input" }
-is_working_A AT %IX0.3 : BOOL;	{ DE:"DIL4 digital input" }
-is_working_B AT %IX0.4 : BOOL;	{ DE:"DIL5 digital input" }
-is_working_C AT %IX0.5 : BOOL;	{ DE:"DIL6 digital input" }
+is_working_A AT %IX0.2 : BOOL;	{ DE:"DIL3 digital input" }
+is_working_B AT %IX0.3 : BOOL;	{ DE:"DIL4 digital input" }
+di_dry AT %IX0.4 : BOOL;	{ DE:"DIL5 digital input" }
+di_overflow AT %IX0.5 : BOOL;	{ DE:"DIL6 digital input" }
 di_flooding AT %IX0.6 : BOOL;	{ DE:"DIL7 digital input" }
-di_sensor_Max AT %IX0.7 : BOOL;	{ DE:"DIL8 digital input" }
-di_sensor_Min AT %IX0.8 : BOOL;	{ DE:"DIL9 digital input" }
+di_reset_alarm AT %IX0.7 : BOOL;	{ DE:"DIL8 digital input" }
+Avto_C AT %IX0.8 : BOOL;	{ DE:"DIL9 digital input" }
 di_door AT %IX0.9 : BOOL;	{ DE:"DIL10 digital input" }
 di_rnpp AT %IX0.10 : BOOL;	{ DE:"DIL11 digital input" }
-Motor_A AT %QX1.0 : BOOL;	{ DE:"DOL1 digital output" }
-Motor_B AT %QX1.1 : BOOL;	{ DE:"DOL2 digital output" }
-Motor_C AT %QX1.2 : BOOL;	{ DE:"DOL3 digital output" }
-general_alarm AT %QX1.3 : BOOL;	{ DE:"DOL4 digital output" }
+is_working_C AT %IX0.11 : BOOL;	{ DE:"DIL12 digital input" }
+start_Motor_A AT %QX1.0 : BOOL;	{ DE:"DOL1 digital output" }
+stop_Motor_A AT %QX1.1 : BOOL;	{ DE:"DOL2 digital output" }
+start_Motor_B AT %QX1.2 : BOOL;	{ DE:"DOL3 digital output" }
+stop_Motor_B AT %QX1.3 : BOOL;	{ DE:"DOL4 digital output" }
+general_alarm AT %QX1.4 : BOOL;	{ DE:"DOL5 digital output" }
+start_Motor_C AT %QX1.5 : BOOL;	{ DE:"DOL6 digital output" }
+stop_Motor_C AT %QX1.6 : BOOL;	{ DE:"DOL7 digital output" }
 o_tank_lvl AT %QW0.2 : INT;	{ DE:"AOL3 analogue output" }
 	END_VAR
 
