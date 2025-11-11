@@ -135,7 +135,7 @@ cnt := cnt + 1;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1762848220">
+				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1762862608">
 					<vars>
 						<localVars>
 							<var name="Rotationnumber" type="INT">
@@ -146,63 +146,34 @@ cnt := cnt + 1;
 								<descr>Локальна змінна Прогонка 0-вимкнена</descr>
 								<initValue>FALSE</initValue>
 							</var>
-							<var name="RunTime_START" type="TIME">
-								<descr>Час роботи двигуна A</descr>
-							</var>
-							<var name="CurrentMotor" type="INT">
-								<initValue>1</initValue>
-							</var>
-							<var name="ErrorCode" type="INT">
-								<initValue>0</initValue>
-							</var>
-							<var name="PumpIntervalTimer_1" type="TON">
-								<descr>інтервал для запуску прогонки</descr>
-							</var>
-							<var name="PumpRunTimer_1" type="TON">
-								<descr>Час прогонки</descr>
-							</var>
-							<var name="TestRunActive_1" type="BOOL">
-								<descr>Тригер готовності прогонки</descr>
-								<initValue>FALSE</initValue>
-							</var>
-							<var name="TestRunRunning_1" type="BOOL">
-								<descr>Прогонка виконується</descr>
-								<initValue>FALSE</initValue>
-							</var>
-							<var name="PumpIntervalTimer_2" type="TON">
-								<descr>інтервал для запуску прогонки</descr>
-							</var>
-							<var name="PumpRunTimer_2" type="TON">
-								<descr>Час прогонки</descr>
-							</var>
-							<var name="TestRunActive_2" type="BOOL">
-								<descr>Тригер готовності прогонки</descr>
-								<initValue>FALSE</initValue>
-							</var>
-							<var name="TestRunRunning_2" type="BOOL">
-								<descr>Прогонка виконується</descr>
-								<initValue>FALSE</initValue>
-							</var>
-							<var name="PumpIntervalTimer_3" type="TON">
-								<descr>інтервал для запуску прогонки</descr>
-							</var>
-							<var name="PumpRunTimer_3" type="TON">
-								<descr>Час прогонки</descr>
-							</var>
-							<var name="TestRunActive_3" type="BOOL">
-								<descr>Тригер готовності прогонки</descr>
-								<initValue>FALSE</initValue>
-							</var>
-							<var name="TestRunRunning_3" type="BOOL">
-								<descr>Прогонка виконується</descr>
-								<initValue>FALSE</initValue>
-							</var>
 							<var name="CurrentPump" type="INT">
 								<initValue>1</initValue>
 							</var>
 							<var name="check_Alarm_Pump_A" type="CheckAlarmPump"/>
 							<var name="check_Alarm_Pump_B" type="CheckAlarmPump"/>
 							<var name="is_critical_lvl" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="need_fast_run_A" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="need_fast_run_B" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="Stopping_Timer_A" type="TON"/>
+							<var name="Stopping_Timer_B" type="TON"/>
+							<var name="stopping_time" type="INT">
+								<initValue>5000</initValue>
+							</var>
+							<var name="running_time" type="INT">
+								<initValue>7000</initValue>
+							</var>
+							<var name="Fast_Run_Timer_A" type="TON"/>
+							<var name="Fast_Run_Timer_B" type="TON"/>
+							<var name="downTimeIN_A" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="downTimeIN_B" type="BOOL">
 								<initValue>FALSE</initValue>
 							</var>
 						</localVars>
@@ -213,25 +184,20 @@ cnt := cnt + 1;
 VAR
 	Rotationnumber : INT := 1;	(* Номер в ротації *)
 	FastRunMode : BOOL := FALSE;	(* Локальна змінна Прогонка 0-вимкнена *)
-	RunTime_START : TIME;	(* Час роботи двигуна A *)
-	CurrentMotor : INT := 1;
-	ErrorCode : INT := 0;
-	PumpIntervalTimer_1 : TON;	(* інтервал для запуску прогонки *)
-	PumpRunTimer_1 : TON;	(* Час прогонки *)
-	TestRunActive_1 : BOOL := FALSE;	(* Тригер готовності прогонки *)
-	TestRunRunning_1 : BOOL := FALSE;	(* Прогонка виконується *)
-	PumpIntervalTimer_2 : TON;	(* інтервал для запуску прогонки *)
-	PumpRunTimer_2 : TON;	(* Час прогонки *)
-	TestRunActive_2 : BOOL := FALSE;	(* Тригер готовності прогонки *)
-	TestRunRunning_2 : BOOL := FALSE;	(* Прогонка виконується *)
-	PumpIntervalTimer_3 : TON;	(* інтервал для запуску прогонки *)
-	PumpRunTimer_3 : TON;	(* Час прогонки *)
-	TestRunActive_3 : BOOL := FALSE;	(* Тригер готовності прогонки *)
-	TestRunRunning_3 : BOOL := FALSE;	(* Прогонка виконується *)
 	CurrentPump : INT := 1;
     check_Alarm_Pump_A : CheckAlarmPump;
     check_Alarm_Pump_B : CheckAlarmPump;
     is_critical_lvl : BOOL := FALSE;
+    need_fast_run_A : BOOL := FALSE;
+    need_fast_run_B : BOOL := FALSE;
+    Stopping_Timer_A : TON;
+    Stopping_Timer_B : TON;
+    stopping_time : INT := 5000;
+    running_time : INT := 7000;
+    Fast_Run_Timer_A : TON;
+    Fast_Run_Timer_B : TON;
+    downTimeIN_A : BOOL := FALSE;
+    downTimeIN_B : BOOL := FALSE;
 END_VAR
 
 ]]>
@@ -430,84 +396,67 @@ IF Tank_Level >= Level_1 AND NOT Rotation AND NOT FastRunMode THEN
 //Прогонка активація
 // ==================================================
 IF NOT Rotation AND FastRunMode THEN
-               
- CASE CurrentPump OF
-        
-        1:
-            
-            // Якщо цикл не активний і не виконується – запускаємо таймер
-            IF Tank_Level >= Level_1 AND Priority = 0 Then 
-            if not is_working_A then
-                CurrentPump := ((CurrentPump) MOD 2) + 1;
-                start_Motor_A := true;       // короткий імпульс старту
-            end_if;    
-         Else 
-            IF NOT TestRunActive_1 AND NOT TestRunRunning_1 THEN
-                PumpIntervalTimer_1(IN := TRUE, PT := 5000);
-               IF PumpIntervalTimer_1.Q THEN
-                    TestRunActive_1 := TRUE;
-                    PumpIntervalTimer_1(IN := FALSE); // Скидання таймера
-               END_IF;
-           END_IF;
-           END_IF;
-            // Якщо цикл активний – запускаємо насос
-            IF TestRunActive_1 THEN
-               IF NOT TestRunRunning_1 THEN
-                    TestRunRunning_1 := TRUE;
-              END_IF;
-            // Перевірка рівня резервуару для насоса 1
-            IF TestRunRunning_1 AND Tank_Level < Level_2 And  Avto_A and not alarm_pumps.0 THEN
-                    PumpRunTimer_1(IN := TestRunActive_1 AND TestRunRunning_1, PT := 5000);
-               IF NOT PumpRunTimer_1.Q THEN
-               if not is_working_A then
-                        start_Motor_A := true;       // короткий імпульс старту
-               end_if;         
-               ELSE
-                        stop_Motor_A := false;       // короткий імпульс розмикання стопу
-                        TestRunRunning_1 := FALSE;
-                        TestRunActive_1 := FALSE;
-                        PumpRunTimer_1(IN := FALSE, PT := 5000);
-                        CurrentPump := ((CurrentPump) MOD 2) + 1;      
-                    END_IF;
-                 END_IF;
-                 END_IF;
-       
-        2:
-           IF  Tank_Level >= Level_1 AND Priority = 1 Then 
-           if not is_working_B then
-                CurrentPump := ((CurrentPump) MOD 2) + 1;
-                start_Motor_B := true;       // короткий імпульс старту
-           end_if;     
-            Else 
-            IF NOT TestRunActive_2 AND NOT TestRunRunning_2 THEN
-                PumpIntervalTimer_2(IN := TRUE, PT := 6000);
-               IF PumpIntervalTimer_2.Q THEN
-                    TestRunActive_2 := TRUE;
-                    PumpIntervalTimer_2(IN := FALSE);
-               END_IF;
-              END_IF;
-            END_IF;
-            IF TestRunActive_2 THEN
-               IF NOT TestRunRunning_2 THEN
-                    TestRunRunning_2 := TRUE;
-               END_IF;
-            IF TestRunRunning_2 AND Tank_Level < Level_2 And  Avto_B and not alarm_pumps.1 THEN
-                    PumpRunTimer_2(IN := TestRunActive_2 AND TestRunRunning_2, PT := 6000);
-               IF NOT PumpRunTimer_2.Q THEN
-               if not is_working_B then
-                        start_Motor_B := true;       // короткий імпульс старту
-               end_if;         
-               ELSE
-                        stop_Motor_B := false;       // короткий імпульс розмикання стопу
-                        TestRunRunning_2 := FALSE;
-                        TestRunActive_2 := FALSE;
-                        PumpRunTimer_2(IN := FALSE, PT := 6000);
-                        CurrentPump := ((CurrentPump) MOD 2) + 1;
-                    END_IF;
-                END_IF;
-             END_IF;
-      END_CASE;   
-  END_IF;               
+if not is_working_A then
+downTimeIN_A := true;
+else
+downTimeIN_A := false;
+end_if;
+
+if not is_working_B then
+downTimeIN_B := true;
+else
+downTimeIN_B := false;
+end_if;
+
+Stopping_Timer_A(IN := downTimeIN_A, PT := stopping_time);
+Stopping_Timer_B(IN := downTimeIN_B, PT := stopping_time);
+
+if Stopping_Timer_A.Q then
+need_fast_run_A := true;
+downTimeIN_A := false;
+end_if;
+
+if Stopping_Timer_B.Q then
+need_fast_run_B := true;
+downTimeIN_B := false;
+end_if;
+
+
+           
+   CASE CurrentPump OF
+        1: if need_fast_run_A and
+           Avto_A and 
+           not alarm_pumps.0 and
+           Tank_Level >= Level_1 then
+          
+           start_Motor_A := true;
+           
+           Fast_Run_Timer_A(IN := is_working_A, PT := running_time);
+               if Fast_Run_Timer_A.Q then
+               stop_Motor_A := false;
+               need_fast_run_A := false;
+               end_if;
+           else
+               CurrentPump := ((CurrentPump) MOD 2) + 1; 
+           end_if;
+           
+        2: if need_fast_run_B and
+           Avto_B and 
+           not alarm_pumps.1 and
+           Tank_Level >= Level_1 then
+          
+           start_Motor_B := true;
+           
+           Fast_Run_Timer_B(IN := is_working_B, PT := running_time);
+               if Fast_Run_Timer_B.Q then
+               stop_Motor_B := false;
+               need_fast_run_B := false;
+               end_if;
+           else
+               CurrentPump := ((CurrentPump) MOD 2) + 1; 
+           end_if;
+   END_CASE;   
+END_IF;               
 
 
 
@@ -549,7 +498,7 @@ if Tank_Level < Level_2 then
 end_if;
 end_if;
 
-if Rotation and 
+if Rotation or FastRunMode and 
    Tank_Level < Level_1 and  not is_working_A and not is_working_B then
    stop_Motor_A := false;
    stop_Motor_B := false;
@@ -77573,7 +77522,7 @@ PROGRAM InitParDB
 		dummyCrc32: UDINT;
 	END_VAR
 
-	dummyCrc32 := 2877696694;
+	dummyCrc32 := 1604578053;
 
 	warningsKiller := sysDBase_SetExtTable( ADR( $$ParDB ), $$ParDBLength );
 
@@ -77604,7 +77553,7 @@ END_PROGRAM
 			</src>
 		</aux>
 		<workspace>
-			<root name="04" nextID="2731">
+			<root name="04" nextID="2792">
 				<GlobalVars name="Global_vars" id="11"/>
 				<Pou name="main" id="2"/>
 				<Pou name="LVL_v2" id="15" genHidden="false"/>
@@ -77848,7 +77797,7 @@ END_PROGRAM
 								<name>ep_rotation</name>
 								<typepar>5</typepar>
 								<typetarg>BOOL</typetarg>
-								<value>1</value>
+								<value>0</value>
 								<min/>
 								<max/>
 								<ipamin/>
@@ -80015,7 +79964,7 @@ END_PROGRAM
 								<value ipa="1" subidx="0">350</value>
 								<value ipa="2" subidx="0">500</value>
 								<value ipa="3" subidx="0">100</value>
-								<value ipa="4" subidx="0">1</value>
+								<value ipa="4" subidx="0">0</value>
 								<value ipa="5000" subidx="0">0</value>
 								<value ipa="5001" subidx="0">0</value>
 								<value ipa="5002" subidx="0">0</value>
