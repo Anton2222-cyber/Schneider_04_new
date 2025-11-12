@@ -135,7 +135,7 @@ cnt := cnt + 1;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1762862608">
+				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1762954196">
 					<vars>
 						<localVars>
 							<var name="Rotationnumber" type="INT">
@@ -162,11 +162,11 @@ cnt := cnt + 1;
 							</var>
 							<var name="Stopping_Timer_A" type="TON"/>
 							<var name="Stopping_Timer_B" type="TON"/>
-							<var name="stopping_time" type="INT">
-								<initValue>5000</initValue>
+							<var name="stopping_time" type="UDINT">
+								<initValue>100000</initValue>
 							</var>
-							<var name="running_time" type="INT">
-								<initValue>7000</initValue>
+							<var name="running_time" type="UDINT">
+								<initValue>10000</initValue>
 							</var>
 							<var name="Fast_Run_Timer_A" type="TON"/>
 							<var name="Fast_Run_Timer_B" type="TON"/>
@@ -192,8 +192,8 @@ VAR
     need_fast_run_B : BOOL := FALSE;
     Stopping_Timer_A : TON;
     Stopping_Timer_B : TON;
-    stopping_time : INT := 5000;
-    running_time : INT := 7000;
+    stopping_time : UDINT := 100000;
+    running_time : UDINT := 10000;
     Fast_Run_Timer_A : TON;
     Fast_Run_Timer_B : TON;
     downTimeIN_A : BOOL := FALSE;
@@ -414,11 +414,13 @@ Stopping_Timer_B(IN := downTimeIN_B, PT := stopping_time);
 if Stopping_Timer_A.Q then
 need_fast_run_A := true;
 downTimeIN_A := false;
+
 end_if;
 
 if Stopping_Timer_B.Q then
 need_fast_run_B := true;
 downTimeIN_B := false;
+
 end_if;
 
 
@@ -435,6 +437,7 @@ end_if;
                if Fast_Run_Timer_A.Q then
                stop_Motor_A := false;
                need_fast_run_A := false;
+               Stopping_Timer_A(IN := FALSE);
                end_if;
            else
                CurrentPump := ((CurrentPump) MOD 2) + 1; 
@@ -451,6 +454,7 @@ end_if;
                if Fast_Run_Timer_B.Q then
                stop_Motor_B := false;
                need_fast_run_B := false;
+               Stopping_Timer_B(IN := FALSE);
                end_if;
            else
                CurrentPump := ((CurrentPump) MOD 2) + 1; 
@@ -490,30 +494,66 @@ end_if;
 // Зупинка при повній викачці
 // ==================================================
 if NOT Rotation and NOT FastRunMode and not is_critical_lvl then
-if Tank_Level < Level_1 then       
+if Tank_Level < Level_1 and Avto_A then       
   	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
 end_if;
-if Tank_Level < Level_2 then       
+if Tank_Level < Level_2 and Avto_B then       
   	    stop_Motor_B := false;       // короткий імпульс розмикання стопу
 end_if;
 end_if;
 
-if Rotation or FastRunMode and 
-   Tank_Level < Level_1 and  not is_working_A and not is_working_B then
+if (Rotation or FastRunMode) and 
+   (Tank_Level < Level_1) and  
+   (not is_working_A) and 
+   (not is_working_B) and 
+   Avto_A and 
+   Avto_B then
+   if not start_Motor_A then
    stop_Motor_A := false;
+   end_if;
+   if not start_Motor_B then
    stop_Motor_B := false;
+   end_if;
 elsif Rotation and not is_critical_lvl then
       if is_working_A or 
       start_Motor_A or 
       is_working_B or 
       start_Motor_B then
-          if Rotationnumber = 0 then
+          if Rotationnumber = 0 and Avto_A then
           stop_Motor_A := false;
-          elsif Rotationnumber = 1 then
+          elsif Rotationnumber = 1 and Avto_B then
           stop_Motor_B := false;
           end_if;
       end_if;
 end_if;
+
+if FastRunMode then
+   if (CurrentPump = 1 and need_fast_run_A) or not is_working_B then
+   if Avto_B then
+   stop_Motor_B := false;       // короткий імпульс розмикання стопу
+   end_if;
+   end_if;
+   
+   if (CurrentPump = 2 and need_fast_run_B) or not is_working_A then
+   if Avto_A then
+   stop_Motor_A := false;       // короткий імпульс розмикання стопу
+   end_if;
+   end_if;
+   
+   if CurrentPump = 1 and need_fast_run_A and not is_working_A and start_Motor_A then
+   if Avto_A then
+   stop_Motor_A := true;       
+   end_if;
+   end_if;
+   
+   if CurrentPump = 2 and need_fast_run_B and not is_working_B and start_Motor_B then
+   if Avto_B then
+   stop_Motor_B := true;       
+   end_if;
+   end_if;
+end_if;
+
+   
 
 if Tank_Level < level_min then    
   	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
@@ -77522,7 +77562,7 @@ PROGRAM InitParDB
 		dummyCrc32: UDINT;
 	END_VAR
 
-	dummyCrc32 := 1604578053;
+	dummyCrc32 := 2877696694;
 
 	warningsKiller := sysDBase_SetExtTable( ADR( $$ParDB ), $$ParDBLength );
 
@@ -77553,7 +77593,7 @@ END_PROGRAM
 			</src>
 		</aux>
 		<workspace>
-			<root name="04" nextID="2792">
+			<root name="04" nextID="2884">
 				<GlobalVars name="Global_vars" id="11"/>
 				<Pou name="main" id="2"/>
 				<Pou name="LVL_v2" id="15" genHidden="false"/>
@@ -77797,7 +77837,7 @@ END_PROGRAM
 								<name>ep_rotation</name>
 								<typepar>5</typepar>
 								<typetarg>BOOL</typetarg>
-								<value>0</value>
+								<value>1</value>
 								<min/>
 								<max/>
 								<ipamin/>
@@ -79964,7 +80004,7 @@ END_PROGRAM
 								<value ipa="1" subidx="0">350</value>
 								<value ipa="2" subidx="0">500</value>
 								<value ipa="3" subidx="0">100</value>
-								<value ipa="4" subidx="0">0</value>
+								<value ipa="4" subidx="0">1</value>
 								<value ipa="5000" subidx="0">0</value>
 								<value ipa="5001" subidx="0">0</value>
 								<value ipa="5002" subidx="0">0</value>

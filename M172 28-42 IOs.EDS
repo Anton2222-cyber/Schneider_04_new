@@ -4,8 +4,8 @@ ModifiedBy=Schneider Electric
 Description=EDS file for 04
 CreationTime=10:32AM
 CreationDate=01-15-2013
-ModificationTime=2:03PM
-ModificationDate=11-11-2025
+ModificationTime=3:30PM
+ModificationDate=11-12-2025
 FileName=M172 28-42 IOs.EDS
 FileVersion=1
 FileRevision=0
@@ -2491,7 +2491,7 @@ ParameterName=ep_rotation
 ObjectType=0x7
 DataType=0x1
 AccessType=rw
-DefaultValue=0
+DefaultValue=1
 PDOMapping=0
 
 [2300]
