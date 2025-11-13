@@ -135,7 +135,7 @@ cnt := cnt + 1;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1762954196">
+				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1763032273">
 					<vars>
 						<localVars>
 							<var name="Rotationnumber" type="INT">
@@ -354,7 +354,7 @@ END_IF;
 // ==================================================
 //Пріорітет 0 = Motor_A, 1 = Motor_B, 2 = Motor_C 
 
-IF Tank_Level >= Level_1 AND NOT Rotation AND NOT FastRunMode THEN
+IF Tank_Level >= Level_1 AND NOT Rotation and not FastRunMode THEN
 
  CASE Priority OF
      0: // Спроба запустити Motor_A 
@@ -428,33 +428,43 @@ end_if;
    CASE CurrentPump OF
         1: if need_fast_run_A and
            Avto_A and 
-           not alarm_pumps.0 and
-           Tank_Level >= Level_1 then
-          
-           start_Motor_A := true;
+           not alarm_pumps.0 then
+               if Tank_Level >= Level_1 or is_working_A then
            
-           Fast_Run_Timer_A(IN := is_working_A, PT := running_time);
+               if not is_working_A then
+               start_Motor_A := true;
+               end_if;
+           
+               Fast_Run_Timer_A(IN := is_working_A, PT := running_time);
                if Fast_Run_Timer_A.Q then
                stop_Motor_A := false;
                need_fast_run_A := false;
                Stopping_Timer_A(IN := FALSE);
                end_if;
+               else 
+               Fast_Run_Timer_A(IN := FALSE);
+               end_if;
            else
-               CurrentPump := ((CurrentPump) MOD 2) + 1; 
+               CurrentPump := ((CurrentPump) MOD 2) + 1;         
            end_if;
            
         2: if need_fast_run_B and
            Avto_B and 
-           not alarm_pumps.1 and
-           Tank_Level >= Level_1 then
+           not alarm_pumps.1 then
+               if Tank_Level >= Level_1 or is_working_B then
           
-           start_Motor_B := true;
+               if not is_working_B then
+               start_Motor_B := true;
+               end_if;
            
-           Fast_Run_Timer_B(IN := is_working_B, PT := running_time);
+               Fast_Run_Timer_B(IN := is_working_B, PT := running_time);
                if Fast_Run_Timer_B.Q then
                stop_Motor_B := false;
                need_fast_run_B := false;
                Stopping_Timer_B(IN := FALSE);
+               end_if;
+               else 
+               Fast_Run_Timer_B(IN := FALSE);
                end_if;
            else
                CurrentPump := ((CurrentPump) MOD 2) + 1; 
@@ -551,6 +561,7 @@ if FastRunMode then
    stop_Motor_B := true;       
    end_if;
    end_if;
+   
 end_if;
 
    
@@ -559,6 +570,16 @@ if Tank_Level < level_min then
   	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
   	    stop_Motor_B := false;       // короткий імпульс розмикання стопу
   	    is_critical_lvl := false;
+  	    
+  	    if Fast_Run_Timer_A.ET > 0 then 
+        need_fast_run_A := false;
+        Fast_Run_Timer_A(IN := FALSE);
+        end_if;
+   
+        if Fast_Run_Timer_B.ET > 0 then 
+        need_fast_run_B := false;
+        Fast_Run_Timer_B(IN := FALSE);
+        end_if;
 end_if;
 
 
@@ -77562,7 +77583,7 @@ PROGRAM InitParDB
 		dummyCrc32: UDINT;
 	END_VAR
 
-	dummyCrc32 := 2877696694;
+	dummyCrc32 := 1604578053;
 
 	warningsKiller := sysDBase_SetExtTable( ADR( $$ParDB ), $$ParDBLength );
 
@@ -77593,7 +77614,7 @@ END_PROGRAM
 			</src>
 		</aux>
 		<workspace>
-			<root name="04" nextID="2884">
+			<root name="04" nextID="2976">
 				<GlobalVars name="Global_vars" id="11"/>
 				<Pou name="main" id="2"/>
 				<Pou name="LVL_v2" id="15" genHidden="false"/>
@@ -77837,7 +77858,7 @@ END_PROGRAM
 								<name>ep_rotation</name>
 								<typepar>5</typepar>
 								<typetarg>BOOL</typetarg>
-								<value>1</value>
+								<value>0</value>
 								<min/>
 								<max/>
 								<ipamin/>
@@ -80004,7 +80025,7 @@ END_PROGRAM
 								<value ipa="1" subidx="0">350</value>
 								<value ipa="2" subidx="0">500</value>
 								<value ipa="3" subidx="0">100</value>
-								<value ipa="4" subidx="0">1</value>
+								<value ipa="4" subidx="0">0</value>
 								<value ipa="5000" subidx="0">0</value>
 								<value ipa="5001" subidx="0">0</value>
 								<value ipa="5002" subidx="0">0</value>

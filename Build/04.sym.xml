@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type ="text/xsl" href="file://C:/Users/Anton/AppData/Local/Temp/LLSymTab.xsl" version="1.0"?>
-<LLSymbolTable Version="1.4" Name="04" TargetID="M172P_596p15" CodeId="0x23DE9259" DebugMemoId="0xA180B976" MemoId="0x00009027" DataRelocation="none" DbRelocation="patch" FunctRelocation="patch" dataAddrMode="byte" codeAddrMode="byte" NoIncrAlloc="false" is64bit="false" isBigEndian="false" dataSignature="0xE26A0822">
+<LLSymbolTable Version="1.4" Name="04" TargetID="M172P_596p15" CodeId="0x14987C2C" DebugMemoId="0xA180B976" MemoId="0x00009027" DataRelocation="none" DbRelocation="patch" FunctRelocation="patch" dataAddrMode="byte" codeAddrMode="byte" NoIncrAlloc="false" is64bit="false" isBigEndian="false" dataSignature="0x96216042">
 	<Resource Name="EWAD" Proc="ARMv7M"/>
 	<CaseSensitive>false</CaseSensitive>
 	<CompilerOptions FBExtCheck="true"/>
@@ -491,7 +491,7 @@
 		<Var Name="SYSMODBUS_MSG_RECEIVED_RS485_PLUGIN" OrigName="sysMODBUS_msg_received_RS485_Plugin" Type="UDINT" OrigType="UDINT" Addr="0xA04866AC" Descr="Counter for modbus message received on RS485/232 Plugin" Group="System_Modbus_messages" RelocationRecord="%M5000+12" OnDataBlock="true" DataBlockType="M" DBDataType="D" DataBlockNumber="5000" DataBlockIndex="3" Access="3"/>
 		<Var Name="$$CODEBASE$$" OrigName="$$CODEBASE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1800000"/>
 		<Var Name="$$CODESTART$$" OrigName="$$CODESTART$$" Type="UDINT" OrigType="UDINT" Addr="0xA18004F0"/>
-		<Var Name="$$CODESIZE$$" OrigName="$$CODESIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1808220"/>
+		<Var Name="$$CODESIZE$$" OrigName="$$CODESIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1808310"/>
 		<Var Name="$$CODEEND$$" OrigName="$$CODEEND$$" Type="UDINT" OrigType="UDINT" Addr="0xA1900000"/>
 		<Var Name="$$DATASIZE$$" OrigName="$$DATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1A001FC"/>
 		<Var Name="$$AUXDATASIZE$$" OrigName="$$AUXDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
@@ -500,11 +500,11 @@
 	</GlobalVars>
 	<Programs>
 		<Prog Name="DOWNLOADDATA" OrigName="DownloadData" SrcType="3" CodeAddr="0xA18048A0" HashCode="BEA32155"/>
-		<Prog Name="INITPARDB" OrigName="InitParDB" SrcType="3" CodeAddr="0xA18049C0" HashCode="12CDCBED">
+		<Prog Name="INITPARDB" OrigName="InitParDB" SrcType="3" CodeAddr="0xA18049C0" HashCode="679422F4">
 			<Var Name="WARNINGSKILLER" OrigName="warningsKiller" Type="USINT" OrigType="USINT" Addr="0xA1A00010"/>
 			<Var Name="DUMMYCRC32" OrigName="dummyCrc32" Type="UDINT" OrigType="UDINT" Addr="0xA1A0000C"/>
 		</Prog>
-		<Prog Name="LVL_V2" OrigName="LVL_v2" SrcType="3" CodeAddr="0xA1804A40" HashCode="25D5EA5D">
+		<Prog Name="LVL_V2" OrigName="LVL_v2" SrcType="3" CodeAddr="0xA1804A40" HashCode="864D3B7E">
 			<Var Name="ROTATIONNUMBER" OrigName="Rotationnumber" Type="INT" OrigType="INT" Addr="0xA1A00072" Descr="Номер в ротації"/>
 			<Var Name="FASTRUNMODE" OrigName="FastRunMode" Type="BOOL" OrigType="BOOL" Addr="0xA1A00017" Descr="Локальна змінна Прогонка 0-вимкнена"/>
 			<Var Name="CURRENTPUMP" OrigName="CurrentPump" Type="INT" OrigType="INT" Addr="0xA1A000A4"/>
@@ -522,7 +522,7 @@
 			<Var Name="DOWNTIMEIN_A" OrigName="downTimeIN_A" Type="BOOL" OrigType="BOOL" Addr="0xA1A00071"/>
 			<Var Name="DOWNTIMEIN_B" OrigName="downTimeIN_B" Type="BOOL" OrigType="BOOL" Addr="0xA1A00074"/>
 		</Prog>
-		<Prog Name="LVL_V3" OrigName="LVL_v3" SrcType="3" CodeAddr="0xA1805E9C" HashCode="B4D14817">
+		<Prog Name="LVL_V3" OrigName="LVL_v3" SrcType="3" CodeAddr="0xA1805F88" HashCode="B4D14817">
 			<Var Name="ROTATIONNUMBER" OrigName="Rotationnumber" Type="INT" OrigType="INT" Addr="0xA1A0015A" Descr="Номер в ротації"/>
 			<Var Name="FASTRUNMODE" OrigName="FastRunMode" Type="BOOL" OrigType="BOOL" Addr="0xA1A00158" Descr="Локальна змінна Прогонка 0-вимкнена"/>
 			<Var Name="PUMPINTERVALTIMER_1" OrigName="PumpIntervalTimer_1" Type="TON" OrigType="TON" Addr="0xA1A00160" Descr="інтервал для запуску прогонки"/>
@@ -543,10 +543,10 @@
 			<Var Name="CHECK_ALARM_PUMP_C" OrigName="check_Alarm_Pump_C" Type="CHECKALARMPUMP" OrigType="CheckAlarmPump" Addr="0xA1A0012C"/>
 		</Prog>
 		<Prog Name="MAIN" OrigName="main" SrcType="3" CodeAddr="0xA1804820" HashCode="1FDBE00B"/>
-		<Prog Name="MOTOHOUR" OrigName="MotoHour" SrcType="3" CodeAddr="0xA1805C90" HashCode="290CAA97"/>
+		<Prog Name="MOTOHOUR" OrigName="MotoHour" SrcType="3" CodeAddr="0xA1805D7C" HashCode="290CAA97"/>
 		<Prog Name="PARCHECK" OrigName="ParCheck" SrcType="3" CodeAddr="0xA1804950" HashCode="A281779A"/>
-		<Prog Name="REGISTER" OrigName="Register" SrcType="3" CodeAddr="0xA1805BA4" HashCode="56775164"/>
-		<Prog Name="SAVEDATA" OrigName="SaveData" SrcType="3" CodeAddr="0xA1805C90" HashCode="D6EFECE5">
+		<Prog Name="REGISTER" OrigName="Register" SrcType="3" CodeAddr="0xA1805C90" HashCode="56775164"/>
+		<Prog Name="SAVEDATA" OrigName="SaveData" SrcType="3" CodeAddr="0xA1805D7C" HashCode="D6EFECE5">
 			<Var Name="POWER_ERR" OrigName="power_err" Type="R_TRIG" OrigType="R_TRIG" Addr="0xA1A001F4"/>
 			<Var Name="TON_START_UP" OrigName="ton_start_up" Type="TON" OrigType="TON" Addr="0xA1A001E0"/>
 			<Var Name="RES_LVL_MIN" OrigName="res_lvl_min" Type="BOOL" OrigType="BOOL" Addr="0xA1A001DF"/>
