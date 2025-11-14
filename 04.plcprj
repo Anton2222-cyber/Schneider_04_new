@@ -135,7 +135,7 @@ cnt := cnt + 1;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1763032273">
+				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1763116460">
 					<vars>
 						<localVars>
 							<var name="Rotationnumber" type="INT">
@@ -238,6 +238,8 @@ else
 flooding_state := 'No';
 end_if;
 
+
+
 stop_Motor_A := true;
 stop_Motor_B := true;
 
@@ -296,6 +298,15 @@ else
 auto_state_2 := 'Hand';
 end_if;
 
+if Rotation then
+FastRun:=false;
+FastRunMode:=false;
+end_if;
+
+if FastRun or FastRunMode then
+Rotation:=false;
+ sysWriteParINT(ADR(ep_rotation), false);
+end_if;
 
 
 // ==================================================
@@ -338,14 +349,7 @@ END_IF;
 
 
 
-//Умова вимкнення 
-     IF NOT Avto_A or alarm_pumps.0 THEN
-        stop_Motor_A := false;       // короткий імпульс розмикання стопу
-     END_IF;
-       IF NOT Avto_B or alarm_pumps.1 THEN
-        stop_Motor_B := false;       // короткий імпульс розмикання стопу
-     END_IF;
-       
+
  
 
 
@@ -354,7 +358,7 @@ END_IF;
 // ==================================================
 //Пріорітет 0 = Motor_A, 1 = Motor_B, 2 = Motor_C 
 
-IF Tank_Level >= Level_1 AND NOT Rotation and not FastRunMode THEN
+IF Tank_Level >= Level_1 AND NOT Rotation THEN
 
  CASE Priority OF
      0: // Спроба запустити Motor_A 
@@ -396,13 +400,13 @@ IF Tank_Level >= Level_1 AND NOT Rotation and not FastRunMode THEN
 //Прогонка активація
 // ==================================================
 IF NOT Rotation AND FastRunMode THEN
-if not is_working_A then
+if not is_working_A and not (Priority = 0) then
 downTimeIN_A := true;
 else
 downTimeIN_A := false;
 end_if;
 
-if not is_working_B then
+if not is_working_B and not (Priority = 1) then
 downTimeIN_B := true;
 else
 downTimeIN_B := false;
@@ -424,7 +428,8 @@ downTimeIN_B := false;
 end_if;
 
 
-           
+           //якщо не співпадають пріоритет і CurrentPump то зробити
+           // щоб запускалось по пріоритету і авто, не працює, не аварія
    CASE CurrentPump OF
         1: if need_fast_run_A and
            Avto_A and 
@@ -437,7 +442,9 @@ end_if;
            
                Fast_Run_Timer_A(IN := is_working_A, PT := running_time);
                if Fast_Run_Timer_A.Q then
+               if not is_critical_lvl then
                stop_Motor_A := false;
+               end_if;
                need_fast_run_A := false;
                Stopping_Timer_A(IN := FALSE);
                end_if;
@@ -459,7 +466,9 @@ end_if;
            
                Fast_Run_Timer_B(IN := is_working_B, PT := running_time);
                if Fast_Run_Timer_B.Q then
+               if not is_critical_lvl then
                stop_Motor_B := false;
+               end_if;
                need_fast_run_B := false;
                Stopping_Timer_B(IN := FALSE);
                end_if;
@@ -504,12 +513,25 @@ end_if;
 // Зупинка при повній викачці
 // ==================================================
 if NOT Rotation and NOT FastRunMode and not is_critical_lvl then
-if Tank_Level < Level_1 and Avto_A then       
-  	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
+
+if Priority = 0 then
+if Tank_Level < Level_1 and Avto_A and not is_working_A then       
+  	    stop_Motor_A := false;       // короткий імпульс розмикання стопу	    
 end_if;
 if Tank_Level < Level_2 and Avto_B then       
   	    stop_Motor_B := false;       // короткий імпульс розмикання стопу
 end_if;
+end_if;
+
+if Priority = 1 then
+if Tank_Level < Level_1 and Avto_B and not is_working_B then       
+  	    stop_Motor_B := false;       // короткий імпульс розмикання стопу	    
+end_if;
+if Tank_Level < Level_2 and Avto_A then       
+  	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
+end_if;
+end_if;
+
 end_if;
 
 if (Rotation or FastRunMode) and 
@@ -537,18 +559,24 @@ elsif Rotation and not is_critical_lvl then
       end_if;
 end_if;
 
-if FastRunMode then
-   if (CurrentPump = 1 and need_fast_run_A) or not is_working_B then
-   if Avto_B then
+
+
+
+if FastRunMode and not is_critical_lvl then
+
+//if not Stopping_Timer_A.ET = stopping_time and not Stopping_Timer_B.ET = stopping_time then
+   if (CurrentPump = 1 and need_fast_run_A and not is_working_B AND not start_Motor_B) or (not is_working_B AND not start_Motor_B)  then
+   if Avto_B and not Stopping_Timer_B.ET = stopping_time then
    stop_Motor_B := false;       // короткий імпульс розмикання стопу
    end_if;
    end_if;
    
-   if (CurrentPump = 2 and need_fast_run_B) or not is_working_A then
-   if Avto_A then
+   if (CurrentPump = 2 and need_fast_run_B and not is_working_A AND not start_Motor_A) or (not is_working_A AND not start_Motor_A) then
+   if Avto_A and not Stopping_Timer_A.ET = stopping_time then
    stop_Motor_A := false;       // короткий імпульс розмикання стопу
    end_if;
    end_if;
+//end_if;   
    
    if CurrentPump = 1 and need_fast_run_A and not is_working_A and start_Motor_A then
    if Avto_A then
@@ -562,6 +590,21 @@ if FastRunMode then
    end_if;
    end_if;
    
+   if not need_fast_run_A then
+   if Fast_Run_Timer_A.ET = running_time then
+   if Priority = 1 then
+   stop_Motor_A := false;       // короткий імпульс розмикання стопу
+   end_if;
+   end_if;
+   end_if;
+   
+   if not need_fast_run_B then 
+   if Fast_Run_Timer_B.ET = running_time then
+   if Priority = 0 then
+   stop_Motor_B := false;       // короткий імпульс розмикання стопу
+   end_if;
+   end_if;
+   end_if;
 end_if;
 
    
@@ -582,6 +625,14 @@ if Tank_Level < level_min then
         end_if;
 end_if;
 
+//Умова вимкнення 
+     IF NOT Avto_A or alarm_pumps.0 THEN
+        stop_Motor_A := false;       // короткий імпульс розмикання стопу
+     END_IF;
+       IF NOT Avto_B or alarm_pumps.1 THEN
+        stop_Motor_B := false;       // короткий імпульс розмикання стопу
+     END_IF;
+       
 
 if di_reset_alarm then 
 Alarms :=0;
@@ -77614,7 +77665,7 @@ END_PROGRAM
 			</src>
 		</aux>
 		<workspace>
-			<root name="04" nextID="2976">
+			<root name="04" nextID="2984">
 				<GlobalVars name="Global_vars" id="11"/>
 				<Pou name="main" id="2"/>
 				<Pou name="LVL_v2" id="15" genHidden="false"/>
