@@ -135,7 +135,7 @@ cnt := cnt + 1;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1763116460">
+				<program name="LVL_v2" version="1.0.0" creationDate="1739859668" lastModifiedDate="1763459905">
 					<vars>
 						<localVars>
 							<var name="Rotationnumber" type="INT">
@@ -176,6 +176,9 @@ cnt := cnt + 1;
 							<var name="downTimeIN_B" type="BOOL">
 								<initValue>FALSE</initValue>
 							</var>
+							<var name="Priority" type="INT">
+								<initValue>0</initValue>
+							</var>
 						</localVars>
 					</vars>
 					<iecDeclaration active="TRUE" valid="TRUE">
@@ -198,6 +201,7 @@ VAR
     Fast_Run_Timer_B : TON;
     downTimeIN_A : BOOL := FALSE;
     downTimeIN_B : BOOL := FALSE;
+    Priority : INT := 0;
 END_VAR
 
 ]]>
@@ -358,6 +362,12 @@ END_IF;
 // ==================================================
 //Пріорітет 0 = Motor_A, 1 = Motor_B, 2 = Motor_C 
 
+if Priority_first_pump = 0 then 
+Priority := 0;
+elsif Priority_second_pump = 0 then
+Priority := 1;
+end_if;
+
 IF Tank_Level >= Level_1 AND NOT Rotation THEN
 
  CASE Priority OF
@@ -428,8 +438,7 @@ downTimeIN_B := false;
 end_if;
 
 
-           //якщо не співпадають пріоритет і CurrentPump то зробити
-           // щоб запускалось по пріоритету і авто, не працює, не аварія
+           
    CASE CurrentPump OF
         1: if need_fast_run_A and
            Avto_A and 
@@ -535,17 +544,20 @@ end_if;
 end_if;
 
 if (Rotation or FastRunMode) and 
-   (Tank_Level < Level_1) and  
-   (not is_working_A) and 
-   (not is_working_B) and 
+   (Tank_Level < Level_1) then 
+    
+   if (not is_working_A) and 
    Avto_A and 
-   Avto_B then
-   if not start_Motor_A then
+   (not start_Motor_A) then
    stop_Motor_A := false;
    end_if;
-   if not start_Motor_B then
+   
+   if (not is_working_B) and
+   Avto_B and 
+   not start_Motor_B then
    stop_Motor_B := false;
    end_if;
+   
 elsif Rotation and not is_critical_lvl then
       if is_working_A or 
       start_Motor_A or 
@@ -609,7 +621,7 @@ end_if;
 
    
 
-if Tank_Level < level_min then    
+if Tank_Level < level_min or di_dry then    
   	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
   	    stop_Motor_B := false;       // короткий імпульс розмикання стопу
   	    is_critical_lvl := false;
@@ -835,7 +847,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="LVL_v3" version="1.0.0" creationDate="1762413748" lastModifiedDate="1762498495">
+				<program name="LVL_v3" version="1.0.0" creationDate="1762413748" lastModifiedDate="1763546574">
 					<vars>
 						<localVars>
 							<var name="Rotationnumber" type="INT">
@@ -903,6 +915,21 @@ end_if;
 							<var name="check_Alarm_Pump_A" type="CheckAlarmPump"/>
 							<var name="check_Alarm_Pump_B" type="CheckAlarmPump"/>
 							<var name="check_Alarm_Pump_C" type="CheckAlarmPump"/>
+							<var name="is_critical_lvl" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="Priority" type="INT">
+								<initValue>0</initValue>
+							</var>
+							<var name="critical_situation" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="quick_pumping" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
+							<var name="need_pumping_to_min" type="BOOL">
+								<initValue>FALSE</initValue>
+							</var>
 						</localVars>
 					</vars>
 					<iecDeclaration active="TRUE" valid="TRUE">
@@ -930,6 +957,11 @@ VAR
     check_Alarm_Pump_A : CheckAlarmPump;
     check_Alarm_Pump_B : CheckAlarmPump;
     check_Alarm_Pump_C : CheckAlarmPump;
+    is_critical_lvl : BOOL := FALSE;
+    Priority : INT := 0;
+    critical_situation : BOOL := FALSE;
+    quick_pumping : BOOL := FALSE;
+    need_pumping_to_min : BOOL := FALSE;
 END_VAR
 ]]>
 					</iecDeclaration>
@@ -975,7 +1007,7 @@ end_if;
 
 stop_Motor_A := true;
 stop_Motor_B := true;
-stop_Motor_C := false;       // короткий імпульс розмикання стопу
+stop_Motor_C := true;       // короткий імпульс розмикання стопу
 
 check_Alarm_Pump_A(
      is_working_FB := is_working_A,
@@ -1051,10 +1083,26 @@ else
 auto_state_3 := 'Hand';
 end_if;
 
+if Rotation then
+FastRun:=false;
+FastRunMode:=false;
+end_if;
+
+if FastRun or FastRunMode then
+Rotation:=false;
+ sysWriteParINT(ADR(ep_rotation), false);
+end_if;
 // ==================================================
 //Запуск насосів на 1 рівень (ротація)
 // ==================================================
-IF Tank_Level >= Level_1 and Rotation THEN
+IF Tank_Level >= Level_1 and 
+   Rotation and
+   not is_working_A and 
+   not is_working_B and
+   not is_working_C and
+   not check_Alarm_Pump_A.StartTimerActive and
+   not check_Alarm_Pump_B.StartTimerActive and 
+   not check_Alarm_Pump_C.StartTimerActive THEN
 
 CASE Rotationnumber OF
     0: // Спроба запустити Motor_A
@@ -1064,15 +1112,15 @@ CASE Rotationnumber OF
         Rotationnumber := (Rotationnumber + 1) MOD 3;
         end_if;
         // Anton
-          ElsIF NOT Avto_A AND NOT is_working_B AND NOT is_working_C THEN
+          ElsIF NOT Avto_A THEN
           
             IF Avto_B and not alarm_pumps.1 THEN
             start_Motor_B := true;       // короткий імпульс старту
-            Rotationnumber := (Rotationnumber + 1) MOD 3;
+            Rotationnumber := (Rotationnumber + 2) MOD 3;
             
             ELSIF Avto_C and not alarm_pumps.2 THEN
             start_Motor_C := true;       // короткий імпульс старту
-            Rotationnumber := (Rotationnumber + 2) MOD 3;
+            Rotationnumber := (Rotationnumber + 1) MOD 3;
             END_IF;
         
      END_IF;     
@@ -1084,15 +1132,15 @@ CASE Rotationnumber OF
         Rotationnumber := (Rotationnumber + 1) MOD 3;
         end_if;
         
-        ElsIF NOT Avto_B AND NOT is_working_A AND NOT is_working_C THEN
+        ElsIF NOT Avto_B THEN
         
         IF Avto_A and not alarm_pumps.0 and not is_working_A THEN 
           start_Motor_A := true;       // короткий імпульс старту
-          Rotationnumber := (Rotationnumber - 1) MOD 3;
+          Rotationnumber := (Rotationnumber + 1) MOD 3;
             
         ELSIF Avto_C and not alarm_pumps.2 and not is_working_C THEN
         start_Motor_C := true;       // короткий імпульс старту
-        Rotationnumber := (Rotationnumber + 1) MOD 3;
+        Rotationnumber := (Rotationnumber + 2) MOD 3;
         END_IF;
         
       END_IF;
@@ -1102,31 +1150,22 @@ CASE Rotationnumber OF
         start_Motor_C := true;       // короткий імпульс старту
         Rotationnumber := (Rotationnumber + 1) MOD 3;
         end_if;
-        ElsIF NOT Avto_C AND NOT is_working_A AND NOT is_working_B THEN
+        ElsIF NOT Avto_C THEN
         
         IF Avto_A and not alarm_pumps.0 and not is_working_A THEN
         start_Motor_A := true;       // короткий імпульс старту
-        Rotationnumber := (Rotationnumber + 1) MOD 3;
+        Rotationnumber := (Rotationnumber - 1) MOD 3;
             
         ELSIF Avto_B and not alarm_pumps.1 and not is_working_B THEN
         start_Motor_B := true;       // короткий імпульс старту
-        Rotationnumber := (Rotationnumber - 1) MOD 3;
+        Rotationnumber := (Rotationnumber + 1) MOD 3;
         END_IF;
         
      END_IF;
 END_CASE;
 END_IF;
 
-//Умова вимкнення 
-     IF NOT Avto_A or alarm_pumps.0 THEN
-        stop_Motor_A := false;       // короткий імпульс розмикання стопу
-     END_IF;
-       IF NOT Avto_B or alarm_pumps.1 THEN
-        stop_Motor_B := false;       // короткий імпульс розмикання стопу
-     END_IF;
-       IF NOT Avto_C or alarm_pumps.2 THEN
-        stop_Motor_C := false;       // короткий імпульс розмикання стопу
-     END_IF;
+
  
 
 
@@ -1135,7 +1174,15 @@ END_IF;
 // ==================================================
 //Пріорітет 0 = Motor_A, 1 = Motor_B, 2 = Motor_C 
 
-IF Tank_Level >= Level_1 AND NOT Rotation AND NOT FastRunMode THEN
+if Priority_first_pump = 0 and Avto_A and not alarm_pumps.0 then 
+Priority := 0;
+elsif Priority_second_pump = 0 and Avto_B and not alarm_pumps.1 then
+Priority := 1;
+elsif Priority_third_pump = 0 and Avto_C and not alarm_pumps.2 then
+Priority := 2;
+end_if;
+
+IF Tank_Level >= Level_1 AND NOT Rotation THEN
 
  CASE Priority OF
      0: // Спроба запустити Motor_A 
@@ -1328,79 +1375,307 @@ IF NOT Rotation AND FastRunMode THEN
 // ==================================================
 (*Вибір запуску Двох насів на Другий рівень*)
 // ==================================================
+
+// не можна крутитити туди сюди ручний режим якщо другий і третій рівень
 IF Tank_Level >= Level_2 AND Tank_Level < Level_3  THEN
     
-     
+   //IF not Rotation and not FastRunMode then  
      IF is_working_A AND NOT is_working_B AND NOT is_working_C THEN
-     
+        if Priority_second_pump < Priority_third_pump then
     
-        if Avto_B and not alarm_pumps.1 THEN
-        start_Motor_B := true;       // короткий імпульс старту
+           if Avto_B and not alarm_pumps.1 THEN
+           start_Motor_B := true;       // короткий імпульс старту
         
-        elsif Avto_C and not alarm_pumps.2 THEN
-        start_Motor_C := true;       // короткий імпульс старту
-       
+           elsif Avto_C and not alarm_pumps.2 THEN
+           start_Motor_C := true;       // короткий імпульс старту
+           END_IF;
+        else
+           if Avto_C and not alarm_pumps.2 THEN
+           start_Motor_C := true;       // короткий імпульс старту
+           
+           elsif Avto_B and not alarm_pumps.1 THEN
+           start_Motor_B := true;       // короткий імпульс старту
+           END_IF;
+        end_if;
         
-        END_IF;
       END_IF;
      
      IF is_working_B AND NOT is_working_A AND NOT is_working_C THEN
-        if Avto_A and not alarm_pumps.0 THEN
-        start_Motor_A := true;       // короткий імпульс старту
-        elsif Avto_C and not alarm_pumps.2 THEN
-        start_Motor_C := true;       // короткий імпульс старту
-     	END_IF;
+     
+        if Priority_first_pump < Priority_third_pump then
+           if Avto_A and not alarm_pumps.0 THEN
+           start_Motor_A := true;       // короткий імпульс старту
+           elsif Avto_C and not alarm_pumps.2 THEN
+           start_Motor_C := true;       // короткий імпульс старту
+     	   END_IF;
+     	else
+     	   if Avto_C and not alarm_pumps.2 THEN
+           start_Motor_C := true;       // короткий імпульс старту
+     	   elsif Avto_A and not alarm_pumps.0 THEN
+           start_Motor_A := true;       // короткий імпульс старту
+     	   END_IF;
+     	end_if;
      END_IF;
      
      IF is_working_C AND NOT is_working_A AND NOT is_working_B THEN
-        IF  Avto_A and not alarm_pumps.0 THEN
-        start_Motor_A := true;       // короткий імпульс старту
-     	elsif Avto_B and not alarm_pumps.1 THEN
-        start_Motor_B := true;       // короткий імпульс старту
+        if Priority_first_pump < Priority_second_pump then
+           IF  Avto_A and not alarm_pumps.0 THEN
+           start_Motor_A := true;       // короткий імпульс старту
+     	   elsif Avto_B and not alarm_pumps.1 THEN
+           start_Motor_B := true;       // короткий імпульс старту
+           END_IF;
+        else
+           if Avto_B and not alarm_pumps.1 THEN
+           start_Motor_B := true;       // короткий імпульс старту
+           elsif  Avto_A and not alarm_pumps.0 THEN
+           start_Motor_A := true;       // короткий імпульс старту
+           END_IF;
+        end_if;
      END_IF;
-END_IF;
+     
+   //END_IF;
 END_IF;  
 
 // ==================================================
+//Критична ситуація
+// ==================================================
+if Tank_Level >= Level_2 then
+   if not Avto_A or 
+   not Avto_B or
+   not Avto_C or
+   alarm_pumps then
+       critical_situation := true;
+   end_if;
+end_if;
+
+if Tank_Level >= Level_2 then
+   if Avto_A and 
+   Avto_B and
+   Avto_C and
+   not alarm_pumps then
+       critical_situation := false;
+   end_if;
+end_if;
+// ==================================================
 //Вимкнення третього насоса при швидкому викачуванні
 // ==================================================
+
 IF Tank_Level <= Level_1 and is_working_A and is_working_B and is_working_C THEN 
-        stop_Motor_A := false;       // короткий імпульс розмикання стопу
-        END_IF;
-      
+   quick_pumping := true;
+END_IF; 
+
+if quick_pumping then
+   if Priority_first_pump = 0 then 
+   stop_Motor_A := false;       // короткий імпульс розмикання стопу
+   elsif Priority_second_pump = 0 then 
+   stop_Motor_B := false;       // короткий імпульс розмикання стопу
+   elsif Priority_third_pump = 0 then 
+   stop_Motor_C := false;       // короткий імпульс розмикання стопу
+   end_if;
+end_if;   
+
 // ==================================================
 (*Вибір запуску Всіх насосів на Третій рівень*)
 // ==================================================
 IF Tank_Level > Level_3 THEN
-     IF Avto_A and not alarm_pumps.0 THEN
+     IF Avto_A and not is_working_A and not alarm_pumps.0 THEN
         start_Motor_A := true;       // короткий імпульс старту
      END_IF;
      
-      IF Avto_B and not alarm_pumps.1 THEN
+      IF Avto_B and not is_working_B and not alarm_pumps.1 THEN
         start_Motor_B := true;       // короткий імпульс старту
      END_IF;
      
-     IF Avto_C and not alarm_pumps.2 THEN
+     IF Avto_C and not is_working_C and not alarm_pumps.2 THEN
         start_Motor_C := true;       // короткий імпульс старту
      END_IF;
      
 END_IF; 
 
+if Tank_Level >= Level_3 then
+is_critical_lvl := true;
+end_if;
+
 // ==================================================
 // Зупинка при повній викачці
 // ==================================================
 
-if Tank_Level < Level_1 then    
+if not Rotation and not FastRunMode and not is_critical_lvl and not critical_situation then
+       if Priority = 0  then
+          if Tank_Level < Level_1 and Avto_A and not is_working_A then
+          stop_Motor_A := false;       // короткий імпульс розмикання стопу
+          end_if;
+          
+          if Priority_second_pump < Priority_third_pump then
+             if Tank_Level < Level_2 and Avto_B then       
+  	         stop_Motor_B := false;       // короткий імпульс розмикання стопу
+             end_if;
+             
+             if Tank_Level < Level_3 and Avto_C then       
+  	         stop_Motor_C := false;       // короткий імпульс розмикання стопу
+             end_if;
+          else
+             if Tank_Level < Level_2 and Avto_C then       
+  	         stop_Motor_C := false;       // короткий імпульс розмикання стопу
+             end_if;
+             
+             if Tank_Level < Level_3 and Avto_B then       
+  	         stop_Motor_B := false;       // короткий імпульс розмикання стопу
+             end_if;
+          end_if;
+       elsif Priority = 1 then
+          if Tank_Level < Level_1 and Avto_B and not is_working_B then
+          stop_Motor_B := false;       // короткий імпульс розмикання стопу
+          end_if;
+          
+          if Priority_first_pump < Priority_third_pump then
+             if Tank_Level < Level_2 and Avto_A then       
+  	         stop_Motor_A := false;       // короткий імпульс розмикання стопу
+             end_if;
+             
+             if Tank_Level < Level_3 and Avto_C then       
+  	         stop_Motor_C := false;       // короткий імпульс розмикання стопу
+             end_if;
+          else
+             if Tank_Level < Level_2 and Avto_C then       
+  	         stop_Motor_C := false;       // короткий імпульс розмикання стопу
+             end_if;
+             
+             if Tank_Level < Level_3 and Avto_A then       
+  	         stop_Motor_A := false;       // короткий імпульс розмикання стопу
+             end_if;
+          end_if;
+       elsif Priority = 2 then
+          if Tank_Level < Level_1 and Avto_C and not is_working_C then
+          stop_Motor_C := false;       // короткий імпульс розмикання стопу
+          end_if;
+          
+          if Priority_first_pump < Priority_second_pump then
+             if Tank_Level < Level_2 and Avto_A then       
+  	         stop_Motor_A := false;       // короткий імпульс розмикання стопу
+             end_if;
+             
+             if Tank_Level < Level_3 and Avto_B then       
+  	         stop_Motor_B := false;       // короткий імпульс розмикання стопу
+             end_if;
+          else
+             if Tank_Level < Level_2 and Avto_B then       
+  	         stop_Motor_B := false;       // короткий імпульс розмикання стопу
+             end_if;
+             
+             if Tank_Level < Level_3 and Avto_A then       
+  	         stop_Motor_A := false;       // короткий імпульс розмикання стопу
+             end_if;
+          end_if;
+       end_if;
+end_if;
+
+if (Rotation or FastRunMode) and 
+   (Tank_Level < Level_1) then 
+    
+   if (not is_working_A) and 
+   Avto_A and 
+   (not start_Motor_A) then
+   stop_Motor_A := false;
+   end_if;
+   
+   if (not is_working_B) and
+   Avto_B and 
+   not start_Motor_B then
+   stop_Motor_B := false;
+   end_if;
+   
+   if (not is_working_C) and
+   Avto_C and 
+   not start_Motor_C then
+   stop_Motor_C := false;
+   end_if;
+   
+elsif Rotation and not is_critical_lvl and not critical_situation then
+      if is_working_A or 
+      start_Motor_A or 
+      is_working_B or 
+      start_Motor_B or 
+      is_working_C or 
+      start_Motor_C then
+          if (start_Motor_A or is_working_A) and Avto_A then
+             if Tank_Level < Level_2 and not need_pumping_to_min then
+             stop_Motor_B := false;
+             stop_Motor_C := false;
+             else 
+                 need_pumping_to_min := true;
+                 if not is_working_B and not start_Motor_B then
+                 stop_Motor_B := false;
+                 elsif not is_working_C and not start_Motor_C then
+                 stop_Motor_C := false;
+                 end_if;
+             end_if;
+          elsif (start_Motor_B or is_working_B) and Avto_B then
+             if Tank_Level < Level_2 and not need_pumping_to_min then
+             stop_Motor_A := false;
+             stop_Motor_C := false;
+             else 
+                 need_pumping_to_min := true;
+                 if not is_working_A and not start_Motor_A then
+                 stop_Motor_A := false;
+                 elsif not is_working_C and not start_Motor_C then
+                 stop_Motor_C := false;
+                 end_if;
+             end_if;
+          elsif (start_Motor_C or is_working_C) and Avto_C then
+             if Tank_Level < Level_2 and not need_pumping_to_min then
+             stop_Motor_A := false;
+             stop_Motor_B := false;
+             else
+                 need_pumping_to_min := true;
+                 if not is_working_A and not start_Motor_A then
+                 stop_Motor_A := false;
+                 elsif not is_working_B and not start_Motor_B then
+                 stop_Motor_B := false;
+                 end_if;
+             end_if;
+          end_if;
+      end_if;
+end_if;
+
+if Avto_A and 
+   NOT is_working_A and
+   NOT start_Motor_A then
+       stop_Motor_A := false;
+   end_if;
+
+if Avto_B and 
+   NOT is_working_B and
+   NOT start_Motor_B then
+       stop_Motor_B := false;
+   end_if;   
+
+if Avto_C and 
+   NOT is_working_C and
+   NOT start_Motor_C then
+       stop_Motor_C := false;
+   end_if;
+
+if Tank_Level < level_min or di_dry then    
   	    stop_Motor_A := false;       // короткий імпульс розмикання стопу
-end_if;
-
-if Tank_Level < Level_2 then       
   	    stop_Motor_B := false;       // короткий імпульс розмикання стопу
+  	    stop_Motor_C := false;
+  	    is_critical_lvl := false;
+  	    critical_situation := false;
+  	    quick_pumping := false;
+  	    need_pumping_to_min := false;
 end_if;
 
-if Tank_Level < Level_3 then       
-  	    stop_Motor_C := false;       // короткий імпульс розмикання стопу
-end_if;
+//Умова вимкнення 
+     IF NOT Avto_A or alarm_pumps.0 THEN
+        stop_Motor_A := false;       // короткий імпульс розмикання стопу
+     END_IF;
+       IF NOT Avto_B or alarm_pumps.1 THEN
+        stop_Motor_B := false;       // короткий імпульс розмикання стопу
+     END_IF;
+       IF NOT Avto_C or alarm_pumps.2 THEN
+        stop_Motor_C := false;       // короткий імпульс розмикання стопу
+     END_IF;
 
 if di_reset_alarm then 
 Alarms :=0;
@@ -77538,13 +77813,11 @@ AXPUmYQGQFdzyadpc1HyqbttBxw=]]>
 		{G:"Status_variables"}
 	Level_3 AT %MW110.5 : INT := 0;  {DE:"Рівень роботи 3"}
 		{G:"Status_variables"}
-	Priority AT %MW110.6 : INT := 0;  {DE:"Пріорітет  0 = Motor_A, 1 = Motor_B, 2 = Motor_C"}
+	Alarms AT %MW110.6 : WORD;  {DE:"Аварії"}
 		{G:"Status_variables"}
-	Alarms AT %MW110.7 : WORD;  {DE:"Аварії"}
+	Rotation AT %MW110.7 : BOOL := 0;  {DE:"Ротація 0 - вимкнена"}
 		{G:"Status_variables"}
-	Rotation AT %MW110.8 : BOOL := 0;  {DE:"Ротація 0 - вимкнена"}
-		{G:"Status_variables"}
-	FastRun AT %MW110.9 : BOOL := 0;  {DE:"Прогонка 0 - вимкнена"}
+	FastRun AT %MW110.8 : BOOL := 0;  {DE:"Прогонка 0 - вимкнена"}
 		{G:"Status_variables"}
 	MotoHour_1 AT %MW110.10 : REAL;  {DE:"Мотогодини  насос А"}
 		{G:"Status_variables"}
@@ -77570,7 +77843,13 @@ AXPUmYQGQFdzyadpc1HyqbttBxw=]]>
 		{G:"Status_variables"}
 	alarm_pumps AT %MW110.96 : WORD := 0;
 		{G:"Status_variables"}
-	is_three_pumps_here AT %MW110.97 : BOOL := 0;
+	is_three_pumps_here AT %MW110.97 : BOOL := 1;
+		{G:"Status_variables"}
+	Priority_first_pump AT %MW110.98 : INT := 0;
+		{G:"Status_variables"}
+	Priority_second_pump AT %MW110.99 : INT := 1;
+		{G:"Status_variables"}
+	Priority_third_pump AT %MW110.100 : INT := 2;
 		{G:"IO_Mapping"}
 	Tank_Level AT %IW1.1 : INT;  {DE:"AIL2 analogue input"}
 		{G:"IO_Mapping"}
@@ -77578,25 +77857,25 @@ AXPUmYQGQFdzyadpc1HyqbttBxw=]]>
 		{G:"IO_Mapping"}
 	Avto_B AT %IX0.1 : BOOL;  {DE:"DIL2 digital input"}
 		{G:"IO_Mapping"}
-	is_working_A AT %IX0.2 : BOOL;  {DE:"DIL3 digital input"}
+	Avto_C AT %IX0.2 : BOOL;  {DE:"DIL3 digital input"}
 		{G:"IO_Mapping"}
-	is_working_B AT %IX0.3 : BOOL;  {DE:"DIL4 digital input"}
+	is_working_A AT %IX0.3 : BOOL;  {DE:"DIL4 digital input"}
 		{G:"IO_Mapping"}
-	di_dry AT %IX0.4 : BOOL;  {DE:"DIL5 digital input"}
+	is_working_B AT %IX0.4 : BOOL;  {DE:"DIL5 digital input"}
 		{G:"IO_Mapping"}
-	di_overflow AT %IX0.5 : BOOL;  {DE:"DIL6 digital input"}
+	is_working_C AT %IX0.5 : BOOL;  {DE:"DIL6 digital input"}
 		{G:"IO_Mapping"}
-	di_flooding AT %IX0.6 : BOOL;  {DE:"DIL7 digital input"}
+	di_dry AT %IX0.6 : BOOL;  {DE:"DIL7 digital input"}
 		{G:"IO_Mapping"}
 	di_reset_alarm AT %IX0.7 : BOOL;  {DE:"DIL8 digital input"}
 		{G:"IO_Mapping"}
-	Avto_C AT %IX0.8 : BOOL;  {DE:"DIL9 digital input"}
+	di_flooding AT %IX0.8 : BOOL;  {DE:"DIL9 digital input"}
 		{G:"IO_Mapping"}
 	di_door AT %IX0.9 : BOOL;  {DE:"DIL10 digital input"}
 		{G:"IO_Mapping"}
 	di_rnpp AT %IX0.10 : BOOL;  {DE:"DIL11 digital input"}
 		{G:"IO_Mapping"}
-	is_working_C AT %IX0.11 : BOOL;  {DE:"DIL12 digital input"}
+	di_overflow AT %IX0.11 : BOOL;  {DE:"DIL12 digital input"}
 		{G:"IO_Mapping"}
 	start_Motor_A AT %QX1.0 : BOOL;  {DE:"DOL1 digital output"}
 		{G:"IO_Mapping"}
@@ -77606,11 +77885,11 @@ AXPUmYQGQFdzyadpc1HyqbttBxw=]]>
 		{G:"IO_Mapping"}
 	stop_Motor_B AT %QX1.3 : BOOL;  {DE:"DOL4 digital output"}
 		{G:"IO_Mapping"}
-	general_alarm AT %QX1.4 : BOOL;  {DE:"DOL5 digital output"}
+	start_Motor_C AT %QX1.4 : BOOL;  {DE:"DOL5 digital output"}
 		{G:"IO_Mapping"}
-	start_Motor_C AT %QX1.5 : BOOL;  {DE:"DOL6 digital output"}
+	stop_Motor_C AT %QX1.5 : BOOL;  {DE:"DOL6 digital output"}
 		{G:"IO_Mapping"}
-	stop_Motor_C AT %QX1.6 : BOOL;  {DE:"DOL7 digital output"}
+	general_alarm AT %QX1.6 : BOOL;  {DE:"DOL7 digital output"}
 		{G:"IO_Mapping"}
 	o_tank_lvl AT %QW0.2 : INT;  {DE:"AOL3 analogue output"}
 	END_VAR
@@ -77620,8 +77899,8 @@ AXPUmYQGQFdzyadpc1HyqbttBxw=]]>
 				<![CDATA[(* Automatically generated, do not edit! *)
 
 VAR_GLOBAL CONSTANT
-$$ParDB : ARRAY[ 0..1007 ] OF USINT; { HIDDEN:ON } { INIT:"04.PLK+0" }
-$$ParDBLength  : DWORD := 28; { HIDDEN:ON }
+$$ParDB : ARRAY[ 0..1079 ] OF USINT; { HIDDEN:ON } { INIT:"04.PLK+0" }
+$$ParDBLength  : DWORD := 30; { HIDDEN:ON }
 END_VAR
 
 PROGRAM InitParDB WITH Serv;
@@ -77634,7 +77913,7 @@ PROGRAM InitParDB
 		dummyCrc32: UDINT;
 	END_VAR
 
-	dummyCrc32 := 1604578053;
+	dummyCrc32 := 1250047904;
 
 	warningsKiller := sysDBase_SetExtTable( ADR( $$ParDB ), $$ParDBLength );
 
@@ -77665,7 +77944,7 @@ END_PROGRAM
 			</src>
 		</aux>
 		<workspace>
-			<root name="04" nextID="2984">
+			<root name="04" nextID="3313">
 				<GlobalVars name="Global_vars" id="11"/>
 				<Pou name="main" id="2"/>
 				<Pou name="LVL_v2" id="15" genHidden="false"/>
@@ -77909,7 +78188,7 @@ END_PROGRAM
 								<name>ep_rotation</name>
 								<typepar>5</typepar>
 								<typetarg>BOOL</typetarg>
-								<value>0</value>
+								<value>1</value>
 								<min/>
 								<max/>
 								<ipamin/>
@@ -78249,55 +78528,6 @@ END_PROGRAM
 								<TelevisIdentificationPar>0</TelevisIdentificationPar>
 							</param>
 							<param>
-								<ipa>5012</ipa>
-								<address>8966</address>
-								<name>Priority</name>
-								<typepar>0</typepar>
-								<typetarg>INT</typetarg>
-								<value>0</value>
-								<min/>
-								<max/>
-								<ipamin/>
-								<ipamax/>
-								<scale>1</scale>
-								<offs>0</offs>
-								<um/>
-								<description>Пріорітет  0 = Motor_A, 1 = Motor_B, 2 = Motor_C</description>
-								<note/>
-								<form/>
-								<accesslevel>3</accesslevel>
-								<readonly>0</readonly>
-								<shortname/>
-								<size>31</size>
-								<dataBlock>MW110.6</dataBlock>
-								<label/>
-								<translation/>
-								<visibility>0</visibility>
-								<clientType>0</clientType>
-								<descriptioncode>CUS40000</descriptioncode>
-								<descriptioncode_language/>
-								<progressive/>
-								<category>1</category>
-								<groups/>
-								<groups_language/>
-								<complemented>1</complemented>
-								<measurementunit>num</measurementunit>
-								<measurementunit_language>en-GB</measurementunit_language>
-								<existence>FIX(1)</existence>
-								<type>0</type>
-								<writesequence/>
-								<softscope>0</softscope>
-								<iotype/>
-								<iolabel/>
-								<wizard/>
-								<wizardgroup/>
-								<installeraccesslevel>0</installeraccesslevel>
-								<autogeneratedfrombusconfig>0</autogeneratedfrombusconfig>
-								<groupscode/>
-								<measurementunitcode>FIX(VMU00020)</measurementunitcode>
-								<TelevisIdentificationPar>0</TelevisIdentificationPar>
-							</param>
-							<param>
 								<ipa>5013</ipa>
 								<address>8967</address>
 								<name>Alarms</name>
@@ -78318,7 +78548,7 @@ END_PROGRAM
 								<readonly>1</readonly>
 								<shortname/>
 								<size>31</size>
-								<dataBlock>MW110.7</dataBlock>
+								<dataBlock>MW110.6</dataBlock>
 								<label/>
 								<translation/>
 								<visibility>0</visibility>
@@ -78367,7 +78597,7 @@ END_PROGRAM
 								<readonly>0</readonly>
 								<shortname/>
 								<size>31</size>
-								<dataBlock>MW110.8</dataBlock>
+								<dataBlock>MW110.7</dataBlock>
 								<label/>
 								<translation/>
 								<visibility>0</visibility>
@@ -78416,7 +78646,7 @@ END_PROGRAM
 								<readonly>0</readonly>
 								<shortname/>
 								<size>31</size>
-								<dataBlock>MW110.9</dataBlock>
+								<dataBlock>MW110.8</dataBlock>
 								<label/>
 								<translation/>
 								<visibility>0</visibility>
@@ -79038,7 +79268,7 @@ END_PROGRAM
 								<name>is_three_pumps_here</name>
 								<typepar>5</typepar>
 								<typetarg>BOOL</typetarg>
-								<value>0</value>
+								<value>1</value>
 								<min/>
 								<max/>
 								<ipamin/>
@@ -79054,6 +79284,153 @@ END_PROGRAM
 								<shortname/>
 								<size>31</size>
 								<dataBlock>MW110.97</dataBlock>
+								<label/>
+								<translation/>
+								<visibility>0</visibility>
+								<clientType>0</clientType>
+								<descriptioncode>CUS40000</descriptioncode>
+								<descriptioncode_language/>
+								<progressive/>
+								<category>1</category>
+								<groups/>
+								<groups_language/>
+								<complemented>1</complemented>
+								<measurementunit>num</measurementunit>
+								<measurementunit_language>en-GB</measurementunit_language>
+								<existence>FIX(1)</existence>
+								<type>0</type>
+								<writesequence/>
+								<softscope>0</softscope>
+								<iotype/>
+								<iolabel/>
+								<wizard/>
+								<wizardgroup/>
+								<installeraccesslevel>0</installeraccesslevel>
+								<autogeneratedfrombusconfig>0</autogeneratedfrombusconfig>
+								<groupscode/>
+								<measurementunitcode>FIX(VMU00020)</measurementunitcode>
+								<TelevisIdentificationPar>0</TelevisIdentificationPar>
+							</param>
+							<param>
+								<ipa>5023</ipa>
+								<address>9058</address>
+								<name>Priority_first_pump</name>
+								<typepar>0</typepar>
+								<typetarg>INT</typetarg>
+								<value>0</value>
+								<min/>
+								<max/>
+								<ipamin/>
+								<ipamax/>
+								<scale>1</scale>
+								<offs>0</offs>
+								<um/>
+								<description/>
+								<note/>
+								<form/>
+								<accesslevel>3</accesslevel>
+								<readonly>0</readonly>
+								<shortname/>
+								<size>31</size>
+								<dataBlock>MW110.98</dataBlock>
+								<label/>
+								<translation/>
+								<visibility>0</visibility>
+								<clientType>0</clientType>
+								<descriptioncode>CUS40000</descriptioncode>
+								<descriptioncode_language/>
+								<progressive/>
+								<category>1</category>
+								<groups/>
+								<groups_language/>
+								<complemented>1</complemented>
+								<measurementunit>num</measurementunit>
+								<measurementunit_language>en-GB</measurementunit_language>
+								<existence>FIX(1)</existence>
+								<type>0</type>
+								<writesequence/>
+								<softscope>0</softscope>
+								<iotype/>
+								<iolabel/>
+								<wizard/>
+								<wizardgroup/>
+								<installeraccesslevel>0</installeraccesslevel>
+								<autogeneratedfrombusconfig>0</autogeneratedfrombusconfig>
+								<groupscode/>
+								<measurementunitcode>FIX(VMU00020)</measurementunitcode>
+								<TelevisIdentificationPar>0</TelevisIdentificationPar>
+							</param>
+							<param>
+								<ipa>5024</ipa>
+								<address>9059</address>
+								<name>Priority_second_pump</name>
+								<typepar>0</typepar>
+								<typetarg>INT</typetarg>
+								<value>1</value>
+								<min/>
+								<max/>
+								<ipamin/>
+								<ipamax/>
+								<scale>1</scale>
+								<offs>0</offs>
+								<um/>
+								<description/>
+								<note/>
+								<form/>
+								<accesslevel>3</accesslevel>
+								<readonly>0</readonly>
+								<shortname/>
+								<size>31</size>
+								<dataBlock>MW110.99</dataBlock>
+								<label/>
+								<translation/>
+								<visibility>0</visibility>
+								<clientType>0</clientType>
+								<descriptioncode>CUS40000</descriptioncode>
+								<descriptioncode_language/>
+								<progressive/>
+								<category>1</category>
+								<groups/>
+								<groups_language/>
+								<complemented>1</complemented>
+								<measurementunit>num</measurementunit>
+								<measurementunit_language>en-GB</measurementunit_language>
+								<existence>FIX(1)</existence>
+								<type>0</type>
+								<writesequence/>
+								<softscope>0</softscope>
+								<iotype/>
+								<iolabel/>
+								<wizard/>
+								<wizardgroup/>
+								<installeraccesslevel>0</installeraccesslevel>
+								<autogeneratedfrombusconfig>0</autogeneratedfrombusconfig>
+								<groupscode/>
+								<measurementunitcode>FIX(VMU00020)</measurementunitcode>
+								<TelevisIdentificationPar>0</TelevisIdentificationPar>
+							</param>
+							<param>
+								<ipa>5025</ipa>
+								<address>9060</address>
+								<name>Priority_third_pump</name>
+								<typepar>0</typepar>
+								<typetarg>INT</typetarg>
+								<value>2</value>
+								<min/>
+								<max/>
+								<ipamin/>
+								<ipamax/>
+								<scale>1</scale>
+								<offs>0</offs>
+								<um/>
+								<description/>
+								<note/>
+								<form/>
+								<accesslevel>3</accesslevel>
+								<readonly>0</readonly>
+								<shortname/>
+								<size>31</size>
+								<dataBlock>MW110.100</dataBlock>
 								<label/>
 								<translation/>
 								<visibility>0</visibility>
@@ -79190,31 +79567,31 @@ END_PROGRAM
 								<ioMapping inout="in" idx="2">
 									<name>DIL3</name>
 									<description>DIL3 digital input</description>
-									<variable>is_working_A</variable>
+									<variable>Avto_C</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="in" idx="3">
 									<name>DIL4</name>
 									<description>DIL4 digital input</description>
-									<variable>is_working_B</variable>
+									<variable>is_working_A</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="in" idx="4">
 									<name>DIL5</name>
 									<description>DIL5 digital input</description>
-									<variable>di_dry</variable>
+									<variable>is_working_B</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="in" idx="5">
 									<name>DIL6</name>
 									<description>DIL6 digital input</description>
-									<variable>di_overflow</variable>
+									<variable>is_working_C</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="in" idx="6">
 									<name>DIL7</name>
 									<description>DIL7 digital input</description>
-									<variable>di_flooding</variable>
+									<variable>di_dry</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="in" idx="7">
@@ -79226,7 +79603,7 @@ END_PROGRAM
 								<ioMapping inout="in" idx="8">
 									<name>DIL9</name>
 									<description>DIL9 digital input</description>
-									<variable>Avto_C</variable>
+									<variable>di_flooding</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="in" idx="9">
@@ -79244,7 +79621,7 @@ END_PROGRAM
 								<ioMapping inout="in" idx="11">
 									<name>DIL12</name>
 									<description>DIL12 digital input</description>
-									<variable>is_working_C</variable>
+									<variable>di_overflow</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="out" idx="0">
@@ -79274,19 +79651,19 @@ END_PROGRAM
 								<ioMapping inout="out" idx="4">
 									<name>DOL5</name>
 									<description>DOL5 digital output</description>
-									<variable>general_alarm</variable>
+									<variable>start_Motor_C</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="out" idx="5">
 									<name>DOL6</name>
 									<description>DOL6 digital output</description>
-									<variable>start_Motor_C</variable>
+									<variable>stop_Motor_C</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="out" idx="6">
 									<name>DOL7</name>
 									<description>DOL7 digital output</description>
-									<variable>stop_Motor_C</variable>
+									<variable>general_alarm</variable>
 									<type>BOOL</type>
 								</ioMapping>
 								<ioMapping inout="out" idx="7">
@@ -80076,14 +80453,13 @@ END_PROGRAM
 								<value ipa="1" subidx="0">350</value>
 								<value ipa="2" subidx="0">500</value>
 								<value ipa="3" subidx="0">100</value>
-								<value ipa="4" subidx="0">0</value>
+								<value ipa="4" subidx="0">1</value>
 								<value ipa="5000" subidx="0">0</value>
 								<value ipa="5001" subidx="0">0</value>
 								<value ipa="5002" subidx="0">0</value>
 								<value ipa="5003" subidx="0">0</value>
 								<value ipa="5004" subidx="0">0</value>
 								<value ipa="5005" subidx="0">0</value>
-								<value ipa="5012" subidx="0">0</value>
 								<value ipa="5013" subidx="0">0</value>
 								<value ipa="5006" subidx="0">0</value>
 								<value ipa="5007" subidx="0">0</value>
@@ -80099,7 +80475,10 @@ END_PROGRAM
 								<value ipa="5019" subidx="0">0</value>
 								<value ipa="5020" subidx="0">0</value>
 								<value ipa="5021" subidx="0">0</value>
-								<value ipa="5022" subidx="0">0</value>
+								<value ipa="5022" subidx="0">1</value>
+								<value ipa="5023" subidx="0">0</value>
+								<value ipa="5024" subidx="0">1</value>
+								<value ipa="5025" subidx="0">2</value>
 							</values>
 							<commDisabled>0</commDisabled>
 							<downloadVolume>0</downloadVolume>
