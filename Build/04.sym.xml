@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type ="text/xsl" href="file://C:/Users/Anton/AppData/Local/Temp/LLSymTab.xsl" version="1.0"?>
-<LLSymbolTable Version="1.4" Name="04" TargetID="M172P_596p15" CodeId="0x36FC8CDB" DebugMemoId="0xA180B976" MemoId="0x00009027" DataRelocation="none" DbRelocation="patch" FunctRelocation="patch" dataAddrMode="byte" codeAddrMode="byte" NoIncrAlloc="false" is64bit="false" isBigEndian="false" dataSignature="0xE478E48E">
+<LLSymbolTable Version="1.4" Name="04" TargetID="M172P_596p15" CodeId="0x37827217" DebugMemoId="0xA180B976" MemoId="0x00009027" DataRelocation="none" DbRelocation="patch" FunctRelocation="patch" dataAddrMode="byte" codeAddrMode="byte" NoIncrAlloc="false" is64bit="false" isBigEndian="false" dataSignature="0xB1EFB18A">
 	<Resource Name="EWAD" Proc="ARMv7M"/>
 	<CaseSensitive>false</CaseSensitive>
 	<CompilerOptions FBExtCheck="true"/>
@@ -83,12 +83,12 @@
 		<Var Name="AVTO_C" OrigName="Avto_C" Type="BOOL" OrigType="BOOL" Addr="0xA1A0015C" Descr="DIL3 digital input" Task="Timed"/>
 		<Var Name="AUTO_STATE_3" OrigName="auto_state_3" Type="STRING" OrigType="STRING" Addr="0xA0003F90" Group="Status_variables" RelocationRecord="%M110+152" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="110" DataBlockIndex="76" Access="3" length="10"/>
 		<Var Name="PRIORITY_THIRD_PUMP" OrigName="Priority_third_pump" Type="INT" OrigType="INT" Addr="0xA0003FC0" Group="Status_variables" RelocationRecord="%M110+200" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="110" DataBlockIndex="100" Access="3"/>
-		<Var Name="CNT" OrigName="cnt" Type="INT" OrigType="INT" Addr="0xA1A001E6" Group="Global_vars"/>
+		<Var Name="CNT" OrigName="cnt" Type="INT" OrigType="INT" Addr="0xA1A001F0" Group="Global_vars"/>
 		<Var Name="PAR_POLI" OrigName="Par_POLI" Type="UINT" OrigType="UINT" Addr="0x10000182" Descr="Polycarbonate code" Group="System_Parameters_EEPROM_RAM_image" RelocationRecord="%M100+386" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="100" DataBlockIndex="193" Access="1"/>
 		<Var Name="LEVEL_TANK" OrigName="level_tank" Type="INT" OrigType="INT" Addr="0xA0003EFA" Descr="Рівень резервуара" Group="Status_variables" RelocationRecord="%M110+2" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="110" DataBlockIndex="1" Access="3"/>
 		<Var Name="GENERAL_ALARM" OrigName="general_alarm" Type="BOOL" OrigType="BOOL" Addr="0x100004B2" Descr="DOL7 digital output" Group="IO_Mapping" RelocationRecord="%Q1+6" OnDataBlock="true" DataBlockType="Q" DBDataType="X" DataBlockNumber="1" DataBlockIndex="6" Access="3"/>
 		<Var Name="DI_RNPP" OrigName="di_rnpp" Type="BOOL" OrigType="BOOL" Addr="0x1000042A" Descr="DIL11 digital input" Group="IO_Mapping" RelocationRecord="%I0+10" OnDataBlock="true" DataBlockType="I" DBDataType="X" DataBlockNumber="0" DataBlockIndex="10" Access="3"/>
-		<Var Name="DI_RNPP" OrigName="di_rnpp" Type="BOOL" OrigType="BOOL" Addr="0xA1A001E5" Descr="DIL11 digital input" Task="Timed"/>
+		<Var Name="DI_RNPP" OrigName="di_rnpp" Type="BOOL" OrigType="BOOL" Addr="0xA1A001F2" Descr="DIL11 digital input" Task="Timed"/>
 		<Var Name="TIME_OF_WAIT" OrigName="TIME_OF_WAIT" Type="INT" OrigType="INT" Addr="0xA0003EF8" Group="Status_variables" RelocationRecord="%M110+0" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="110" DataBlockIndex="0" Access="3"/>
 		<Var Name="MOTOHOUR_1" OrigName="MotoHour_1" Type="REAL" OrigType="REAL" Addr="0xA0003F0C" Descr="Мотогодини  насос А" Group="Status_variables" RelocationRecord="%M110+20" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="110" DataBlockIndex="10" Access="3"/>
 		<Var Name="MOTOHOUR_2" OrigName="MotoHour_2" Type="REAL" OrigType="REAL" Addr="0xA0003F10" Descr="Мотогодини  насос В" Group="Status_variables" RelocationRecord="%M110+24" OnDataBlock="true" DataBlockType="M" DBDataType="W" DataBlockNumber="110" DataBlockIndex="12" Access="3"/>
@@ -494,16 +494,16 @@
 		<Var Name="SYSMODBUS_MSG_RECEIVED_RS485_PLUGIN" OrigName="sysMODBUS_msg_received_RS485_Plugin" Type="UDINT" OrigType="UDINT" Addr="0xA04866AC" Descr="Counter for modbus message received on RS485/232 Plugin" Group="System_Modbus_messages" RelocationRecord="%M5000+12" OnDataBlock="true" DataBlockType="M" DBDataType="D" DataBlockNumber="5000" DataBlockIndex="3" Access="3"/>
 		<Var Name="$$CODEBASE$$" OrigName="$$CODEBASE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1800000"/>
 		<Var Name="$$CODESTART$$" OrigName="$$CODESTART$$" Type="UDINT" OrigType="UDINT" Addr="0xA1800538"/>
-		<Var Name="$$CODESIZE$$" OrigName="$$CODESIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA18095F0"/>
+		<Var Name="$$CODESIZE$$" OrigName="$$CODESIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1809D7C"/>
 		<Var Name="$$CODEEND$$" OrigName="$$CODEEND$$" Type="UDINT" OrigType="UDINT" Addr="0xA1900000"/>
-		<Var Name="$$DATASIZE$$" OrigName="$$DATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1A00205"/>
+		<Var Name="$$DATASIZE$$" OrigName="$$DATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0xA1A00210"/>
 		<Var Name="$$AUXDATASIZE$$" OrigName="$$AUXDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
 		<Var Name="$$BITDATASIZE$$" OrigName="$$BITDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
 		<Var Name="$$RITDATASIZE$$" OrigName="$$RITDATASIZE$$" Type="UDINT" OrigType="UDINT" Addr="0x0"/>
 	</GlobalVars>
 	<Programs>
 		<Prog Name="DOWNLOADDATA" OrigName="DownloadData" SrcType="3" CodeAddr="0xA18048F0" HashCode="BEA32155"/>
-		<Prog Name="INITPARDB" OrigName="InitParDB" SrcType="3" CodeAddr="0xA1804A10" HashCode="8C112B6D">
+		<Prog Name="INITPARDB" OrigName="InitParDB" SrcType="3" CodeAddr="0xA1804A10" HashCode="83921A1D">
 			<Var Name="WARNINGSKILLER" OrigName="warningsKiller" Type="USINT" OrigType="USINT" Addr="0xA1A00010"/>
 			<Var Name="DUMMYCRC32" OrigName="dummyCrc32" Type="UDINT" OrigType="UDINT" Addr="0xA1A0000C"/>
 		</Prog>
@@ -526,43 +526,47 @@
 			<Var Name="DOWNTIMEIN_B" OrigName="downTimeIN_B" Type="BOOL" OrigType="BOOL" Addr="0xA1A00076"/>
 			<Var Name="PRIORITY" OrigName="Priority" Type="INT" OrigType="INT" Addr="0xA1A00074"/>
 		</Prog>
-		<Prog Name="LVL_V3" OrigName="LVL_v3" SrcType="3" CodeAddr="0xA1806368" HashCode="E0D7CA4F">
+		<Prog Name="LVL_V3" OrigName="LVL_v3" SrcType="3" CodeAddr="0xA1806368" HashCode="435A619A">
 			<Var Name="ROTATIONNUMBER" OrigName="Rotationnumber" Type="INT" OrigType="INT" Addr="0xA1A0015E" Descr="Номер в ротації"/>
 			<Var Name="FASTRUNMODE" OrigName="FastRunMode" Type="BOOL" OrigType="BOOL" Addr="0xA1A000D6" Descr="Локальна змінна Прогонка 0-вимкнена"/>
-			<Var Name="PUMPINTERVALTIMER_1" OrigName="PumpIntervalTimer_1" Type="TON" OrigType="TON" Addr="0xA1A00168" Descr="інтервал для запуску прогонки"/>
-			<Var Name="PUMPRUNTIMER_1" OrigName="PumpRunTimer_1" Type="TON" OrigType="TON" Addr="0xA1A0017C" Descr="Час прогонки"/>
-			<Var Name="TESTRUNACTIVE_1" OrigName="TestRunActive_1" Type="BOOL" OrigType="BOOL" Addr="0xA1A00164" Descr="Тригер готовності прогонки"/>
-			<Var Name="TESTRUNRUNNING_1" OrigName="TestRunRunning_1" Type="BOOL" OrigType="BOOL" Addr="0xA1A0015D" Descr="Прогонка виконується"/>
-			<Var Name="PUMPINTERVALTIMER_2" OrigName="PumpIntervalTimer_2" Type="TON" OrigType="TON" Addr="0xA1A00190" Descr="інтервал для запуску прогонки"/>
-			<Var Name="PUMPRUNTIMER_2" OrigName="PumpRunTimer_2" Type="TON" OrigType="TON" Addr="0xA1A001A4" Descr="Час прогонки"/>
-			<Var Name="TESTRUNACTIVE_2" OrigName="TestRunActive_2" Type="BOOL" OrigType="BOOL" Addr="0xA1A00167" Descr="Тригер готовності прогонки"/>
-			<Var Name="TESTRUNRUNNING_2" OrigName="TestRunRunning_2" Type="BOOL" OrigType="BOOL" Addr="0xA1A00165" Descr="Прогонка виконується"/>
-			<Var Name="PUMPINTERVALTIMER_3" OrigName="PumpIntervalTimer_3" Type="TON" OrigType="TON" Addr="0xA1A001BC" Descr="інтервал для запуску прогонки"/>
-			<Var Name="PUMPRUNTIMER_3" OrigName="PumpRunTimer_3" Type="TON" OrigType="TON" Addr="0xA1A001D0" Descr="Час прогонки"/>
-			<Var Name="TESTRUNACTIVE_3" OrigName="TestRunActive_3" Type="BOOL" OrigType="BOOL" Addr="0xA1A001B8" Descr="Тригер готовності прогонки"/>
-			<Var Name="TESTRUNRUNNING_3" OrigName="TestRunRunning_3" Type="BOOL" OrigType="BOOL" Addr="0xA1A00166" Descr="Прогонка виконується"/>
-			<Var Name="CURRENTPUMP" OrigName="CurrentPump" Type="INT" OrigType="INT" Addr="0xA1A00162"/>
+			<Var Name="CURRENTPUMP" OrigName="CurrentPump" Type="INT" OrigType="INT" Addr="0xA1A001A6"/>
 			<Var Name="CHECK_ALARM_PUMP_A" OrigName="check_Alarm_Pump_A" Type="CHECKALARMPUMP" OrigType="CheckAlarmPump" Addr="0xA1A000D8"/>
 			<Var Name="CHECK_ALARM_PUMP_B" OrigName="check_Alarm_Pump_B" Type="CHECKALARMPUMP" OrigType="CheckAlarmPump" Addr="0xA1A00104"/>
 			<Var Name="CHECK_ALARM_PUMP_C" OrigName="check_Alarm_Pump_C" Type="CHECKALARMPUMP" OrigType="CheckAlarmPump" Addr="0xA1A00130"/>
-			<Var Name="IS_CRITICAL_LVL" OrigName="is_critical_lvl" Type="BOOL" OrigType="BOOL" Addr="0xA1A001BA"/>
+			<Var Name="IS_CRITICAL_LVL" OrigName="is_critical_lvl" Type="BOOL" OrigType="BOOL" Addr="0xA1A001EE"/>
 			<Var Name="PRIORITY" OrigName="Priority" Type="INT" OrigType="INT" Addr="0xA1A00160"/>
-			<Var Name="CRITICAL_SITUATION" OrigName="critical_situation" Type="BOOL" OrigType="BOOL" Addr="0xA1A001B9"/>
-			<Var Name="QUICK_PUMPING" OrigName="quick_pumping" Type="BOOL" OrigType="BOOL" Addr="0xA1A001BB"/>
-			<Var Name="NEED_PUMPING_TO_MIN" OrigName="need_pumping_to_min" Type="BOOL" OrigType="BOOL" Addr="0xA1A001E4"/>
+			<Var Name="CRITICAL_SITUATION" OrigName="critical_situation" Type="BOOL" OrigType="BOOL" Addr="0xA1A001EC"/>
+			<Var Name="QUICK_PUMPING" OrigName="quick_pumping" Type="BOOL" OrigType="BOOL" Addr="0xA1A001ED"/>
+			<Var Name="NEED_PUMPING_TO_MIN" OrigName="need_pumping_to_min" Type="BOOL" OrigType="BOOL" Addr="0xA1A001EF"/>
+			<Var Name="NEED_FAST_RUN_A" OrigName="need_fast_run_A" Type="BOOL" OrigType="BOOL" Addr="0xA1A00162"/>
+			<Var Name="NEED_FAST_RUN_B" OrigName="need_fast_run_B" Type="BOOL" OrigType="BOOL" Addr="0xA1A00163"/>
+			<Var Name="NEED_FAST_RUN_C" OrigName="need_fast_run_C" Type="BOOL" OrigType="BOOL" Addr="0xA1A0018C"/>
+			<Var Name="STOPPING_TIMER_A" OrigName="Stopping_Timer_A" Type="TON" OrigType="TON" Addr="0xA1A00164"/>
+			<Var Name="STOPPING_TIMER_B" OrigName="Stopping_Timer_B" Type="TON" OrigType="TON" Addr="0xA1A00178"/>
+			<Var Name="STOPPING_TIMER_C" OrigName="Stopping_Timer_C" Type="TON" OrigType="TON" Addr="0xA1A00190"/>
+			<Var Name="STOPPING_TIME" OrigName="stopping_time" Type="UDINT" OrigType="UDINT" Addr="0xA1A001A8"/>
+			<Var Name="RUNNING_TIME" OrigName="running_time" Type="UDINT" OrigType="UDINT" Addr="0xA1A001C0"/>
+			<Var Name="FAST_RUN_TIMER_A" OrigName="Fast_Run_Timer_A" Type="TON" OrigType="TON" Addr="0xA1A001AC"/>
+			<Var Name="FAST_RUN_TIMER_B" OrigName="Fast_Run_Timer_B" Type="TON" OrigType="TON" Addr="0xA1A001C4"/>
+			<Var Name="FAST_RUN_TIMER_C" OrigName="Fast_Run_Timer_C" Type="TON" OrigType="TON" Addr="0xA1A001D8"/>
+			<Var Name="DOWNTIMEIN_A" OrigName="downTimeIN_A" Type="BOOL" OrigType="BOOL" Addr="0xA1A0018D"/>
+			<Var Name="DOWNTIMEIN_B" OrigName="downTimeIN_B" Type="BOOL" OrigType="BOOL" Addr="0xA1A001A4"/>
+			<Var Name="DOWNTIMEIN_C" OrigName="downTimeIN_C" Type="BOOL" OrigType="BOOL" Addr="0xA1A001A5"/>
+			<Var Name="ISLEVEL2REACHED" OrigName="isLevel2Reached" Type="BOOL" OrigType="BOOL" Addr="0xA1A0015D"/>
+			<Var Name="WORKINGPUMPSCOUNT" OrigName="workingPumpsCount" Type="INT" OrigType="INT" Addr="0xA1A0018E"/>
 		</Prog>
 		<Prog Name="MAIN" OrigName="main" SrcType="3" CodeAddr="0xA1804870" HashCode="1FDBE00B"/>
 		<Prog Name="MOTOHOUR" OrigName="MotoHour" SrcType="3" CodeAddr="0xA180615C" HashCode="290CAA97"/>
 		<Prog Name="PARCHECK" OrigName="ParCheck" SrcType="3" CodeAddr="0xA18049A0" HashCode="A281779A"/>
 		<Prog Name="REGISTER" OrigName="Register" SrcType="3" CodeAddr="0xA1806070" HashCode="56775164"/>
 		<Prog Name="SAVEDATA" OrigName="SaveData" SrcType="3" CodeAddr="0xA180615C" HashCode="D6EFECE5">
-			<Var Name="POWER_ERR" OrigName="power_err" Type="R_TRIG" OrigType="R_TRIG" Addr="0xA1A001FC"/>
-			<Var Name="TON_START_UP" OrigName="ton_start_up" Type="TON" OrigType="TON" Addr="0xA1A001E8"/>
-			<Var Name="RES_LVL_MIN" OrigName="res_lvl_min" Type="BOOL" OrigType="BOOL" Addr="0xA1A00200"/>
-			<Var Name="RES_LVL_1" OrigName="res_lvl_1" Type="BOOL" OrigType="BOOL" Addr="0xA1A00201"/>
-			<Var Name="RES_LVL_2" OrigName="res_lvl_2" Type="BOOL" OrigType="BOOL" Addr="0xA1A00202"/>
-			<Var Name="RES_LVL_3" OrigName="res_lvl_3" Type="BOOL" OrigType="BOOL" Addr="0xA1A00203"/>
-			<Var Name="RES_ROTATION" OrigName="res_rotation" Type="BOOL" OrigType="BOOL" Addr="0xA1A00204"/>
+			<Var Name="POWER_ERR" OrigName="power_err" Type="R_TRIG" OrigType="R_TRIG" Addr="0xA1A00208"/>
+			<Var Name="TON_START_UP" OrigName="ton_start_up" Type="TON" OrigType="TON" Addr="0xA1A001F4"/>
+			<Var Name="RES_LVL_MIN" OrigName="res_lvl_min" Type="BOOL" OrigType="BOOL" Addr="0xA1A001F3"/>
+			<Var Name="RES_LVL_1" OrigName="res_lvl_1" Type="BOOL" OrigType="BOOL" Addr="0xA1A0020C"/>
+			<Var Name="RES_LVL_2" OrigName="res_lvl_2" Type="BOOL" OrigType="BOOL" Addr="0xA1A0020D"/>
+			<Var Name="RES_LVL_3" OrigName="res_lvl_3" Type="BOOL" OrigType="BOOL" Addr="0xA1A0020E"/>
+			<Var Name="RES_ROTATION" OrigName="res_rotation" Type="BOOL" OrigType="BOOL" Addr="0xA1A0020F"/>
 		</Prog>
 	</Programs>
 	<FunctionBlocks>
