@@ -751,7 +751,7 @@
 							<EVENT name="OnPress"/>
 							<EVENT name="OnRelease"/>
 						</EVENTS>
-						<ACTION id="1" key="0">menu</ACTION>
+						<ACTION id="1" key="0">configureKNS</ACTION>
 					</BUTTON>
 				</BUTTONS>
 				<CHECKBOXES/>
@@ -2986,7 +2986,7 @@ END_PROGRAM
 						<XPOS>4</XPOS>
 						<YPOS>1</YPOS>
 						<XDIM>120</XDIM>
-						<YDIM>11</YDIM>
+						<YDIM>10</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
 						<TRANSP>FALSE</TRANSP>
 						<SELECT>FALSE</SELECT>
@@ -3014,9 +3014,9 @@ END_PROGRAM
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>4</XPOS>
-						<YPOS>12</YPOS>
+						<YPOS>21</YPOS>
 						<XDIM>120</XDIM>
-						<YDIM>12</YDIM>
+						<YDIM>10</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
 						<TRANSP>FALSE</TRANSP>
 						<SELECT>FALSE</SELECT>
@@ -3026,7 +3026,7 @@ END_PROGRAM
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>2</ZORDER>
-						<ORDER>2</ORDER>
+						<ORDER>3</ORDER>
 						<SELTEXT>Оновити рiвнi</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
@@ -3044,9 +3044,9 @@ END_PROGRAM
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>4</XPOS>
-						<YPOS>24</YPOS>
+						<YPOS>31</YPOS>
 						<XDIM>120</XDIM>
-						<YDIM>12</YDIM>
+						<YDIM>10</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
 						<TRANSP>FALSE</TRANSP>
 						<SELECT>FALSE</SELECT>
@@ -3056,7 +3056,7 @@ END_PROGRAM
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>3</ZORDER>
-						<ORDER>3</ORDER>
+						<ORDER>4</ORDER>
 						<SELTEXT>Скинути авар. насос.</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
@@ -3074,9 +3074,9 @@ END_PROGRAM
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>4</XPOS>
-						<YPOS>36</YPOS>
+						<YPOS>41</YPOS>
 						<XDIM>120</XDIM>
-						<YDIM>12</YDIM>
+						<YDIM>10</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
 						<TRANSP>FALSE</TRANSP>
 						<SELECT>FALSE</SELECT>
@@ -3086,7 +3086,7 @@ END_PROGRAM
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>4</ZORDER>
-						<ORDER>4</ORDER>
+						<ORDER>5</ORDER>
 						<SELTEXT>Оновити прiор. нас.</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
@@ -3104,9 +3104,9 @@ END_PROGRAM
 						<SELCOL type="RGBColor">0</SELCOL>
 						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
 						<XPOS>49</XPOS>
-						<YPOS>51</YPOS>
+						<YPOS>53</YPOS>
 						<XDIM>29</XDIM>
-						<YDIM>12</YDIM>
+						<YDIM>10</YDIM>
 						<VISIBLE>TRUE</VISIBLE>
 						<TRANSP>FALSE</TRANSP>
 						<SELECT>FALSE</SELECT>
@@ -3116,7 +3116,7 @@ END_PROGRAM
 						<TYPE>Normal</TYPE>
 						<DESC/>
 						<ZORDER>5</ZORDER>
-						<ORDER>5</ORDER>
+						<ORDER>6</ORDER>
 						<SELTEXT>&lt;--</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
@@ -3124,6 +3124,36 @@ END_PROGRAM
 							<EVENT name="OnRelease"/>
 						</EVENTS>
 						<ACTION id="1" key="0">menu</ACTION>
+					</BUTTON>
+					<BUTTON version="2" name="Button_6">
+						<FONT>EWP2_6x8</FONT>
+						<BORDPTS>1</BORDPTS>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<STYLE>Flat</STYLE>
+						<COLOR type="RGBColor">16777215</COLOR>
+						<SELCOL type="RGBColor">0</SELCOL>
+						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
+						<XPOS>4</XPOS>
+						<YPOS>11</YPOS>
+						<XDIM>120</XDIM>
+						<YDIM>10</YDIM>
+						<VISIBLE>TRUE</VISIBLE>
+						<TRANSP>FALSE</TRANSP>
+						<SELECT>FALSE</SELECT>
+						<PRESS>*</PRESS>
+						<TEXT>Оновити прогонку</TEXT>
+						<ALIGN>Center</ALIGN>
+						<TYPE>Normal</TYPE>
+						<DESC/>
+						<ZORDER>6</ZORDER>
+						<ORDER>2</ORDER>
+						<SELTEXT>Оновити прогонку</SELTEXT>
+						<EVENTS>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnPress"/>
+							<EVENT name="OnRelease"/>
+						</EVENTS>
+						<ACTION id="1" key="0">updateFastRun</ACTION>
 					</BUTTON>
 				</BUTTONS>
 				<CHECKBOXES/>
@@ -3397,6 +3427,127 @@ END_PROGRAM
 						<ZORDER>7</ZORDER>
 						<ORDER>4</ORDER>
 						<SELTEXT>&lt;--</SELTEXT>
+						<EVENTS>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnPress"/>
+							<EVENT name="OnRelease"/>
+						</EVENTS>
+						<ACTION id="1" key="0">configureKNS</ACTION>
+					</BUTTON>
+				</BUTTONS>
+				<CHECKBOXES/>
+				<PROGRESSES/>
+				<CHARTS/>
+				<CUSTOMS/>
+			</OBJECTS>
+			<EVENTS>
+				<EVENT name="OnLoad"/>
+				<EVENT name="OnUnload"/>
+				<EVENT name="OnActivate"/>
+				<EVENT name="OnDeactivate"/>
+				<EVENT name="OnDraw"/>
+				<EVENT name="OnTimer"/>
+				<EVENT name="OnAfterDraw"/>
+			</EVENTS>
+			<ACTIONS/>
+			<SCRIPT>
+				<![CDATA[]]>
+			</SCRIPT>
+		</PAGE>
+		<PAGE name="updateFastRun">
+			<ATTRIBUTES>
+				<MSGID>0</MSGID>
+				<WNDMODE>0</WNDMODE>
+				<MODAL>No</MODAL>
+				<FONT>EWP2_6x8</FONT>
+				<COLOR type="RGBColor">0</COLOR>
+				<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+				<STYLE>Flat</STYLE>
+				<XDIM>128</XDIM>
+				<YDIM>64</YDIM>
+				<XPOS>0</XPOS>
+				<YPOS>0</YPOS>
+				<CHARGRIDDIMX>1</CHARGRIDDIMX>
+				<CHARGRIDDIMY>1</CHARGRIDDIMY>
+				<CAPTION>Прогонка</CAPTION>
+				<TITLEBAR>Yes</TITLEBAR>
+				<SYSMENU>No</SYSMENU>
+				<BORDER>No</BORDER>
+				<DESC/>
+				<HIDDEN>0</HIDDEN>
+			</ATTRIBUTES>
+			<OBJECTS>
+				<STRINGS/>
+				<IMGS/>
+				<LINES/>
+				<RECTS/>
+				<ANIMS/>
+				<EDITS>
+					<EDIT name="Edit_2">
+						<FONT>EWP2_6x8</FONT>
+						<COLOR type="RGBColor">0</COLOR>
+						<BCKCOLOR type="RGBColor">16777215</BCKCOLOR>
+						<SELBCK type="RGBColor">0</SELBCK>
+						<SELCOL type="RGBColor">16777215</SELCOL>
+						<STYLE>Flat</STYLE>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<BORDPTS>1</BORDPTS>
+						<XPOS>52</XPOS>
+						<YPOS>23</YPOS>
+						<XDIM>24</XDIM>
+						<YDIM>8</YDIM>
+						<NUMCHAR>4</NUMCHAR>
+						<ORDER>2</ORDER>
+						<FORMAT>%d</FORMAT>
+						<ALIGN>Center</ALIGN>
+						<ACCESS>RW</ACCESS>
+						<DESC/>
+						<ZORDER>2</ZORDER>
+						<VAR type="BOOL">@LocalParameters.FastRun</VAR>
+						<TYPE>BOOL</TYPE>
+						<REFRESH>TRUE</REFRESH>
+						<VISIBLE>TRUE</VISIBLE>
+						<SELECT>TRUE</SELECT>
+						<LABEL/>
+						<VARMIN>*</VARMIN>
+						<VARMAX>*</VARMAX>
+						<EVENTS>
+							<EVENT name="BeforeUpdate"/>
+							<EVENT name="AfterUpdate"/>
+							<EVENT name="OnGotFocus"/>
+							<EVENT name="OnLostFocus"/>
+							<EVENT name="OnClick"/>
+							<EVENT name="OnEnter"/>
+							<EVENT name="OnChange"/>
+						</EVENTS>
+					</EDIT>
+				</EDITS>
+				<TEXTBOXES/>
+				<COMBOBOXES/>
+				<BUTTONS>
+					<BUTTON version="2" name="Button_1">
+						<FONT>EWP2_6x8</FONT>
+						<BORDPTS>1</BORDPTS>
+						<BORDCOL type="RGBColor">0</BORDCOL>
+						<STYLE>Flat</STYLE>
+						<COLOR type="RGBColor">16777215</COLOR>
+						<SELCOL type="RGBColor">0</SELCOL>
+						<SELBORDCOL type="RGBColor">16777215</SELBORDCOL>
+						<XPOS>44</XPOS>
+						<YPOS>40</YPOS>
+						<XDIM>39</XDIM>
+						<YDIM>14</YDIM>
+						<VISIBLE>TRUE</VISIBLE>
+						<TRANSP>FALSE</TRANSP>
+						<SELECT>FALSE</SELECT>
+						<PRESS>*</PRESS>
+						<TEXT>Back</TEXT>
+						<ALIGN>Center</ALIGN>
+						<TYPE>Normal</TYPE>
+						<DESC/>
+						<ZORDER>1</ZORDER>
+						<ORDER>1</ORDER>
+						<SELTEXT>Back</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
 							<EVENT name="OnPress"/>

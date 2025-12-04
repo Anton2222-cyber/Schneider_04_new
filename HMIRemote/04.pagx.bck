@@ -3087,7 +3087,7 @@ END_PROGRAM
 						<DESC/>
 						<ZORDER>4</ZORDER>
 						<ORDER>4</ORDER>
-						<SELTEXT>Скинути авар. насос.</SELTEXT>
+						<SELTEXT>Оновити прiор. нас.</SELTEXT>
 						<EVENTS>
 							<EVENT name="OnClick"/>
 							<EVENT name="OnPress"/>
